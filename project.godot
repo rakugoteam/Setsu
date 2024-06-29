@@ -1,0 +1,85 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Monologue"
+config/version="2.2.1"
+run/main_scene="res://Scenes/App.tscn"
+config/features=PackedStringArray("4.2")
+run/low_processor_mode=true
+boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
+boot_splash/image="res://icon.png"
+boot_splash/fullsize=false
+config/icon="res://icon.png"
+
+[autoload]
+
+uuid="*res://Scripts/Global/UUID.gd"
+Util="*res://Scripts/Global/Util.gd"
+GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
+SfxLoader="*res://Test/Scripts/SfxLoader.gd"
+
+[display]
+
+window/size/viewport_width=1450
+window/size/viewport_height=750
+window/per_pixel_transparency/allowed=true
+window/size/fullscreen=true
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Assets/": "orange",
+"res://Examples/": "purple",
+"res://Objects/": "yellow",
+"res://Objects/GraphNodes/": "green",
+"res://Objects/SidePanelNodes/": "teal",
+"res://Objects/SubComponents/": "blue",
+"res://Scenes/": "yellow",
+"res://Scripts/": "yellow",
+"res://Scripts/GraphNodes/": "green",
+"res://Scripts/SidePanelNodes/": "teal",
+"res://Scripts/SubComponents/": "blue",
+"res://Test/": "red"
+}
+
+[filesystem]
+
+import/blender/enabled=false
+
+[gui]
+
+theme/custom="res://Assets/MainTheme.tres"
+theme/default_font_subpixel_positioning=0
+theme/lcd_subpixel_layout=0
+
+[input]
+
+Save={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":83,"physical_keycode":83,"key_label":83,"unicode":0,"echo":false,"script":null)
+]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+viewport/transparent_background=true
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
+environment/defaults/default_environment="res://default_env.tres"
