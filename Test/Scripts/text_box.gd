@@ -5,7 +5,7 @@ extends VBoxContainer
 
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
 
-var current_text_box: RichTextLabel
+var current_text_box: AdvancedTextLabel
 
 var text = ""
 var speaker_display = ""
@@ -52,7 +52,7 @@ func reset():
 
 
 func update():
-	current_text_box.text = text
+	current_text_box._text = text
 
 
 func display():
