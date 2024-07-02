@@ -79,22 +79,23 @@ func _exit():
 
 func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = false):
 	# Textbox
-	var new_textbox: RichTextLabel = text_box.instantiate()
-	tb_text_label.text = ""
+	var new_textbox: AdvancedTextLabel = text_box.instantiate()
+	tb_text_label._text = ""
 	
 	if speaker_name.begins_with("_"):
-		new_textbox.text = sentence
+		new_textbox._text = sentence
 		new_textbox.visible_characters = 0
 		
-		tb_text_label.text = sentence
+		tb_text_label._text = sentence
 		tb_text_label.visible_characters = 0
+		
 	else:
-		new_textbox.text = "[color=e75a41]" + speaker_name + "[/color]\n"
-		new_textbox.text += sentence
+		new_textbox._text = "[color=e75a41]" + speaker_name + "[/color]\n"
+		new_textbox._text += sentence
 		new_textbox.visible_characters = len(speaker_name)
 		
-		tb_text_label.text = "[color=e75a41]" + speaker_name + "[/color]\n"
-		tb_text_label.text += sentence
+		tb_text_label._text = "[color=e75a41]" + speaker_name + "[/color]\n"
+		tb_text_label._text += sentence
 		tb_text_label.visible_characters = len(speaker_name)
 	
 	# Speaker
@@ -103,7 +104,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		if not character_container.visible:
 			character_container.position.x = -character_container.size.x
 			character_container.show()
-			character_container.texture = char_asset
+			character_container._texture = char_asset
 			get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
 	else:
 		character_container.position.x = 50
@@ -111,23 +112,23 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		
 		character_container.hide()
 	
-	for tb: RichTextLabel in sp_text_box_container.get_children():
+	for tb: AdvancedText in sp_text_box_container.get_children():
 		tb.modulate = Color(1, 1, 1, 0.6)
 	
 	sp_text_box_container.add_child(new_textbox)
 	
 	if instant:
-		new_textbox.visible_characters = len(new_textbox.text)
-		tb_text_label.visible_characters = len(tb_text_label.text)
+		new_textbox.visible_characters = len(new_textbox._text)
+		tb_text_label.visible_characters = len(tb_text_label._text)
 		return
 	
-	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
-	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label.text), 0.5)
+	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox._text), 0.5)
+	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label._text), 0.5)
 
 
 func _instantiate_option(option):
 	var new_option = option_button.instantiate()
-	new_option.text = option.get("Sentence")
+	new_option._text = option.get("Sentence")
 	new_option.connect("pressed", option_selected.bind(option))
 	
 	return new_option
@@ -163,7 +164,7 @@ func _on_monologue_event_triggered(raw_event):
 func _on_monologue_update_background(path, texture):
 	
 	if texture:
-		background_node.texture = texture
+		background_node._texture = texture
 	else:
 		$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
 
