@@ -19,6 +19,9 @@ boot_splash/bg_color=Color(0.117647, 0.133333, 0.164706, 1)
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 config/icon="res://icon.png"
+addons/rakugo_game_template/loading_scene_path="res://scenes/LoadingScreen/LoadingScreen.tscn"
+addons/rakugo_game_template/main_menu_path="res://scenes/MainMenu/MainMenu.tscn"
+addons/rakugo_game_template/first_game_scene_path="res://scenes/Game/game.tscn"
 
 [autoload]
 
@@ -26,6 +29,14 @@ uuid="*res://Scripts/Global/UUID.gd"
 Util="*res://Scripts/Global/Util.gd"
 GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 SfxLoader="*res://Test/Scripts/SfxLoader.gd"
+AdvancedText="*res://addons/advanced-text/AdvancedText.gd"
+AppSettings="*res://addons/rakugo_game_template/Autoloads/AppSettings.gd"
+SceneLoader="*res://addons/rakugo_game_template/Autoloads/SceneLoader.gd"
+ProjectMusicController="*res://addons/rakugo_game_template/Autoloads/ProjectMusicController.tscn"
+UISoundManager="*res://addons/rakugo_game_template/Autoloads/UISoundManager/UISoundManager.tscn"
+Transitions="*res://addons/rakugo_game_template/Autoloads/Transitions/transitions.tscn"
+MaterialIconsDB="*res://addons/material-design-icons/icons/icons.gd"
+EmojisDB="*res://addons/emojis-for-godot/emojis/emojis.gd"
 
 [display]
 
@@ -36,7 +47,7 @@ window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg", "res://addons/advanced-text/plugin.cfg", "res://addons/emojis-for-godot/plugin.cfg", "res://addons/material-design-icons/plugin.cfg", "res://addons/rakugo_game_template/plugin.cfg")
 
 [file_customization]
 
