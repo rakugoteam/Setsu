@@ -1,17 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=15 format=3 uid="uid://dnxbsvukyu6a2"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_8rud0"]
 [ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://Test/Assets/background.png" id="2_0y34q"]
 [ext_resource type="Script" path="res://Test/Scripts/CharacterAsset.gd" id="3_xil5b"]
 [ext_resource type="Texture2D" uid="uid://dcv65k3aspep6" path="res://Assets/Icons/SidePanelMode.png" id="4_hc80r"]
 [ext_resource type="Script" path="res://Test/Scripts/text_box.gd" id="4_huku6"]
-[ext_resource type="Script" path="res://Test/Scripts/choice_panel.gd" id="5_gll0q"]
 [ext_resource type="Script" path="res://Test/Scripts/Notification.gd" id="6_kev1j"]
 [ext_resource type="PackedScene" uid="uid://cm2caiiwpfydd" path="res://Test/Objects/text_box.tscn" id="7_00ova"]
 [ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://Assets/Icons/TextboxMode.png" id="7_2ymld"]
 [ext_resource type="FontFile" uid="uid://sx7iusrmfmsg" path="res://Test/Font/VCREAS 3.0.ttf" id="7_if5ck"]
-[ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="11_koyp4"]
-[ext_resource type="Resource" uid="uid://dga3wfg0w4rw6" path="res://Test/Data/markdown_settings.tres" id="12_3fot5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8kgr"]
 bg_color = Color(0.141176, 0.14902, 0.192157, 1)
@@ -162,7 +159,7 @@ visible = false
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("5_gll0q")
+theme_override_constants/separation = 10
 
 [node name="TextBoxContainer" type="MarginContainer" parent="."]
 visible = false
@@ -235,7 +232,7 @@ visible = false
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("5_gll0q")
+theme_override_constants/separation = 10
 
 [node name="Notification" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -272,8 +269,6 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("7_if5ck")
 bbcode_enabled = true
 fit_content = true
-script = ExtResource("11_koyp4")
-parser = ExtResource("12_3fot5")
 
 [connection signal="monologue_custom_action" from="." to="." method="_on_monologue_custom_action"]
 [connection signal="monologue_end" from="." to="." method="_on_monologue_end"]

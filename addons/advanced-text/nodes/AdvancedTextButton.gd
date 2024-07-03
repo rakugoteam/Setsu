@@ -50,8 +50,12 @@ func _ready() -> void:
 	fit_content = true
 	_change_stylebox("normal")
 	_change_stylebox("focus", "focus")
-	mouse_entered.connect(_change_stylebox.bind("hover"))
-	mouse_exited.connect(_on_mouse_exited)
+	
+	if !mouse_entered.is_connected(_change_stylebox):
+		mouse_entered.connect(_change_stylebox.bind("hover"))
+	
+	if !mouse_exited.is_connected(_on_mouse_exited):
+		mouse_exited.connect(_on_mouse_exited)
 
 func _on_mouse_exited():
 	if toggle_mode and _toggled:

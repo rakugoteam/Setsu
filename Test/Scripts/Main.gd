@@ -1,5 +1,6 @@
 extends MonologueProcess
 
+@onready var markup = preload("res://Test/Data/markdown_settings.tres")
 
 @onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
@@ -112,8 +113,8 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		
 		character_container.hide()
 	
-	for tb: AdvancedText in sp_text_box_container.get_children():
-		tb.modulate = Color(1, 1, 1, 0.6)
+	# for tb: AdvancedTextLabel in sp_text_box_container.get_children():
+	# 	tb.modulate = Color(1, 1, 1, 0.6)
 	
 	sp_text_box_container.add_child(new_textbox)
 	
@@ -122,15 +123,20 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		tb_text_label.visible_characters = len(tb_text_label._text)
 		return
 	
-	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox._text), 0.5)
-	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label._text), 0.5)
+	get_tree().create_tween().tween_property(
+		new_textbox, "visible_characters", len(new_textbox._text), 0.5)
+	get_tree().create_tween().tween_property(
+		tb_text_label, "visible_characters", len(tb_text_label._text), 0.5)
 
 
 func _instantiate_option(option):
-	var new_option = option_button.instantiate()
-	new_option._text = option.get("Sentence")
+	var new_option : Button = option_button.instantiate()
+	# new_option.fit_content = true
+	# new_option.scroll_active = false
+	# new_option.shortcut_keys_enabled = false
+	# new_option.parser = markup
+	new_option.text = option.get("Sentence")
 	new_option.connect("pressed", option_selected.bind(option))
-	
 	return new_option
 
 func _on_monologue_new_choice(options):
@@ -140,7 +146,6 @@ func _on_monologue_new_choice(options):
 	
 	tb_choice_container.show()
 	sp_choice_container.show()
-
 
 func _on_monologue_option_choosed(_raw_option):
 	tb_choice_container.hide()
@@ -164,7 +169,7 @@ func _on_monologue_event_triggered(raw_event):
 func _on_monologue_update_background(path, texture):
 	
 	if texture:
-		background_node._texture = texture
+		background_node.texture = texture
 	else:
 		$Notification.debug("Update Background instruction received [color=7f7f7f](" + path + ")[/color]")
 

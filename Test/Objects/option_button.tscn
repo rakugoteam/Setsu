@@ -1,28 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj80aa4ckke2i"]
+[gd_scene format=3 uid="uid://cj80aa4ckke2i"]
 
-[ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextButton.gd" id="1_5mghq"]
-[ext_resource type="Resource" uid="uid://dga3wfg0w4rw6" path="res://Test/Data/markdown_settings.tres" id="2_nxqwp"]
-
-[node name="ChoiceButton" type="RichTextLabel"]
+[node name="ChoiceButton" type="Button"]
 texture_filter = 1
 custom_minimum_size = Vector2(100, 0)
-anchors_preset = -1
-anchor_right = 0.27
-anchor_bottom = 0.04
-offset_right = -0.0400085
-offset_bottom = 0.079998
+anchors_preset = 10
+anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-bbcode_enabled = true
-text = "It's a pretty long sentence but not that long so..."
-fit_content = true
-scroll_active = false
-shortcut_keys_enabled = false
-script = ExtResource("1_5mghq")
-_text = "It's a pretty long sentence but not that long so..."
-parser = ExtResource("2_nxqwp")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

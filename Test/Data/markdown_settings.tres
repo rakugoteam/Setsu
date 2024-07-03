@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MarkdownParser" load_steps=6 format=3 uid="uid://dga3wfg0w4rw6"]
+[gd_resource type="Resource" script_class="MarkdownParser" load_steps=6 format=3 uid="uid://74bogqdd04tt"]
 
 [ext_resource type="Script" path="res://addons/advanced-text/parsers/MarkdownParser.gd" id="1_4s8ds"]
 
