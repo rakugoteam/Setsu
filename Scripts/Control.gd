@@ -100,13 +100,16 @@ func _shortcut_input(event):
 func get_current_graph_edit() -> GraphEdit:
 	return graph_edits.get_child(tab_bar.current_tab)
 
+func get_graph_nodes() -> Array[Node]:
+	return get_current_graph_edit().get_children()
+
 
 func _to_dict() -> Dictionary:
 	var list_nodes = []
 	
-	save_progress_bar.max_value = get_current_graph_edit().get_children().size() + 1
+	save_progress_bar.max_value = get_graph_nodes().size() + 1
 	
-	for node in get_current_graph_edit().get_children():
+	for node in get_graph_nodes():
 		if node.is_queued_for_deletion():
 			continue
 		list_nodes.append(node._to_dict())
@@ -194,7 +197,7 @@ func get_root_dict(nodes):
 
 
 func get_root_node_ref():
-	for node in get_current_graph_edit().get_children():
+	for node in get_graph_nodes():
 		if !node.is_queued_for_deletion() and node.id == root_dict.get("ID"):
 			return node
 
@@ -334,7 +337,7 @@ func load_project(path):
 	
 	
 func get_node_by_id(id):
-	for node in get_current_graph_edit().get_children():
+	for node in get_graph_nodes():
 		if node.id == id:
 			return node
 	return null
@@ -553,16 +556,20 @@ func new_graph_edit():
 
 
 func _on_new_file_btn_pressed():
+	$WelcomeWindow.hide()
 	var new_file_path = await new_file_select()
 	if new_file_path == null:
+		$WelcomeWindow.show()
 		return
 		
 	return await file_selected(new_file_path, 0)
 
 
 func _on_open_file_btn_pressed():
+	$WelcomeWindow.hide()
 	var new_file_path = await open_file_select()
 	if new_file_path == null:
+		$WelcomeWindow.show()
 		return
 		
 	return await file_selected(new_file_path, 1)
