@@ -19,7 +19,7 @@ content_margin_right = 7.0
 bg_color = Color(0.768627, 0.180392, 0.25098, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
-corner_radius_bottom_right = 5
+corner_radius_bottom_right = 6
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2i5c"]

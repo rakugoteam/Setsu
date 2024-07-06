@@ -36,7 +36,8 @@ func _ready():
 		
 
 func _input(event):
-	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
+	if (event.is_action_pressed("ui_accept")
+	and is_completed and not sp_choice_container.visible):
 		next()
 
 func _handle_scrollbar_changed():
@@ -130,7 +131,8 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 
 
 func _instantiate_option(option):
-	var new_option : Button = option_button.instantiate()
+	# var new_option : Button = option_button.instantiate()
+	var new_option : AdvancedTextButton = option_button.instantiate()
 	# new_option.fit_content = true
 	# new_option.scroll_active = false
 	# new_option.shortcut_keys_enabled = false
