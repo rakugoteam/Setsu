@@ -5,7 +5,7 @@ extends VBoxContainer
 
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
 
-var current_text_box: RichTextLabel
+var current_text_box: AdvancedTextLabel
 
 var text = ""
 var speaker_display = ""
@@ -52,7 +52,7 @@ func reset():
 
 
 func update():
-	current_text_box.text = text
+	current_text_box._text = text
 
 
 func display():
@@ -60,9 +60,9 @@ func display():
 
 
 func append_text_box():
-	if current_text_box:
-		current_text_box.remove_theme_color_override("default_color")
-		current_text_box.add_theme_color_override("default_color", Color("656565"))
+	# if current_text_box:
+		# current_text_box.remove_theme_color_override("default_color")
+		# current_text_box.add_theme_color_override("default_color", Color("656565"))
 	
 	var new_text_box = text_box.instantiate()
 	add_child(new_text_box)

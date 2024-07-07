@@ -1,7 +1,8 @@
 extends PanelContainer
 
 
-@onready var timeleft = $VBoxContainer/TimeLeft
+@onready var timeleft := $VBoxContainer/TimeLeft
+@onready var text_label := $VBoxContainer/MarginContainer/RichTextLabel
 
 
 func _ready():
@@ -10,7 +11,7 @@ func _ready():
 
 func debug(text: String):
 	show()
-	$VBoxContainer/MarginContainer/RichTextLabel.text = "[color=e5b65e][DEBUG][/color] " + text
+	text_label.text = "[color=e5b65e][DEBUG][/color] " + text
 	timeleft.custom_minimum_size.x = size.x
 	var tween = get_tree().create_tween()
 	tween.tween_property(timeleft, "custom_minimum_size:x", 0, 7.5)
