@@ -61,4 +61,28 @@ scroll_following = true
 script = ExtResource("4_6ycci")
 parser = ExtResource("5_puklo")
 
+[node name="Hint" type="Popup" parent="."]
+unique_name_in_owner = true
+
+[node name="Panel" type="Panel" parent="Hint"]
+custom_minimum_size = Vector2(20, 20)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AdvancedTextLabel" type="RichTextLabel" parent="Hint/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[i]Some hint[/i]"
+script = ExtResource("4_6ycci")
+_text = "*Some hint*"
+parser = ExtResource("5_puklo")
+
 [connection signal="resize_request" from="." to="." method="_on_GraphNode_resize_request"]

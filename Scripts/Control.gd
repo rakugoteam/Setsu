@@ -1,10 +1,15 @@
 extends Control
 
-
 var dialog = {}
 var dialog_for_localisation = []
+var emoji_finder : Window
+var icon_search : Window
 
 const HISTORY_FILE_PATH: String = "user://history.save"
+const emoji_finder_path :=\
+"res://addons/emojis-for-godot/EmojiPanel/EmojiPanel.tscn"
+const icon_finder_script :=\
+	"res://addons/material-design-icons/icon_finder/IconFinder.tscn"
 
 @onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
@@ -593,3 +598,16 @@ func _on_cancel_file_btn_pressed():
 
 func _on_edit_conf_btn_pressed():
 	side_panel_node.show_config()
+
+func _on_emojis_btn_pressed():
+	if emoji_finder == null:
+		emoji_finder = load(emoji_finder_path).instantiate() as Window
+		add_child(emoji_finder)
+	emoji_finder.popup_centered()
+
+func _on_icons_btn_pressed():
+	if icon_search == null:
+		icon_search = load(icon_finder_script).instantiate() as Window
+		add_child.call_deferred(icon_search)
+	
+	icon_search.popup_centered()

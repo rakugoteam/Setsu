@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=39 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -19,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
 [ext_resource type="Texture2D" uid="uid://bl0hk7s0pdeuk" path="res://addons/advanced-text/icons/md.svg" id="12_kyvfa"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="13_qww5m"]
+[ext_resource type="Texture2D" uid="uid://d2e2kxb6bfi02" path="res://addons/emojis-for-godot/icon.png" id="13_t8kxb"]
+[ext_resource type="Texture2D" uid="uid://c0mm85a01jrvn" path="res://addons/material-design-icons/nodes/MaterialIcon.svg" id="14_3p25i"]
 [ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 
@@ -301,6 +303,20 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 15
 alignment = 2
 
+[node name="EmojisBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+text = "Find Emoji"
+icon = ExtResource("13_t8kxb")
+
+[node name="IconsBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+text = "Find Material Icon"
+icon = ExtResource("14_3p25i")
+
 [node name="EditConfBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -349,7 +365,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -23)
+scroll_offset = Vector2(0, -24)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -582,6 +598,8 @@ use_native_dialog = true
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EmojisBtn" to="." method="_on_emojis_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/IconsBtn" to="." method="_on_icons_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
