@@ -33,6 +33,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
+@onready var cancel_file_btn = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
 
 var live_dict: Dictionary
 
@@ -490,12 +491,13 @@ func _on_graph_node_selecter_close_requested():
 func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
 		for ge in graph_edits.get_children():
-			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
+			ge.visible = graph_edits.get_child(
+				tab_bar.current_tab) == ge
 		
 		return
 	
 	new_graph_edit()
-
+	cancel_file_btn.show()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
 
@@ -586,3 +588,8 @@ func _on_help_id_pressed(id):
 func _on_file_dialog_canceled():
 	$WelcomeWindow.show()
 
+func _on_cancel_file_btn_pressed():
+	$WelcomeWindow.hide()
+	$NoInteractions.hide()
+	if tab_bar.get_tab_title(tab_bar.current_tab) == "+":
+		tab_bar.current_tab -= 1

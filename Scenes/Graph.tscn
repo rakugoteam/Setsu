@@ -535,6 +535,13 @@ mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("6_vjwwg")
 
+[node name="CancelFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
+visible = false
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Cancel"
+icon = ExtResource("5_f42wd")
+
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 visible = false
 layout_mode = 2
@@ -584,5 +591,5 @@ use_native_dialog = true
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="GraphNodeSelecter" method="_on_end_path_selector_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn" to="." method="_on_cancel_file_btn_pressed"]
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
-[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
