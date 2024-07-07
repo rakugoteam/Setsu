@@ -581,3 +581,8 @@ func _on_help_id_pressed(id):
 			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")
 		1:
 			OS.shell_open("https://rakugoteam.github.io/advanced-text-docs/2.0/Markdown/")
+
+
+func _on_file_dialog_canceled():
+	$WelcomeWindow.show()
+
