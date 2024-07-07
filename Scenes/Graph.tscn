@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://bh1xpymnqcl5d" path="res://Assets/Icons/help_icon.png" id="11_bl0px"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
 [ext_resource type="Texture2D" uid="uid://bl0hk7s0pdeuk" path="res://addons/advanced-text/icons/md.svg" id="12_kyvfa"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="13_qww5m"]
 [ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 
@@ -215,18 +216,11 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
 [node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 transparent_bg = true
 size = Vector2i(119, 100)
-item_count = 5
+item_count = 2
 item_0/text = "Open"
 item_0/id = 0
 item_1/text = "New"
 item_1/id = 1
-item_2/text = ""
-item_2/id = 2
-item_2/separator = true
-item_3/text = "Edit Config"
-item_3/id = 3
-item_4/text = "Test File"
-item_4/id = 4
 
 [node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(119, 100)
@@ -304,7 +298,15 @@ vertical_alignment = 1
 [node name="TestBtnContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 15
 alignment = 2
+
+[node name="EditConfBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+text = "Edit Config"
+icon = ExtResource("8_hffb8")
 
 [node name="Test" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
@@ -313,6 +315,7 @@ theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
 theme_override_styles/focus = SubResource("StyleBoxFlat_tyw4k")
 text = "Test"
+icon = ExtResource("13_qww5m")
 
 [node name="GraphEditsArea" type="Control" parent="MarginContainer/MainContainer"]
 layout_mode = 2
@@ -579,6 +582,7 @@ use_native_dialog = true
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]

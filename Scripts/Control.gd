@@ -515,15 +515,16 @@ func tab_close_pressed(tab):
 	tab_bar.remove_tab(tab)
 	tab_changed(tab)
 
+var file_menu := false
+
 func _on_file_id_pressed(id):
+	file_menu = true
 	match id:
 		0: # Open file
 			var new_file_path = await open_file_select()
 			if new_file_path == null:
 				return
 				
-			$WelcomeWindow.hide()
-			$FileDialog.hide()
 			new_graph_edit()
 			return await file_selected(new_file_path, 1)
 
@@ -531,17 +532,9 @@ func _on_file_id_pressed(id):
 			var new_file_path = await new_file_select()
 			if new_file_path == null:
 				return
-				
-			$WelcomeWindow.hide()
-			$FileDialog.hide()
+			
 			new_graph_edit()
 			return await file_selected(new_file_path, 0)
-
-		3: # Config
-			side_panel_node.show_config()
-
-		4: # Test
-			test_project()
 
 func new_graph_edit():
 	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
@@ -586,6 +579,10 @@ func _on_help_id_pressed(id):
 
 
 func _on_file_dialog_canceled():
+	if file_menu:
+		file_menu = false
+		return
+	
 	$WelcomeWindow.show()
 
 func _on_cancel_file_btn_pressed():
@@ -593,3 +590,6 @@ func _on_cancel_file_btn_pressed():
 	$NoInteractions.hide()
 	if tab_bar.get_tab_title(tab_bar.current_tab) == "+":
 		tab_bar.current_tab -= 1
+
+func _on_edit_conf_btn_pressed():
+	side_panel_node.show_config()
