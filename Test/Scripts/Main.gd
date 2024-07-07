@@ -21,6 +21,7 @@ extends MonologueProcess
 var _from_node_id = null
 
 var is_completed: bool = true
+@export var dump := "this is a workaround, don't remove it!"
 
 func _ready():
 	var global_vars = get_node("/root/GlobalVariables")

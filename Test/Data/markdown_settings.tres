@@ -18,4 +18,5 @@ script = ExtResource("1_4s8ds")
 italics = "*"
 bold = "**"
 points = "-"
+use_custom_hints = true
 headers = Array[LabelSettings]([SubResource("LabelSettings_a7yb5"), SubResource("LabelSettings_ynjgx"), SubResource("LabelSettings_lipfb"), SubResource("LabelSettings_r4lo2")])

@@ -12,22 +12,10 @@
 			}
 		},
 		{
-			"$type": "NodeDiceRoll",
-			"ID": "75d053a3-6b9d-4f65-8da7-504cfd1b8b08",
-			"Skill": "",
-			"Target": 0,
-			"PassID": -1,
-			"FailID": -1,
-			"EditorPosition": {
-				"x": 1160,
-				"y": 280
-			}
-		},
-		{
 			"$type": "NodeSentence",
 			"ID": "885365cd-1b44-4adc-91af-1b85d964d9a3",
-			"NextID": "75d053a3-6b9d-4f65-8da7-504cfd1b8b08",
-			"Sentence": "# Tytuł\n## Nagłówek 1\n### Nagłówek 2\n**gruby**\n*kursywa*\n@u{podkeślenie}\n~~przekeślenie~~\n@>center<@\n@>na prawo>@\n@<wyjustowanie, którego istnienia nie trawię>@\n@|wcięcie|@\n[link może do czegoś użyjemy, nie musi być to prawidziwy url](jakiś://tam_address)\n@color=red{czerwony}\n@table=2\n{\n|można|nawet|mieć|tablekę|\n}\n- lista\n- punktów\n1. numerowa\n2. lista\n@wave amp=50 freq=2{ text }\n@tornado radius=5 freq=2{ text }\n@shake rate=5 level=10{ text }\n@rainbow freq=0.2 sat=10 val=20{ text }\n",
+			"NextID": -1,
+			"Sentence": "# Tytuł\n## Nagłówek 1\n### Nagłówek 2\n**gruby**\n*kursywa*\n@u{podkeślenie}\n~~przekeślenie~~\n@>center<@\n@>na prawo>@\n@<wyjustowanie, którego istnienia nie trawię>@\n@|wcięcie|@\n[link](jakiś://tam_address)\n@color=red{czerwony}\n@table=2\n{\n|można|nawet|mieć|tablekę|\n}\n- lista\n- punktów\n1. numerowa\n2. lista\n@wave amp=50 freq=2{ text }\n@tornado radius=5 freq=2{ text }\n@shake rate=5 level=10{ text }\n@rainbow freq=0.2 sat=10 val=20{ text }\n@[podpowiedź](podopowiedź)\n![](res://icon.png)\n:sunglasses:",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
 			"DisplayVariant": "",
