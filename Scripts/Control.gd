@@ -579,3 +579,5 @@ func _on_help_id_pressed(id):
 	match id:
 		0:
 			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")
+		1:
+			OS.shell_open("https://rakugoteam.github.io/advanced-text-docs/2.0/Markdown/")

@@ -19,6 +19,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="Control" parent="PanelContainer" instance=ExtResource("1_kiov6")]
 layout_mode = 2
