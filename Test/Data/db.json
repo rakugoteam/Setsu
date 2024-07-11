@@ -1,0 +1,33 @@
+{
+	"Characters": [
+		{
+			"Reference": "_NARRATOR",
+			"ID": 0
+		},
+		{
+			"Reference": "TestChar",
+			"ID": 1
+		},
+		{
+			"Reference": "TesCharB",
+			"ID": 2
+		}
+	],
+	"Variables": [
+		{
+			"Name": "JakiśBool",
+			"Value": true,
+			"Type": "Boolean"
+		},
+		{
+			"Name": "JakaśLiczba",
+			"Value": 1,
+			"Type": "Integer"
+		},
+		{
+			"Name": "JakiśNapis",
+			"Value": "Zupa",
+			"Type": "String"
+		}
+	]
+}

@@ -3,15 +3,6 @@
 	"RootNodeID": "4f0f437e-c0cd-43ba-9b28-08a4e46d0902",
 	"ListNodes": [
 		{
-			"$type": "NodeRoot",
-			"ID": "4f0f437e-c0cd-43ba-9b28-08a4e46d0902",
-			"NextID": "885365cd-1b44-4adc-91af-1b85d964d9a3",
-			"EditorPosition": {
-				"x": 40,
-				"y": 0
-			}
-		},
-		{
 			"$type": "NodeSentence",
 			"ID": "885365cd-1b44-4adc-91af-1b85d964d9a3",
 			"NextID": -1,
@@ -23,13 +14,41 @@
 				"x": 540,
 				"y": 0
 			}
+		},
+		{
+			"$type": "NodeRoot",
+			"ID": "4f0f437e-c0cd-43ba-9b28-08a4e46d0902",
+			"NextID": "885365cd-1b44-4adc-91af-1b85d964d9a3",
+			"EditorPosition": {
+				"x": 40,
+				"y": 0
+			}
 		}
 	],
 	"Characters": [
 		{
 			"Reference": "_NARRATOR",
-			"ID": 0
+			"ID": 1
+		},
+		{
+			"Reference": "TestChar",
+			"ID": 2
+		},
+		{
+			"Reference": "TesCharB",
+			"ID": 3
 		}
 	],
-	"Variables": []
+	"Variables": [
+		{
+			"Name": "JakiśBool",
+			"Value": true,
+			"Type": "Boolean"
+		},
+		{
+			"Name": "JakaśLiczba",
+			"Value": 1,
+			"Type": "Integer"
+		}
+	]
 }

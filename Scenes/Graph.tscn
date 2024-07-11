@@ -293,7 +293,7 @@ show_percentage = false
 
 [node name="SavedNotification" type="Label" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
-text = "✅ SAVED"
+text = "SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
 vertical_alignment = 1
 
@@ -365,7 +365,6 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -24)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1

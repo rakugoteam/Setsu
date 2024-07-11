@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b66fevmn5fhd0"]
+[gd_scene load_steps=4 format=3 uid="uid://b66fevmn5fhd0"]
 
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/RootNodePanel.gd" id="1_pf2u6"]
+[ext_resource type="FontFile" uid="uid://bbfeoo2kuf30n" path="res://addons/material-design-icons/fonts/material_design_icons.ttf" id="2_8mwas"]
+[ext_resource type="Script" path="res://addons/material-design-icons/nodes/MaterialButton.gd" id="3_lyuff"]
 
 [node name="RootNodePanel" type="VBoxContainer"]
 offset_right = 316.0
@@ -8,6 +10,32 @@ offset_bottom = 221.0
 size_flags_vertical = 0
 theme_override_constants/separation = 20
 script = ExtResource("1_pf2u6")
+
+[node name="DataBaseContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LineEditDB" type="LineEdit" parent="DataBaseContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Choose data base json to load/save"
+
+[node name="SaveDB" type="Button" parent="DataBaseContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_8mwas")
+theme_override_font_sizes/font_size = 20
+text = "󰆓"
+script = ExtResource("3_lyuff")
+icon_name = "content-save"
+icon_size = 20
+
+[node name="LoadDB" type="Button" parent="DataBaseContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_8mwas")
+theme_override_font_sizes/font_size = 20
+text = "󰝰"
+script = ExtResource("3_lyuff")
+icon_name = "folder-open"
+icon_size = 20
 
 [node name="CharactersMainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -25,7 +53,12 @@ theme_override_constants/separation = 5
 
 [node name="Add" type="Button" parent="CharactersMainContainer"]
 layout_mode = 2
-text = "+"
+theme_override_fonts/font = ExtResource("2_8mwas")
+theme_override_font_sizes/font_size = 20
+text = "󱇬"
+script = ExtResource("3_lyuff")
+icon_name = "plus-thick"
+icon_size = 20
 
 [node name="VariablesMainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -43,7 +76,33 @@ theme_override_constants/separation = 5
 
 [node name="Add" type="Button" parent="VariablesMainContainer"]
 layout_mode = 2
-text = "+"
+theme_override_fonts/font = ExtResource("2_8mwas")
+theme_override_font_sizes/font_size = 20
+text = "󱇬"
+script = ExtResource("3_lyuff")
+icon_name = "plus-thick"
+icon_size = 20
 
+[node name="FileDialogSave" type="FileDialog" parent="."]
+size = Vector2i(777, 600)
+ok_button_text = "Save"
+access = 2
+filters = PackedStringArray("*.json")
+use_native_dialog = true
+
+[node name="FileDialogOpen" type="FileDialog" parent="."]
+title = "Open a File"
+size = Vector2i(777, 600)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json")
+use_native_dialog = true
+
+[connection signal="text_submitted" from="DataBaseContainer/LineEditDB" to="." method="_on_line_edit_db_text_submitted"]
+[connection signal="pressed" from="DataBaseContainer/SaveDB" to="." method="_on_save_db_pressed"]
+[connection signal="pressed" from="DataBaseContainer/LoadDB" to="." method="_on_load_db_pressed"]
 [connection signal="pressed" from="CharactersMainContainer/Add" to="." method="add_character"]
 [connection signal="pressed" from="VariablesMainContainer/Add" to="." method="add_variable"]
+[connection signal="file_selected" from="FileDialogSave" to="." method="_on_file_dialog_file_selected"]
+[connection signal="file_selected" from="FileDialogOpen" to="." method="_on_file_dialog_file_selected"]

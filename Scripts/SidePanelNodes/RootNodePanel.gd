@@ -1,20 +1,26 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
 class_name RootNodePanel
-
 extends VBoxContainer
 
+var file_dialog : FileDialog
 
-@onready var character_node = preload("res://Objects/SubComponents/Character.tscn")
-@onready var characters_container = $CharactersMainContainer/CharactersContainer
+@onready
+var line_edit_db := $DataBaseContainer/LineEditDB
 
-@onready var variable_node = preload("res://Objects/SubComponents/Variable.tscn")
-@onready var variables_container = $VariablesMainContainer/VariablesContainer
+@onready
+var character_node = preload("res://Objects/SubComponents/Character.tscn")
+@onready
+var characters_container = $CharactersMainContainer/CharactersContainer
+
+@onready
+var variable_node = preload("res://Objects/SubComponents/Variable.tscn")
+@onready
+var variables_container = $VariablesMainContainer/VariablesContainer
 
 var graph_node
-
 var id = ""
-
+var db_file := ""
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
@@ -41,7 +47,7 @@ func add_character(reference: String = ""):
 	
 	update_speakers()
 
- 
+
 func add_variable(init: bool = false, dict: Dictionary = {}):
 	var new_node = variable_node.instantiate()
 	new_node.update_callback = update_variables
@@ -97,3 +103,62 @@ func update_variables():
 		updated_variables.append(child._to_dict())
 		
 	graph_node.get_parent().variables = updated_variables
+
+func _on_save_db_pressed():
+	file_dialog = $FileDialogSave
+	file_dialog.popup_centered()
+
+func _on_load_db_pressed():
+	file_dialog = $FileDialogOpen
+	file_dialog.popup_centered()
+
+func _on_file_dialog_file_selected(path):
+	match file_dialog.mode:
+		FileDialog.FILE_MODE_SAVE_FILE:
+			var data = JSON.stringify(db_to_dict(), "\t", false, true)
+			var file = FileAccess.open(path, FileAccess.WRITE)
+			db_file = path
+			line_edit_db.text = path
+			file.store_string(data)
+			file.close()
+		
+		FileDialog.FILE_MODE_OPEN_FILE:
+			load_db(path)
+
+func load_db(path):
+	if not FileAccess.file_exists(path):
+		return
+	
+	db_file = path
+	line_edit_db.text = path
+	var file := FileAccess.get_file_as_string(path)
+	var data := JSON.parse_string(file) as Dictionary
+	print(data)
+	db_from_dict(data)
+
+func _on_line_edit_db_text_submitted(new_text):
+	load_db(new_text)
+
+func db_to_dict():
+	return {
+		"Characters": 
+			graph_node.get_parent().speakers,
+		"Variables":
+		graph_node.get_parent().variables,
+	}
+
+func db_from_dict(dict:Dictionary):
+	for ch in characters_container.get_children():
+		ch.queue_free()
+	
+	for ch in variables_container.get_children():
+		ch.queue_free()
+
+	graph_node.get_parent().speakers = dict["Characters"]
+	graph_node.get_parent().variables = dict["Variables"]
+
+	for character in graph_node.get_parent().speakers:
+		add_character(character.get("Reference"))
+	
+	for variable in graph_node.get_parent().variables:
+		add_variable(true, variable)

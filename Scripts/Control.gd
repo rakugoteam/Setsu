@@ -137,7 +137,8 @@ func _to_dict() -> Dictionary:
 	save_progress_bar.value += 1
 	
 	return {
-		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
+		"EditorVersion": ProjectSettings.get_setting(
+			"application/config/version", "unknown"),
 		"RootNodeID": root_dict.get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
@@ -220,7 +221,8 @@ func save(quick: bool = false):
 		save_button.show()
 		test_button.show()
 	
-	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
+	var file = FileAccess.open(
+		get_current_graph_edit().file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
 	
