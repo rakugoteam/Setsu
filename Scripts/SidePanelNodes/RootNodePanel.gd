@@ -20,7 +20,7 @@ var variables_container = $VariablesMainContainer/VariablesContainer
 
 var graph_node
 var id = ""
-var db_file := ""
+var db_file = ""
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
@@ -117,23 +117,31 @@ func _on_file_dialog_file_selected(path):
 		FileDialog.FILE_MODE_SAVE_FILE:
 			var data = JSON.stringify(db_to_dict(), "\t", false, true)
 			var file = FileAccess.open(path, FileAccess.WRITE)
-			db_file = path
-			line_edit_db.text = path
+			shorten_db_path(db_file)
+			line_edit_db.text = db_file
 			file.store_string(data)
 			file.close()
 		
 		FileDialog.FILE_MODE_OPEN_FILE:
 			load_db(path)
 
+
+func shorten_db_path(path:String):
+	db_file = path
+	var monologue_json : String = graph_node.get_parent().file_path
+	var monologue_base_dir = monologue_json.get_base_dir()
+	if db_file.begins_with(monologue_base_dir):
+		db_file = path.lstrip(monologue_base_dir + "/")
+
 func load_db(path):
 	if not FileAccess.file_exists(path):
 		return
 	
-	db_file = path
-	line_edit_db.text = path
+	shorten_db_path(path)
+	line_edit_db.text = db_file
 	var file := FileAccess.get_file_as_string(path)
 	var data := JSON.parse_string(file) as Dictionary
-	print(data)
+	# print(data)
 	db_from_dict(data)
 
 func _on_line_edit_db_text_submitted(new_text):
