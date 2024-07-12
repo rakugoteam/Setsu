@@ -134,7 +134,7 @@ func _on_file_dialog_file_selected(path):
 				add_variable(true, variable)
 			
 		
-	line_edit_db.text = graph_node.get_parent().db_file
+	line_edit_db.text = graph_node.get_parent().db_file_path
 
 func _on_line_edit_db_text_submitted(new_text):
 	graph_node.get_parent().load_db(new_text)

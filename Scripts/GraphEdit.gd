@@ -115,14 +115,13 @@ func shorten_db_path(path:String):
 	var monologue_json : String = file_path
 	var monologue_base_dir = monologue_json.get_base_dir()
 	if db_file_path.begins_with(monologue_base_dir):
-		db_file_path = path.lstrip(monologue_base_dir + "/")
+		db_file_path = path.trim_prefix(monologue_base_dir + "/")
 
 func save_db(path = db_file_path):
 	var db = JSON.stringify(db_to_dict(), "\t", false, true)
 	path = rel_db_path(path)
 	
 	var file = FileAccess.open(path, FileAccess.WRITE)
-	shorten_db_path(db_file_path)
 	file.store_string(db)
 	file.close()
 
