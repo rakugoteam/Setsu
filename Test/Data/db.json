@@ -9,13 +9,13 @@
 			"ID": 1
 		},
 		{
-			"Reference": "TesCharB",
+			"Reference": "TesCharCs",
 			"ID": 2
 		}
 	],
 	"Variables": [
 		{
-			"Name": "JakiśBool",
+			"Name": "JakiśBoolX",
 			"Value": true,
 			"Type": "Boolean"
 		},
@@ -23,11 +23,6 @@
 			"Name": "JakaśLiczba",
 			"Value": 1,
 			"Type": "Integer"
-		},
-		{
-			"Name": "JakiśNapis",
-			"Value": "Zupa",
-			"Type": "String"
 		}
 	]
 }

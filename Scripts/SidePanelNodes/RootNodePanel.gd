@@ -28,10 +28,11 @@ func _ready():
 	
 	for variable in graph_node.get_parent().variables:
 		add_variable(true, variable)
+	
+	line_edit_db.text = graph_node.get_parent().db_file_path
 
 func _from_dict(dict):
 	id = dict.get("ID")
-
 
 func add_character(reference: String = ""):
 	var new_node = character_node.instantiate()
@@ -115,58 +116,25 @@ func _on_load_db_pressed():
 func _on_file_dialog_file_selected(path):
 	match file_dialog.mode:
 		FileDialog.FILE_MODE_SAVE_FILE:
-			var data = JSON.stringify(db_to_dict(), "\t", false, true)
-			var file = FileAccess.open(path, FileAccess.WRITE)
-			shorten_db_path(db_file)
-			line_edit_db.text = db_file
-			file.store_string(data)
-			file.close()
+			graph_node.get_parent().save_db(path)
+			
 		
 		FileDialog.FILE_MODE_OPEN_FILE:
-			load_db(path)
-
-
-func shorten_db_path(path:String):
-	db_file = path
-	var monologue_json : String = graph_node.get_parent().file_path
-	var monologue_base_dir = monologue_json.get_base_dir()
-	if db_file.begins_with(monologue_base_dir):
-		db_file = path.lstrip(monologue_base_dir + "/")
-
-func load_db(path):
-	if not FileAccess.file_exists(path):
-		return
-	
-	shorten_db_path(path)
-	line_edit_db.text = db_file
-	var file := FileAccess.get_file_as_string(path)
-	var data := JSON.parse_string(file) as Dictionary
-	# print(data)
-	db_from_dict(data)
+			graph_node.get_parent().load_db(path)
+			for ch in characters_container.get_children():
+				ch.queue_free()
+			
+			for ch in variables_container.get_children():
+				ch.queue_free()
+			
+			for character in graph_node.get_parent().speakers:
+				add_character(character.get("Reference"))
+			
+			for variable in graph_node.get_parent().variables:
+				add_variable(true, variable)
+			
+		
+	line_edit_db.text = graph_node.get_parent().db_file
 
 func _on_line_edit_db_text_submitted(new_text):
-	load_db(new_text)
-
-func db_to_dict():
-	return {
-		"Characters": 
-			graph_node.get_parent().speakers,
-		"Variables":
-		graph_node.get_parent().variables,
-	}
-
-func db_from_dict(dict:Dictionary):
-	for ch in characters_container.get_children():
-		ch.queue_free()
-	
-	for ch in variables_container.get_children():
-		ch.queue_free()
-
-	graph_node.get_parent().speakers = dict["Characters"]
-	graph_node.get_parent().variables = dict["Variables"]
-
-	for character in graph_node.get_parent().speakers:
-		add_character(character.get("Reference"))
-	
-	for variable in graph_node.get_parent().variables:
-		add_variable(true, variable)
+	graph_node.get_parent().load_db(new_text)

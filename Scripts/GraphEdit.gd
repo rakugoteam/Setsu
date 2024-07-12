@@ -4,6 +4,7 @@ extends GraphEdit
 @onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
 
 var file_path: String
+var db_file_path : String
 
 var speakers = []
 var variables = []
@@ -108,3 +109,52 @@ func _on_child_entered_tree(node: Node):
 	var close_btn: TextureButton = close_button.instantiate()
 	close_btn.connect("pressed", free_graphnode.bind(node))
 	node_header.add_child(close_btn)
+
+func shorten_db_path(path:String):
+	db_file_path = path
+	var monologue_json : String = file_path
+	var monologue_base_dir = monologue_json.get_base_dir()
+	if db_file_path.begins_with(monologue_base_dir):
+		db_file_path = path.lstrip(monologue_base_dir + "/")
+
+func save_db(path = db_file_path):
+	var db = JSON.stringify(db_to_dict(), "\t", false, true)
+	path = rel_db_path(path)
+	
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	shorten_db_path(db_file_path)
+	file.store_string(db)
+	file.close()
+
+func rel_db_path(path: String):
+	if path.is_relative_path():
+		var monologue_json : String = file_path
+		var monologue_base_dir = monologue_json.get_base_dir()
+		path = monologue_base_dir.path_join(path)
+	
+	return path
+
+func load_db(path = db_file_path):
+	shorten_db_path(path)
+	path = rel_db_path(path)
+
+	if not FileAccess.file_exists(path):
+		# prints("file dont exist:", path)
+		return
+
+	# prints("file exist:", path)
+	var file := FileAccess.get_file_as_string(path)
+	var db := JSON.parse_string(file) as Dictionary
+	# print(data)
+	db_from_dict(db)
+	# print(db_to_dict())
+
+func db_to_dict():
+	return {
+		"Characters": speakers,
+		"Variables": variables,
+	}
+
+func db_from_dict(dict:Dictionary):
+	speakers = dict["Characters"]
+	variables = dict["Variables"]

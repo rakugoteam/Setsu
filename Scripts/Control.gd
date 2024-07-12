@@ -118,6 +118,7 @@ func _to_dict() -> Dictionary:
 	for node in get_graph_nodes():
 		if node.is_queued_for_deletion():
 			continue
+
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
@@ -128,14 +129,29 @@ func _to_dict() -> Dictionary:
 	root_dict = get_root_dict(list_nodes)
 	root_node_ref = get_root_node_ref()
 	
+	if get_current_graph_edit().db_file_path:
+		save_progress_bar.max_value += 1
+		save_progress_bar.value += 1
+		get_current_graph_edit().save_db()
+		save_progress_bar.value += 1
+
+		return {
+			"EditorVersion": ProjectSettings.get_setting(
+				"application/config/version", "unknown"),
+			"RootNodeID": root_dict.get("ID"),
+			"ListNodes": list_nodes,
+			"DBFile": get_current_graph_edit().db_file_path,
+		}
+
 	var characters = get_current_graph_edit().speakers
 	if get_current_graph_edit().speakers.size() <= 0:
 		characters.append({
 			"Reference": "_NARRATOR",
 			"ID": 0
 		})
-	save_progress_bar.value += 1
 	
+	save_progress_bar.value += 1
+
 	return {
 		"EditorVersion": ProjectSettings.get_setting(
 			"application/config/version", "unknown"),
@@ -253,12 +269,22 @@ func load_project(path):
 		save(true)
 	
 	live_dict = data
+
+	if "DBFile" in data:
+		var db_file := data["DBFile"] as String
+		# prints("DBFile:", db_file)
+		get_current_graph_edit().load_db(db_file)
+
+	else:
+		# prints("DBFile: null")
+		graph_edit.speakers = data.get("Characters")
+		graph_edit.variables = data.get("Variables")
 	
-	graph_edit.speakers = data.get("Characters")
-	graph_edit.variables = data.get("Variables")
+	# prints("loaded db:", graph_edit.db_to_dict())
 	
 	for node in graph_edit.get_children():
 		node.queue_free()
+	
 	graph_edit.clear_connections()
 	graph_edit.data = data
 	

@@ -25,30 +25,5 @@
 			}
 		}
 	],
-	"Characters": [
-		{
-			"Reference": "_NARRATOR",
-			"ID": 1
-		},
-		{
-			"Reference": "TestChar",
-			"ID": 2
-		},
-		{
-			"Reference": "TesCharB",
-			"ID": 3
-		}
-	],
-	"Variables": [
-		{
-			"Name": "JakiśBool",
-			"Value": true,
-			"Type": "Boolean"
-		},
-		{
-			"Name": "JakaśLiczba",
-			"Value": 1,
-			"Type": "Integer"
-		}
-	]
+	"DBFile": "db.json"
 }
