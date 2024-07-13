@@ -475,6 +475,8 @@ func test_project(from_selected_node: bool = false):
 
 func new_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	if OS.get_name().to_lower() == "web":
+		$FileDialog.access = FileDialog.ACCESS_USERDATA
 	$FileDialog.title = "Crate New File"
 	$FileDialog.ok_button_text = "Crate"
 	$FileDialog.popup_centered()
@@ -488,6 +490,8 @@ func new_file_select():
 
 func open_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	if OS.get_name().to_lower() == "web":
+		$FileDialog.access = FileDialog.ACCESS_USERDATA
 	$FileDialog.title = "Open File"
 	$FileDialog.ok_button_text = "Open"
 	$FileDialog.popup_centered()

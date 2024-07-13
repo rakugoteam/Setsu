@@ -107,6 +107,8 @@ func update_variables():
 
 func _on_save_db_pressed():
 	file_dialog = $FileDialogSave
+	if OS.get_name().to_lower() == "web":
+		file_dialog.access = FileDialog.ACCESS_USERDATA
 	file_dialog.popup_centered()
 
 func _on_load_db_pressed():
