@@ -25,5 +25,5 @@
 			}
 		}
 	],
-	"DBFile": "db.json"
+	"DBFile": "md_db.json"
 }

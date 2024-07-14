@@ -117,7 +117,7 @@ func shorten_db_path(path:String):
 	if db_file_path.begins_with(monologue_base_dir):
 		db_file_path = path.trim_prefix(monologue_base_dir + "/")
 
-func save_db(path = db_file_path):
+func save_db(path := db_file_path):
 	var db = JSON.stringify(db_to_dict(), "\t", false, true)
 	path = rel_db_path(path)
 	
@@ -156,4 +156,9 @@ func db_to_dict():
 
 func db_from_dict(dict:Dictionary):
 	speakers = dict["Characters"]
+	var id := 0
+	for ch in speakers:
+		ch["ID"] = id
+		id += 1
+	
 	variables = dict["Variables"]
