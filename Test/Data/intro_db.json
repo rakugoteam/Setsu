@@ -2,19 +2,19 @@
 	"Characters": [
 		{
 			"Reference": "_NARRATOR",
-			"ID": 4
+			"ID": 0
 		},
 		{
 			"Reference": "Lazy God",
-			"ID": 5
+			"ID": 1
 		},
 		{
 			"Reference": "The Architect",
-			"ID": 6
+			"ID": 2
 		},
 		{
 			"Reference": "Douglas Adams",
-			"ID": 7
+			"ID": 3
 		}
 	],
 	"Variables": [
