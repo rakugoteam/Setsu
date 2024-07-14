@@ -19,13 +19,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Choose data base json to load/save"
 
-[node name="SaveDB" type="Button" parent="DataBaseContainer"]
+[node name="NewDB" type="Button" parent="DataBaseContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_8mwas")
 theme_override_font_sizes/font_size = 20
-text = "󰆓"
+text = "󱘳"
 script = ExtResource("3_lyuff")
-icon_name = "content-save"
+icon_name = "database-plus-outline"
 icon_size = 20
 
 [node name="LoadDB" type="Button" parent="DataBaseContainer"]
@@ -100,7 +100,7 @@ filters = PackedStringArray("*.json")
 use_native_dialog = true
 
 [connection signal="text_submitted" from="DataBaseContainer/LineEditDB" to="." method="_on_line_edit_db_text_submitted"]
-[connection signal="pressed" from="DataBaseContainer/SaveDB" to="." method="_on_save_db_pressed"]
+[connection signal="pressed" from="DataBaseContainer/NewDB" to="." method="_on_save_db_pressed"]
 [connection signal="pressed" from="DataBaseContainer/LoadDB" to="." method="_on_load_db_pressed"]
 [connection signal="pressed" from="CharactersMainContainer/Add" to="." method="add_character"]
 [connection signal="pressed" from="VariablesMainContainer/Add" to="." method="add_variable"]
