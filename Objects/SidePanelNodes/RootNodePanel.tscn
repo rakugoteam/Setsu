@@ -88,7 +88,6 @@ size = Vector2i(777, 600)
 ok_button_text = "Save"
 access = 2
 filters = PackedStringArray("*.json")
-use_native_dialog = true
 
 [node name="FileDialogOpen" type="FileDialog" parent="."]
 title = "Open a File"
@@ -97,7 +96,6 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.json")
-use_native_dialog = true
 
 [connection signal="text_submitted" from="DataBaseContainer/LineEditDB" to="." method="_on_line_edit_db_text_submitted"]
 [connection signal="pressed" from="DataBaseContainer/NewDB" to="." method="_on_save_db_pressed"]
