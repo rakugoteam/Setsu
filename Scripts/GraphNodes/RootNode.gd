@@ -5,8 +5,7 @@ class_name RootNode
 extends MonologueGraphNode
 
 
-var characters = []
-
+var characters := []
 
 func _ready():
 	node_type = "NodeRoot"

@@ -118,6 +118,7 @@ func _to_dict() -> Dictionary:
 	for node in get_graph_nodes():
 		if node.is_queued_for_deletion():
 			continue
+
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
@@ -128,16 +129,32 @@ func _to_dict() -> Dictionary:
 	root_dict = get_root_dict(list_nodes)
 	root_node_ref = get_root_node_ref()
 	
+	if get_current_graph_edit().db_file_path:
+		save_progress_bar.max_value += 1
+		save_progress_bar.value += 1
+		get_current_graph_edit().save_db()
+		save_progress_bar.value += 1
+
+		return {
+			"EditorVersion": ProjectSettings.get_setting(
+				"application/config/version", "unknown"),
+			"RootNodeID": root_dict.get("ID"),
+			"ListNodes": list_nodes,
+			"DBFile": get_current_graph_edit().db_file_path,
+		}
+
 	var characters = get_current_graph_edit().speakers
 	if get_current_graph_edit().speakers.size() <= 0:
 		characters.append({
 			"Reference": "_NARRATOR",
 			"ID": 0
 		})
-	save_progress_bar.value += 1
 	
+	save_progress_bar.value += 1
+
 	return {
-		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
+		"EditorVersion": ProjectSettings.get_setting(
+			"application/config/version", "unknown"),
 		"RootNodeID": root_dict.get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
@@ -220,7 +237,8 @@ func save(quick: bool = false):
 		save_button.show()
 		test_button.show()
 	
-	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
+	var file = FileAccess.open(
+		get_current_graph_edit().file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
 	
@@ -251,12 +269,22 @@ func load_project(path):
 		save(true)
 	
 	live_dict = data
+
+	if "DBFile" in data:
+		var db_file := data["DBFile"] as String
+		# prints("DBFile:", db_file)
+		get_current_graph_edit().load_db(db_file)
+
+	else:
+		# prints("DBFile: null")
+		graph_edit.speakers = data.get("Characters")
+		graph_edit.variables = data.get("Variables")
 	
-	graph_edit.speakers = data.get("Characters")
-	graph_edit.variables = data.get("Variables")
+	# prints("loaded db:", graph_edit.db_to_dict())
 	
 	for node in graph_edit.get_children():
 		node.queue_free()
+	
 	graph_edit.clear_connections()
 	graph_edit.data = data
 	
@@ -447,6 +475,8 @@ func test_project(from_selected_node: bool = false):
 
 func new_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	if OS.get_name().to_lower() == "web":
+		$FileDialog.access = FileDialog.ACCESS_USERDATA
 	$FileDialog.title = "Crate New File"
 	$FileDialog.ok_button_text = "Crate"
 	$FileDialog.popup_centered()
@@ -460,6 +490,8 @@ func new_file_select():
 
 func open_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	if OS.get_name().to_lower() == "web":
+		$FileDialog.access = FileDialog.ACCESS_USERDATA
 	$FileDialog.title = "Open File"
 	$FileDialog.ok_button_text = "Open"
 	$FileDialog.popup_centered()
