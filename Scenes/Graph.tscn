@@ -292,17 +292,19 @@ theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxFlat_ux1f6")
 
 [node name="DownloadBtn" type="RichTextLabel" parent="MarginContainer/MainContainer/Header"]
-custom_minimum_size = Vector2(200, 30)
+custom_minimum_size = Vector2(170, 30)
 layout_mode = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8gutg")
 theme_override_styles/normal = SubResource("StyleBoxFlat_jst2r")
 bbcode_enabled = true
-text = "[center]Download Dialogue [font_size= 24][font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰇚[/font][/font_size] [/center]"
+text = "[center][font_size=3] [/font_size]
+[font_size=14]Download Dialogue[font=res://addons/material-design-icons/fonts/material_design_icons.ttf]󰇚[/font][/font_size][/center]"
 fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false
 script = ExtResource("13_1ujfa")
-_text = "[center]Download Dialogue[icon:download, 24] [/center]"
+_text = "[center]@space=3
+[font_size=14]Download Dialogue[icon:download][/font_size][/center]"
 parser = ExtResource("14_7qfy0")
 
 [node name="Save" type="Button" parent="MarginContainer/MainContainer/Header"]
@@ -400,7 +402,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -289)
+scroll_offset = Vector2(0, -30)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -631,6 +633,7 @@ filters = PackedStringArray("*.json")
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/DownloadBtn" to="." method="_on_download_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EmojisBtn" to="." method="_on_emojis_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/IconsBtn" to="." method="_on_icons_btn_pressed"]

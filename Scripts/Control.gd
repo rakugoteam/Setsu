@@ -39,6 +39,7 @@ const icon_finder_script :=\
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 @onready var cancel_file_btn = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
+@onready var download_btn = $MarginContainer/MainContainer/Header/DownloadBtn
 
 var live_dict: Dictionary
 
@@ -60,6 +61,9 @@ func _ready():
 	var new_root_node = root_node.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_graph_edit_signal(get_current_graph_edit())
+
+	if OS.get_name().to_lower() != "web":
+		download_btn.hide()
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -526,7 +530,7 @@ func _on_graph_node_selecter_close_requested():
 
 
 func tab_changed(_idx):
-	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
+	if get_current_tab_name() != "+":
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(
 				tab_bar.current_tab) == ge
@@ -625,7 +629,7 @@ func _on_file_dialog_canceled():
 func _on_cancel_file_btn_pressed():
 	$WelcomeWindow.hide()
 	$NoInteractions.hide()
-	if tab_bar.get_tab_title(tab_bar.current_tab) == "+":
+	if get_current_tab_name() == "+":
 		tab_bar.current_tab -= 1
 
 func _on_edit_conf_btn_pressed():
@@ -643,3 +647,18 @@ func _on_icons_btn_pressed():
 		add_child.call_deferred(icon_search)
 	
 	icon_search.popup_centered()
+
+func get_current_tab_name() -> String:
+	return tab_bar.get_tab_title(tab_bar.current_tab)
+
+func _on_download_btn_pressed():
+	var data = JSON.stringify(_to_dict(), "\t", false, true)
+	JavaScriptBridge.download_buffer(
+		data.to_utf8_buffer(),
+		get_current_tab_name(),
+		"application/json"
+	)
+
+
+
+
