@@ -15,6 +15,9 @@ mono_crash.*.json
 addons/ColorPreview/
 addons/script-ide
 addons/open_external_editor
+addons/quick_layout_changer
+addons/globalize-plugins
+addons/dictionary_inspector
 
 # Exports
 *.pck
