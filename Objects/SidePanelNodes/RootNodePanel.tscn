@@ -37,15 +37,6 @@ script = ExtResource("3_lyuff")
 icon_name = "folder-open"
 icon_size = 20
 
-[node name="DownloadDB" type="Button" parent="DataBaseContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_8mwas")
-theme_override_font_sizes/font_size = 24
-text = "󰇚"
-script = ExtResource("3_lyuff")
-icon_name = "download"
-icon_size = 24
-
 [node name="CharactersMainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
@@ -109,7 +100,6 @@ filters = PackedStringArray("*.json")
 [connection signal="text_submitted" from="DataBaseContainer/LineEditDB" to="." method="_on_line_edit_db_text_submitted"]
 [connection signal="pressed" from="DataBaseContainer/NewDB" to="." method="_on_save_db_pressed"]
 [connection signal="pressed" from="DataBaseContainer/LoadDB" to="." method="_on_load_db_pressed"]
-[connection signal="pressed" from="DataBaseContainer/DownloadDB" to="." method="_on_download_db_pressed"]
 [connection signal="pressed" from="CharactersMainContainer/Add" to="." method="add_character"]
 [connection signal="pressed" from="VariablesMainContainer/Add" to="." method="add_variable"]
 [connection signal="file_selected" from="FileDialogSave" to="." method="_on_file_dialog_file_selected"]

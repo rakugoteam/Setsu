@@ -39,7 +39,7 @@ const icon_finder_script :=\
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 @onready var cancel_file_btn = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
-@onready var download_btn = $MarginContainer/MainContainer/Header/DownloadBtn
+@onready var download_box = $MarginContainer/MainContainer/Header/DownloadBox
 
 var live_dict: Dictionary
 
@@ -63,7 +63,7 @@ func _ready():
 	connect_graph_edit_signal(get_current_graph_edit())
 
 	if OS.get_name().to_lower() != "web":
-		download_btn.hide()
+		download_box.hide()
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -83,14 +83,20 @@ func _ready():
 				data.erase(path)
 			for path in data.slice(0, 3):
 				var btn: Button = recent_file_button.instantiate()
-				var btn_text = path.replace("\\", "/")
+				var btn_text = path
+				btn_text = path.replace("\\", "/")
 				btn_text = btn_text.replace("//", "/")
 				btn_text = btn_text.split("/")
+				
 				if btn_text.size() >= 2:
 					btn_text = btn_text.slice(-2, btn_text.size())
 					btn_text = btn_text[0].path_join(btn_text[1])
 				else:
 					btn_text = btn_text.back()
+				
+				if OS.get_name().to_lower() == "web":
+					btn_text = btn_text.trim_prefix("user:/")
+
 				btn.text = btn_text
 				btn.pressed.connect(file_selected.bind(path, 1))
 				recent_files_button_container.add_child(btn)
@@ -139,12 +145,16 @@ func _to_dict() -> Dictionary:
 		get_current_graph_edit().save_db()
 		save_progress_bar.value += 1
 
+		var db_file_path : String = get_current_graph_edit().db_file_path
+		if OS.get_name().to_lower() == "web":
+			db_file_path = db_file_path.trim_prefix("user://")
+
 		return {
 			"EditorVersion": ProjectSettings.get_setting(
 				"application/config/version", "unknown"),
 			"RootNodeID": root_dict.get("ID"),
 			"ListNodes": list_nodes,
-			"DBFile": get_current_graph_edit().db_file_path,
+			"DBFile": db_file_path,
 		}
 
 	var characters = get_current_graph_edit().speakers
@@ -225,7 +235,8 @@ func get_root_dict(nodes):
 
 func get_root_node_ref():
 	for node in get_graph_nodes():
-		if !node.is_queued_for_deletion() and node.id == root_dict.get("ID"):
+		if (!node.is_queued_for_deletion()
+			and node.id == root_dict.get("ID")):
 			return node
 
 
@@ -530,6 +541,7 @@ func _on_graph_node_selecter_close_requested():
 
 
 func tab_changed(_idx):
+	side_panel_node.hide()
 	if get_current_tab_name() != "+":
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(
@@ -659,6 +671,14 @@ func _on_download_btn_pressed():
 		"application/json"
 	)
 
-
-
+func _on_download_db_btn_pressed():
+	var current_tab := get_current_graph_edit()
+	var db : Dictionary = current_tab.db_to_dict()
+	var db_data := JSON.stringify(db, "\t", false, true)
+	var db_path : String = current_tab.db_file_path
+	db_path = Array(db_path.split("/", false)).back()
+	JavaScriptBridge.download_buffer(
+		db_data.to_utf8_buffer(), db_path,
+		"application/json"
+	)
 
