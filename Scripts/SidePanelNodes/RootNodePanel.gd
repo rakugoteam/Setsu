@@ -140,3 +140,7 @@ func _on_file_dialog_file_selected(path):
 
 func _on_line_edit_db_text_submitted(new_text):
 	graph_node.get_parent().load_db(new_text)
+
+
+func _on_download_db_pressed():
+	pass # Replace with function body.
