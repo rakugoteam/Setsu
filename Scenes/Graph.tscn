@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=44 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -25,6 +25,7 @@
 [ext_resource type="Resource" uid="uid://74bogqdd04tt" path="res://Test/Data/markdown_settings.tres" id="14_7qfy0"]
 [ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
+[ext_resource type="Script" path="res://addons/html5_file_dialog/HTML5FileDialog.gd" id="26_8j74u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
 content_margin_left = 5.0
@@ -581,7 +582,7 @@ icon = ExtResource("8_hudw3")
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
-size = Vector2i(600, 150)
+size = Vector2i(450, 100)
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -606,7 +607,7 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 20
 
 [node name="NewFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
@@ -626,6 +627,17 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Cancel"
 icon = ExtResource("5_f42wd")
+
+[node name="VSeparator" type="VSeparator" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="UploadFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+theme_override_styles/normal = SubResource("StyleBoxFlat_jst2r")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8gutg")
+text = "Upload file"
 
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 visible = false
@@ -654,6 +666,10 @@ theme = ExtResource("17_2g74o")
 access = 2
 filters = PackedStringArray("*.json")
 
+[node name="HTML5FileDialog" type="Node" parent="."]
+script = ExtResource("26_8j74u")
+filters = PackedStringArray("application/json")
+
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
@@ -681,4 +697,6 @@ filters = PackedStringArray("*.json")
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn" to="." method="_on_cancel_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn" to="." method="_on_upload_file_btn_pressed"]
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="file_selected" from="HTML5FileDialog" to="." method="_on_html_5_file_dialog_file_selected"]

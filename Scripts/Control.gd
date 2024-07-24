@@ -29,17 +29,19 @@ const icon_finder_script :=\
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
-@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
-@onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
-@onready var graph_node_selecter = $GraphNodeSelecter
+@onready var side_panel_node := $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
+@onready var saved_notification := $MarginContainer/MainContainer/Header/SavedNotification
+@onready var graph_node_selecter := $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
-@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
-@onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
-@onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
-@onready var cancel_file_btn = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
-@onready var download_box = $MarginContainer/MainContainer/Header/DownloadBox
+@onready var add_menu_bar := $MarginContainer/MainContainer/Header/MenuBar/Add
+@onready var recent_files_container := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
+@onready var recent_files_button_container := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
+@onready var cancel_file_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
+@onready var download_box := $MarginContainer/MainContainer/Header/DownloadBox
+@onready var html_file_dialogue := $HTML5FileDialog
+@onready var upload_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn
 
 var live_dict: Dictionary
 
@@ -64,6 +66,7 @@ func _ready():
 
 	if OS.get_name().to_lower() != "web":
 		download_box.hide()
+		upload_btn.hide()
 	
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -681,4 +684,18 @@ func _on_download_db_btn_pressed():
 		db_data.to_utf8_buffer(), db_path,
 		"application/json"
 	)
+
+func _on_upload_file_btn_pressed():
+	html_file_dialogue.show()
+
+func _on_html_5_file_dialog_file_selected(file:HTML5FileHandle):
+	$WelcomeWindow.hide()
+	var text := await file.as_text()
+	var cloud_file_path := "user://" + file.name
+	var cloud_file = FileAccess.open(
+		cloud_file_path, FileAccess.WRITE)
+	cloud_file.store_string(text)
+	cloud_file.close()
+	
+	load_project(cloud_file_path)
 
