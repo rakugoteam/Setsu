@@ -477,8 +477,8 @@ func new_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	if OS.get_name().to_lower() == "web":
 		$FileDialog.access = FileDialog.ACCESS_USERDATA
-	$FileDialog.title = "Crate New File"
-	$FileDialog.ok_button_text = "Crate"
+	$FileDialog.title = "Create New File"
+	$FileDialog.ok_button_text = "Create"
 	$FileDialog.popup_centered()
 	var new_file_path = await $FileDialog.file_selected
 
