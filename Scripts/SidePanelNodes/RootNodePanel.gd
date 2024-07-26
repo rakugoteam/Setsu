@@ -145,3 +145,8 @@ func _on_line_edit_db_text_submitted(new_text:String):
 	if OS.get_name().to_lower() == "web":
 		new_text = "user://" + new_text
 	graph_node.get_parent().load_db(new_text)
+
+func _on_upload_db_pressed():
+	var c = graph_node.get_parent().control_node
+	c.upload_mode = "db"
+	c.html_file_dialogue.show()

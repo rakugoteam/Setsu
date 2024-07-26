@@ -52,7 +52,8 @@ func get_all_connections_from_slot(from_node: StringName, from_port: int):
 	var connections = []
 	
 	for connection in get_connection_list():
-		if connection.get("from_node") == from_node and connection.get("from_port") == from_port:
+		if (connection.get("from_node") == from_node
+			and connection.get("from_port") == from_port):
 			var to = get_node_or_null(NodePath(connection.get("to_node")))
 			connections.append(to)
 
@@ -65,7 +66,8 @@ func get_linked_bridge_node(target_number):
 
 func get_free_bridge_number(_n=1, lp_max=50):
 	for node in get_children():
-		if (node.node_type == "NodeBridgeOut" or node.node_type == "NodeBridgeIn") and node.number_selector.value == _n:
+		if (node.node_type in ["NodeBridgeOut", "NodeBridgeIn"]
+			and node.number_selector.value == _n):
 			if lp_max <= 0:
 				return _n
 				
@@ -91,12 +93,14 @@ func free_graphnode(node: GraphNode):
 	# Disconnect all empty connections
 	for n in get_all_connections_to_node(node.name):
 		for co in get_connection_list():
-			if co.get("from_node") == n.name and co.get("to_node") == node.name:
+			if (co.get("from_node") == n.name
+				and co.get("to_node") == node.name):
 				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
 	
 	for n in get_all_connections_from_node(node.name):
 		for co in get_connection_list():
-			if co.get("from_node") == node.name and co.get("to_node") == n.name:
+			if (co.get("from_node") == node.name
+				and co.get("to_node") == n.name):
 				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
 		
 	node.queue_free()

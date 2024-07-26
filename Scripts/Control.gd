@@ -1,5 +1,6 @@
 extends Control
 
+var upload_mode := "dialogue"
 var dialog = {}
 var dialog_for_localisation = []
 var emoji_finder : Window
@@ -39,9 +40,8 @@ const icon_finder_script :=\
 @onready var recent_files_container := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
 @onready var cancel_file_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
-@onready var download_box := $MarginContainer/MainContainer/Header/DownloadBox
 @onready var html_file_dialogue := $HTML5FileDialog
-@onready var upload_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn
+@onready var sync_menu := $MarginContainer/MainContainer/Header/MenuBar/Sync
 
 var live_dict: Dictionary
 
@@ -65,9 +65,9 @@ func _ready():
 	connect_graph_edit_signal(get_current_graph_edit())
 
 	if OS.get_name().to_lower() != "web":
-		download_box.hide()
-		upload_btn.hide()
-	
+		sync_menu.queue_free()
+		html_file_dialogue.queue_free()
+
 	saved_notification.hide()
 	save_progress_bar.hide()
 	
@@ -591,6 +591,10 @@ func _on_file_id_pressed(id):
 			
 			new_graph_edit()
 			return await file_selected(new_file_path, 0)
+		
+		2: # Save
+			save()
+			return
 
 func new_graph_edit():
 	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
@@ -666,7 +670,7 @@ func _on_icons_btn_pressed():
 func get_current_tab_name() -> String:
 	return tab_bar.get_tab_title(tab_bar.current_tab)
 
-func _on_download_btn_pressed():
+func download_dialogue():
 	var data = JSON.stringify(_to_dict(), "\t", false, true)
 	JavaScriptBridge.download_buffer(
 		data.to_utf8_buffer(),
@@ -674,7 +678,7 @@ func _on_download_btn_pressed():
 		"application/json"
 	)
 
-func _on_download_db_btn_pressed():
+func download_db():
 	var current_tab := get_current_graph_edit()
 	var db : Dictionary = current_tab.db_to_dict()
 	var db_data := JSON.stringify(db, "\t", false, true)
@@ -686,16 +690,37 @@ func _on_download_db_btn_pressed():
 	)
 
 func _on_upload_file_btn_pressed():
+	upload_mode = "dialogue"
 	html_file_dialogue.show()
 
-func _on_html_5_file_dialog_file_selected(file:HTML5FileHandle):
-	$WelcomeWindow.hide()
+func upload_file(file:HTML5FileHandle) -> String:
 	var text := await file.as_text()
 	var cloud_file_path := "user://" + file.name
 	var cloud_file = FileAccess.open(
 		cloud_file_path, FileAccess.WRITE)
 	cloud_file.store_string(text)
 	cloud_file.close()
-	
-	load_project(cloud_file_path)
+	return cloud_file_path
 
+func _on_html_5_file_dialog_file_selected(file:HTML5FileHandle):
+	$WelcomeWindow.hide()
+	var current_tab := get_current_graph_edit()
+	match upload_mode:
+		"dialogue":
+			new_graph_edit()
+			file_selected(await upload_file(file), 1)
+		"db": current_tab.load_db(await upload_file(file))
+
+func _on_sync_id_pressed(id: int):
+	match id:
+		0: # UploadDialogue
+			upload_mode = "dialogue"
+			html_file_dialogue.show()
+		1: # Upload DB
+			upload_mode = "db"
+			html_file_dialogue.show()
+		2: # Download Dialogue
+			download_dialogue()
+		3: # Download DB
+			download_db()
+			
