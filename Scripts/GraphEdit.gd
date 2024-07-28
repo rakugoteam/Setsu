@@ -13,6 +13,7 @@ var selection_mode = false
 
 var graphnode_selected = false
 var moving_mode = false
+var selected_node
 
 var data: Dictionary
 
@@ -27,6 +28,13 @@ func _input(event):
 	if event is InputEventMouseMotion and mouse_pressed:
 		selection_mode = true
 		moving_mode = graphnode_selected
+	
+	if event is InputEventKey:
+		var key := event as InputEventKey
+		if key.is_pressed() and key.key_label == KEY_DELETE and selected_node:
+			if selected_node.node_type != "RootNode":
+				selected_node.queue_free()
+
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
@@ -83,11 +91,13 @@ func is_option_node_exciste(node_id):
 			return true
 	return false
 
-func _on_node_selected(_node):
+func _on_node_selected(node):
 	graphnode_selected = true
+	selected_node = node
 
 func _on_node_deselected(_node):
 	graphnode_selected = false
+	selected_node = null
 
 func free_graphnode(node: GraphNode):
 	# Disconnect all empty connections
