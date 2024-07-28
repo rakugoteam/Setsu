@@ -87,7 +87,6 @@ func update_speakers():
 			continue
 		
 		child.id = all_nodes.find(child)
-		
 		updated_speakers.append(child._to_dict())
 		
 	graph_node.get_parent().speakers = updated_speakers

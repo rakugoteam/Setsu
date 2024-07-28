@@ -354,7 +354,7 @@ theme_override_font_sizes/font_size = 14
 text = "Find Material Icon"
 icon = ExtResource("14_3p25i")
 
-[node name="EditConfBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+[node name="EditConfBtn" type="CheckButton" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
@@ -402,7 +402,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -30)
+scroll_offset = Vector2(0, -24)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -644,6 +644,11 @@ filters = PackedStringArray("*.json")
 script = ExtResource("26_8j74u")
 filters = PackedStringArray("application/json")
 
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+initial_position = 2
+size = Vector2i(300, 100)
+dialog_autowrap = true
+
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Sync" to="." method="_on_sync_id_pressed"]
@@ -652,11 +657,13 @@ filters = PackedStringArray("application/json")
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EmojisBtn" to="." method="_on_emojis_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/IconsBtn" to="." method="_on_icons_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_pressed"]
+[connection signal="toggled" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_toggled"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]
+[connection signal="node_selected" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits/Default" to="." method="_on_node_selected"]
 [connection signal="text_changed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_line_edit_id_text_changed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="." method="_on_close_node_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]

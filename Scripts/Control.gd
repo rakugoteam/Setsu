@@ -42,6 +42,7 @@ const icon_finder_script :=\
 @onready var cancel_file_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
 @onready var html_file_dialogue := $HTML5FileDialog
 @onready var sync_menu := $MarginContainer/MainContainer/Header/MenuBar/Sync
+@onready var edit_conf_btn := $MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn
 
 var live_dict: Dictionary
 
@@ -268,6 +269,10 @@ func save(quick: bool = false):
 	save_button.show()
 	test_button.show()
 
+func alert(message: String):
+	$AcceptDialog.dialog_text = message
+	$AcceptDialog.show()
+	await $AcceptDialog.confirmed
 
 func load_project(path):
 	if not FileAccess.file_exists(path):
@@ -290,15 +295,15 @@ func load_project(path):
 
 	if "DBFile" in data:
 		var db_file := data["DBFile"] as String
-		# prints("DBFile:", db_file)
+		# alert("DBFile: %s" % db_file)
 		get_current_graph_edit().load_db(db_file)
 
 	else:
-		# prints("DBFile: null")
+		# alert("DBFile: null")
 		graph_edit.speakers = data.get("Characters")
 		graph_edit.variables = data.get("Variables")
 	
-	# prints("loaded db:", graph_edit.db_to_dict())
+	# alert("loaded db: %s" % graph_edit.db_to_dict())
 	
 	for node in graph_edit.get_children():
 		node.queue_free()
@@ -549,7 +554,7 @@ func tab_changed(_idx):
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(
 				tab_bar.current_tab) == ge
-		
+			
 		return
 	
 	new_graph_edit()
@@ -651,9 +656,6 @@ func _on_cancel_file_btn_pressed():
 	if get_current_tab_name() == "+":
 		tab_bar.current_tab -= 1
 
-func _on_edit_conf_btn_pressed():
-	side_panel_node.show_config()
-
 func _on_emojis_btn_pressed():
 	if emoji_finder == null:
 		emoji_finder = load(emoji_finder_path).instantiate() as Window
@@ -709,7 +711,10 @@ func _on_html_5_file_dialog_file_selected(file:HTML5FileHandle):
 		"dialogue":
 			new_graph_edit()
 			file_selected(await upload_file(file), 1)
-		"db": current_tab.load_db(await upload_file(file))
+		"db": 
+			side_panel_node.hide()
+			current_tab.load_db(await upload_file(file))
+			side_panel_node.show_config()
 
 func _on_sync_id_pressed(id: int):
 	match id:
@@ -723,4 +728,15 @@ func _on_sync_id_pressed(id: int):
 			download_dialogue()
 		3: # Download DB
 			download_db()
-			
+
+func _on_edit_conf_btn_toggled(toggled_on):
+	if toggled_on: side_panel_node.show_config()
+	else: side_panel_node.hide()
+
+func _on_node_selected(node):
+	edit_conf_btn.button_pressed = (
+		node.node_type == "NodeRoot"
+	)
+
+func _on_close_node_btn_pressed():
+	edit_conf_btn.button_pressed = false

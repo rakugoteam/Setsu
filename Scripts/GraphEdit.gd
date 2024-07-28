@@ -138,7 +138,6 @@ func rel_db_path(path: String):
 		var monologue_json : String = file_path
 		var monologue_base_dir = monologue_json.get_base_dir()
 		path = monologue_base_dir.path_join(path)
-
 	
 	return path
 
@@ -147,15 +146,15 @@ func load_db(path = db_file_path):
 	path = rel_db_path(path)
 
 	if not FileAccess.file_exists(path):
-		# prints("file dont exist:", path)
+		await control_node.alert("file dont exist %s" % path)
 		return
 
-	# prints("file exist:", path)
+	# await control_node.alert("file exist: %s" % path)
 	var file := FileAccess.get_file_as_string(path)
 	var db := JSON.parse_string(file) as Dictionary
-	# print(data)
+	# await control_node.alert(str(data))
 	db_from_dict(db)
-	# print(db_to_dict())
+	# await control_node.alert(db_to_dict())
 
 func db_to_dict():
 	return {
