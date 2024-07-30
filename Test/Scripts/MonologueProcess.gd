@@ -2,9 +2,7 @@ extends Control
 
 class_name MonologueProcess
 
-
 var dir_path
-
 
 var root_node_id: String
 var node_list: Array
@@ -27,7 +25,6 @@ signal monologue_play_audio(path: String, stream)
 signal monologue_update_background(path: String, background)
 signal monologue_custom_action(raw_action: Dictionary)
 
-
 func _init():
 	print("[INFO] Monologue Process initiated")
 	monologue_node_reached.connect(_process_node)
@@ -35,23 +32,44 @@ func _init():
 
 func load_dialogue(dialogue_name, custom_start_point = -1):
 	var path = dialogue_name + ".json"
-	dir_path = path.replace("/", "\\").split("\\")
+	# no neeed for using "\\" inside godot project
+	dir_path = path.split("/")
 	dir_path.remove_at(len(dir_path)-1)
-	dir_path = "\\".join(dir_path)
+	dir_path = "/".join(dir_path)
 	assert(FileAccess.file_exists(path), "Can't find dialogs file")
 	
 	var file = FileAccess.open(path, FileAccess.READ)
 	var data: Dictionary = JSON.parse_string(file.get_as_text())
-	
+
 	assert(data.has("RootNodeID"), "Invalid json file, can't find 'RootNodeID'")
 	assert(data.has("ListNodes"), "Invalid json file, can't find 'ListNodes'")
-	assert(data.has("Characters"), "Invalid json file, can't find 'Characters'")
-	assert(data.has("Variables"), "Invalid json file, can't find 'Variables'")
+
+	var db : Dictionary
+	var db_file_path : String
+
+	if "DBFile" in data:
+		db_file_path = data["DBFile"] as String
+		db_file_path = path.get_base_dir().path_join(db_file_path)
+		var db_file = FileAccess.open(db_file_path, FileAccess.READ)
+		db = JSON.parse_string(db_file.get_as_text())
+		assert(db.has("Characters"), "Invalid json file, can't find 'Characters'")
+		assert(db.has("Variables"), "Invalid json file, can't find 'Variables'")
+	
+	else:
+		assert(data.has("Characters"), "Invalid json file, can't find 'Characters'")
+		assert(data.has("Variables"), "Invalid json file, can't find 'Variables'")
 	
 	root_node_id = data.get("RootNodeID")
 	node_list = data.get("ListNodes")
-	characters = data.get("Characters")
-	variables = data.get("Variables")
+
+	if db:
+		characters = db["Characters"]
+		variables = db["Variables"]
+	
+	else:
+		characters = data.get("Characters")
+		variables = data.get("Variables")
+	
 	events = node_list.filter(func(n): return n.get("$type") == "NodeEvent")
 	
 	next_id = custom_start_point
@@ -59,7 +77,9 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 		next_id = root_node_id
 	
 	print("[INFO] Dialogue " + path + " loaded")
-
+	
+	if db:
+		print("[INFO] Dialogue DataBase" + db_file_path + " loaded")
 
 func next():
 	# Check for an event
@@ -85,6 +105,7 @@ func next():
 				condition_pass = v_val <= c_val
 			"!=":
 				condition_pass = v_val != c_val
+
 		if condition_pass:
 			monologue_event_triggered.emit(event)
 			fallback_id = next_id
@@ -110,25 +131,33 @@ func _process_node(node: Dictionary):
 			next_id = node.get("NextID")
 			next()
 			return
+
 		"NodeBridgeIn":
 			next_id = node.get("NextID")
 			next()
 			return
+
 		"NodeBridgeOut":
 			next_id = node.get("NextID")
 			next()
 			return
+
 		"NodeSentence":
 			next_id = node.get("NextID")
 			
 			var processed_sentence = process_conditional_text(node.get("Sentence"))
-			var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
+			# var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
+			var speaker_name := str(node["SpeakerID"])
+			for character in characters:
+				if int(character["ID"]) == int(node["SpeakerID"]):
+					speaker_name = character["DisplaySpeakerName"]
 			
 			monologue_sentence.emit(
 				processed_sentence,
-				get_speaker(node.get("SpeakerID")),
+				get_speaker(node["SpeakerID"]),
 				speaker_name
 			)
+
 		"NodeChoice":
 			var options: Array = []
 			for option_id in node.get("OptionsID"):
@@ -136,20 +165,23 @@ func _process_node(node: Dictionary):
 				if not option:
 					print("[WARNING] Can't find option with id: " + option_id)
 					continue
+
 				if option.get("Enable") == false:
 					continue
 				
 				options.append(option)
+			
 			monologue_new_choice.emit(options)
+
 		"NodeDiceRoll":
 			var roll = rng.randi_range(0, 100)
+			next_id = node.get("FailID")
 			if roll <= node.get("Target"):
 				next_id = node.get("PassID")
-			else:
-				next_id = node.get("FailID")
 		
 			next()
 			return
+
 		"NodeAction":
 			next_id = node.get("NextID")
 			
@@ -186,6 +218,7 @@ func _process_node(node: Dictionary):
 								variable["Value"] /= raw_action.get("Value")
 							else:
 								print("[WARNING] Can't divide by value 0")
+						
 				"ActionCustom":
 					match raw_action.get("CustomType"):
 						"PlayAudio":
@@ -196,6 +229,7 @@ func _process_node(node: Dictionary):
 								track.loop = raw_action.get("Loop")
 							
 							monologue_play_audio.emit(raw_action.get("Value"), sound)
+
 						"UpdateBackground":
 							var bg = Image.new()
 							var texture = null
@@ -209,8 +243,10 @@ func _process_node(node: Dictionary):
 									texture = ImageTexture.create_from_image(bg)
 							
 							monologue_update_background.emit(raw_action.get("Value"), texture)
+
 						"Other":
 							monologue_custom_action.emit(raw_action)
+
 				"ActionTimer":
 					var time_to_wait = raw_action.get("Value", 0.0)
 					if not is_inside_tree():
@@ -220,6 +256,7 @@ func _process_node(node: Dictionary):
 					
 			next()
 			return
+
 		"NodeCondition":
 			var condition = node.get("Condition")
 			var variable = get_variable(condition.get("Variable"))
@@ -247,6 +284,7 @@ func _process_node(node: Dictionary):
 			
 			next()
 			return
+
 		"NodeEndPath":
 			monologue_end.emit(node)
 
@@ -254,19 +292,19 @@ func find_node_from_id(id):
 	if not id is String:
 		return null
 		
-	var nodes = node_list.filter(func (node): return node.get("ID") == id)
+	var nodes = node_list.filter(func(node): return node.get("ID") == id)
 	if nodes.size() <= 0:
 		return null
 	return nodes[0]
 
 func get_speaker(id: int) -> String:
-	var speaker = characters.filter(func (c): return c["ID"] == id)
+	var speaker = characters.filter(func(c): return c["ID"] == id)
 	if speaker.size() <= 0:
 		return ""
 	return speaker[0]["Reference"]
 
 func get_variable(var_name: String):
-	var variable = variables.filter(func (v): return v.get("Name") == var_name)
+	var variable = variables.filter(func(v): return v.get("Name") == var_name)
 	
 	if variable.size() <= 0:
 		return null
@@ -288,9 +326,9 @@ func process_conditional_text(text: String) -> String:
 		var then_position = condition.find("then")
 		var else_position = condition.find("else")
 		
-		var var_name = condition.substr(if_position+3, then_position - (if_position+3)).strip_edges(true, true)
-		var then_name = condition.substr(then_position+5, else_position - (then_position+5)).strip_edges(true, true).trim_prefix("\"").trim_suffix("\"")
-		var else_name = condition.substr(else_position+5).strip_edges(true, true).trim_prefix("\"").trim_suffix("\"")
+		var var_name = condition.substr(if_position + 3, then_position - (if_position + 3)).strip_edges(true, true)
+		var then_name = condition.substr(then_position + 5, else_position - (then_position + 5)).strip_edges(true, true).trim_prefix("\"").trim_suffix("\"")
+		var else_name = condition.substr(else_position + 5).strip_edges(true, true).trim_prefix("\"").trim_suffix("\"")
 		
 		var variable = get_variable(var_name)
 		
@@ -298,7 +336,7 @@ func process_conditional_text(text: String) -> String:
 			print("[ERROR] Can't find the variable " + var_name)
 		
 		if variable.get("Type") != "Boolean":
-			print("[ERROR] The variable can only be of type Boolean (not " + variable.get("Type")  + ")")
+			print("[ERROR] The variable can only be of type Boolean (not " + variable.get("Type") + ")")
 			return text
 		
 		if variable.get("Value") == true:

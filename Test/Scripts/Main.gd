@@ -107,7 +107,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		if not character_container.visible:
 			character_container.position.x = -character_container.size.x
 			character_container.show()
-			character_container._texture = char_asset
+			character_container.texture = char_asset
 			get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
 	else:
 		character_container.position.x = 50

@@ -3,7 +3,7 @@
 class_name RootNodePanel
 extends VBoxContainer
 
-var file_dialog : FileDialog
+var file_dialog: FileDialog
 
 @onready
 var line_edit_db := $DataBaseContainer/LineEditDB
@@ -25,7 +25,7 @@ var db_file = ""
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
-		add_character(character.get("Reference"))
+		add_character(character.get("Reference"), character["DisplaySpeakerName"])
 	
 	for variable in graph_node.get_parent().variables:
 		add_variable(true, variable)
@@ -39,15 +39,19 @@ func _ready():
 func _from_dict(dict):
 	id = dict.get("ID")
 
-func add_character(reference: String = ""):
-	var new_node = character_node.instantiate()
+func add_character(reference := "", display_speaker_name := ""):
+	var new_node: CharacterComp = character_node.instantiate()
 	characters_container.add_child(new_node)
 	
 	var node_id = characters_container.get_children().find(new_node)
 	var ref_input: LineEdit = new_node.ref_input
+	var display_input: LineEdit = new_node.display_input
 	
 	ref_input.text = reference
+	display_input.text = display_speaker_name
 	ref_input.text_changed.connect(text_submitted_callback)
+	display_input.text_changed.connect(text_submitted_callback)
+
 	new_node.id = node_id
 	new_node.root_node = self
 	
@@ -143,7 +147,7 @@ func _on_file_dialog_file_selected(path):
 	if OS.get_name().to_lower() == "web":
 		line_edit_db.text = line_edit_db.text.trim_prefix("user://")
 
-func _on_line_edit_db_text_submitted(new_text:String):
+func _on_line_edit_db_text_submitted(new_text: String):
 	if OS.get_name().to_lower() == "web":
 		new_text = "user://" + new_text
 	graph_node.get_parent().load_db(new_text)
