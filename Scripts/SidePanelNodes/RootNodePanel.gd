@@ -7,6 +7,7 @@ var file_dialog : FileDialog
 
 @onready
 var line_edit_db := $DataBaseContainer/LineEditDB
+@onready var upload_btn := $DataBaseContainer/UploadDB
 
 @onready
 var character_node = preload("res://Objects/SubComponents/Character.tscn")
@@ -32,6 +33,8 @@ func _ready():
 	line_edit_db.text = graph_node.get_parent().db_file_path
 	if OS.get_name().to_lower() == "web":
 		line_edit_db.text = line_edit_db.text.trim_prefix("user://")
+	else:
+		upload_btn.hide()
 
 func _from_dict(dict):
 	id = dict.get("ID")

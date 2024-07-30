@@ -43,6 +43,7 @@ const icon_finder_script :=\
 @onready var html_file_dialogue := $HTML5FileDialog
 @onready var sync_menu := $MarginContainer/MainContainer/Header/MenuBar/Sync
 @onready var edit_conf_btn := $MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn
+@onready var upload_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn
 
 var live_dict: Dictionary
 
@@ -68,6 +69,7 @@ func _ready():
 	if OS.get_name().to_lower() != "web":
 		sync_menu.queue_free()
 		html_file_dialogue.queue_free()
+		upload_btn.queue_free()
 
 	saved_notification.hide()
 	save_progress_bar.hide()
