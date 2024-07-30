@@ -4,7 +4,7 @@ extends GraphEdit
 @onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
 
 var file_path: String
-var db_file_path : String
+var db_file_path: String
 
 var speakers = []
 var variables = []
@@ -13,7 +13,7 @@ var selection_mode = false
 
 var graphnode_selected = false
 var moving_mode = false
-var selected_node
+var selected_nodes: Array[Node] = []
 
 var data: Dictionary
 
@@ -31,9 +31,11 @@ func _input(event):
 	
 	if event is InputEventKey:
 		var key := event as InputEventKey
-		if key.is_pressed() and key.key_label == KEY_DELETE and selected_node:
-			if selected_node.node_type != "RootNode":
-				selected_node.queue_free()
+		if key.is_pressed() and key.key_label == KEY_DELETE:
+			if !selected_nodes: return
+			for node in selected_nodes:
+				if node.node_type != "RootNode":
+					node.queue_free()
 
 
 func get_all_connections_from_node(from_node: StringName):
@@ -72,14 +74,14 @@ func get_linked_bridge_node(target_number):
 		if node.node_type == "NodeBridgeOut" and node.number_selector.value == target_number:
 			return node
 
-func get_free_bridge_number(_n=1, lp_max=50):
+func get_free_bridge_number(_n = 1, lp_max = 50):
 	for node in get_children():
 		if (node.node_type in ["NodeBridgeOut", "NodeBridgeIn"]
 			and node.number_selector.value == _n):
 			if lp_max <= 0:
 				return _n
 				
-			return get_free_bridge_number(_n+1, lp_max-1)
+			return get_free_bridge_number(_n + 1, lp_max - 1)
 	return _n
 
 func is_option_node_exciste(node_id):
@@ -93,11 +95,12 @@ func is_option_node_exciste(node_id):
 
 func _on_node_selected(node):
 	graphnode_selected = true
-	selected_node = node
+	selected_nodes.append(node)
 
-func _on_node_deselected(_node):
+func _on_node_deselected(node):
 	graphnode_selected = false
-	selected_node = null
+	var id := selected_nodes.find(node)
+	selected_nodes.remove_at(id)
 
 func free_graphnode(node: GraphNode):
 	# Disconnect all empty connections
@@ -124,9 +127,9 @@ func _on_child_entered_tree(node: Node):
 	close_btn.connect("pressed", free_graphnode.bind(node))
 	node_header.add_child(close_btn)
 
-func shorten_db_path(path:String):
+func shorten_db_path(path: String):
 	db_file_path = path
-	var monologue_json : String = file_path
+	var monologue_json: String = file_path
 	var monologue_base_dir = monologue_json.get_base_dir() + "/"
 	if OS.get_name().to_lower() == "web":
 		monologue_base_dir = monologue_base_dir.trim_prefix("user://")
@@ -145,7 +148,7 @@ func save_db(path := db_file_path):
 
 func rel_db_path(path: String):
 	if path.is_relative_path():
-		var monologue_json : String = file_path
+		var monologue_json: String = file_path
 		var monologue_base_dir = monologue_json.get_base_dir()
 		path = monologue_base_dir.path_join(path)
 	
@@ -172,7 +175,7 @@ func db_to_dict():
 		"Variables": variables,
 	}
 
-func db_from_dict(dict:Dictionary):
+func db_from_dict(dict: Dictionary):
 	speakers = dict["Characters"]
 	var id := 0
 	for ch in speakers:
