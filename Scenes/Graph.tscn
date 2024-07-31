@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=42 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -23,6 +23,7 @@
 [ext_resource type="Texture2D" uid="uid://c0mm85a01jrvn" path="res://addons/material-design-icons/nodes/MaterialIcon.svg" id="14_3p25i"]
 [ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
+[ext_resource type="Script" path="res://addons/html5_file_dialog/HTML5FileDialog.gd" id="26_8j74u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
 content_margin_left = 5.0
@@ -169,6 +170,25 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 anti_aliasing = false
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jst2r"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.0862745, 0.101961, 0.12549, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 2.0
+expand_margin_right = 5.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8gutg"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_1l82f"]
 font_color = Color(0.572549, 0.572549, 0.572549, 1)
 
@@ -214,15 +234,31 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxFlat_22xm7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_3npb4")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
+flat = true
 
 [node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 transparent_bg = true
 size = Vector2i(119, 100)
-item_count = 2
+item_count = 3
 item_0/text = "Open"
 item_0/id = 0
 item_1/text = "New"
 item_1/id = 1
+item_2/text = "Save"
+item_2/id = 2
+
+[node name="Sync" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
+transparent_bg = true
+size = Vector2i(179, 112)
+item_count = 4
+item_0/text = "Upload Dialogue"
+item_0/id = 0
+item_1/text = "Upload DB"
+item_1/id = 1
+item_2/text = "Download Dialogue"
+item_2/id = 2
+item_3/text = "Download DB"
+item_3/id = 3
 
 [node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(119, 100)
@@ -271,6 +307,7 @@ theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxFlat_ux1f6")
 
 [node name="Save" type="Button" parent="MarginContainer/MainContainer/Header"]
+visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
@@ -317,7 +354,7 @@ theme_override_font_sizes/font_size = 14
 text = "Find Material Icon"
 icon = ExtResource("14_3p25i")
 
-[node name="EditConfBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+[node name="EditConfBtn" type="CheckButton" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
@@ -519,7 +556,7 @@ icon = ExtResource("8_hudw3")
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
-size = Vector2i(600, 150)
+size = Vector2i(563, 100)
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -544,7 +581,7 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 20
 
 [node name="NewFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
@@ -564,6 +601,17 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Cancel"
 icon = ExtResource("5_f42wd")
+
+[node name="VSeparator" type="VSeparator" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="UploadFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(132, 0)
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+theme_override_styles/normal = SubResource("StyleBoxFlat_jst2r")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8gutg")
+text = "Upload file"
 
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 visible = false
@@ -592,18 +640,30 @@ theme = ExtResource("17_2g74o")
 access = 2
 filters = PackedStringArray("*.json")
 
+[node name="HTML5FileDialog" type="Node" parent="."]
+script = ExtResource("26_8j74u")
+filters = PackedStringArray("application/json")
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+initial_position = 2
+size = Vector2i(300, 100)
+dialog_autowrap = true
+
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
+[connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Sync" to="." method="_on_sync_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EmojisBtn" to="." method="_on_emojis_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/IconsBtn" to="." method="_on_icons_btn_pressed"]
-[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_pressed"]
+[connection signal="toggled" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_toggled"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]
+[connection signal="node_selected" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits/Default" to="." method="_on_node_selected"]
 [connection signal="text_changed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_line_edit_id_text_changed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="." method="_on_close_node_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
@@ -617,4 +677,6 @@ filters = PackedStringArray("*.json")
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn" to="." method="_on_cancel_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn" to="." method="_on_upload_file_btn_pressed"]
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="file_selected" from="HTML5FileDialog" to="." method="_on_html_5_file_dialog_file_selected"]

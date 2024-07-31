@@ -23,5 +23,5 @@ func _on_return_to_editor_button_pressed():
 	queue_free()
 
 func _on_test_button_modern_pressed():
-	var scene = preload("res://Test/Main.tscn")
+	var scene = preload("res://Test/TestMain.tscn")
 	load_scene(scene)
