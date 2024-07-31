@@ -3,13 +3,13 @@ extends Control
 var upload_mode := "dialogue"
 var dialog = {}
 var dialog_for_localisation = []
-var emoji_finder : Window
-var icon_search : Window
+var emoji_finder: Window
+var icon_search: Window
 
 const HISTORY_FILE_PATH: String = "user://history.save"
-const emoji_finder_path :=\
+const emoji_finder_path := \
 "res://addons/emojis-for-godot/EmojiPanel/EmojiPanel.tscn"
-const icon_finder_script :=\
+const icon_finder_script := \
 	"res://addons/material-design-icons/icon_finder/IconFinder.tscn"
 
 @onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
@@ -47,7 +47,7 @@ const icon_finder_script :=\
 
 var live_dict: Dictionary
 
-var initial_pos = Vector2(40,40)
+var initial_pos = Vector2(40, 40)
 var option_index = 0
 var node_index = 0
 var all_nodes_index = 0
@@ -70,6 +70,14 @@ func _ready():
 		sync_menu.queue_free()
 		html_file_dialogue.queue_free()
 		upload_btn.queue_free()
+
+	icon_search = load(icon_finder_script).instantiate()
+	icon_search.hide()
+	add_child.call_deferred(icon_search)
+	
+	emoji_finder = load(emoji_finder_path).instantiate()
+	emoji_finder.hide()
+	add_child.call_deferred(emoji_finder)
 
 	saved_notification.hide()
 	save_progress_bar.hide()
@@ -151,7 +159,7 @@ func _to_dict() -> Dictionary:
 		get_current_graph_edit().save_db()
 		save_progress_bar.value += 1
 
-		var db_file_path : String = get_current_graph_edit().db_file_path
+		var db_file_path: String = get_current_graph_edit().db_file_path
 		if OS.get_name().to_lower() == "web":
 			db_file_path = db_file_path.trim_prefix("user://")
 
@@ -204,7 +212,7 @@ func file_selected(path, open_mode):
 	graph_edit.file_path = path
 	
 	$WelcomeWindow.hide()
-	if open_mode == 0: #NEW
+	if open_mode == 0: # NEW
 		for node in graph_edit.get_children():
 			node.queue_free()
 		var new_root_node = root_node.instantiate()
@@ -253,7 +261,7 @@ func save(quick: bool = false):
 	test_button.hide()
 	
 	var data = JSON.stringify(_to_dict(), "\t", false, true)
-	if not data: # Fail to load 
+	if not data: # Fail to load
 		save_progress_bar.hide()
 		save_button.show()
 		test_button.show()
@@ -422,7 +430,7 @@ func center_node_in_graph_edit(node):
 		disable_picker_mode()
 		return
 	
-	node.position_offset = ((graph_edit.size/2) + graph_edit.scroll_offset) / graph_edit.zoom
+	node.position_offset = ((graph_edit.size / 2) + graph_edit.scroll_offset) / graph_edit.zoom
 
 func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
@@ -443,8 +451,8 @@ func add_node(node_type):
 		
 		center_node_in_graph_edit(in_node)
 		center_node_in_graph_edit(out_node)
-		in_node.position_offset.x -= in_node.size.x/2+10
-		out_node.position_offset.x += out_node.size.x/2+10
+		in_node.position_offset.x -= in_node.size.x / 2 + 10
+		out_node.position_offset.x += out_node.size.x / 2 + 10
 		
 	var node
 	match node_type:
@@ -659,16 +667,9 @@ func _on_cancel_file_btn_pressed():
 		tab_bar.current_tab -= 1
 
 func _on_emojis_btn_pressed():
-	if emoji_finder == null:
-		emoji_finder = load(emoji_finder_path).instantiate() as Window
-		add_child(emoji_finder)
 	emoji_finder.popup_centered()
 
 func _on_icons_btn_pressed():
-	if icon_search == null:
-		icon_search = load(icon_finder_script).instantiate() as Window
-		add_child.call_deferred(icon_search)
-	
 	icon_search.popup_centered()
 
 func get_current_tab_name() -> String:
@@ -684,9 +685,9 @@ func download_dialogue():
 
 func download_db():
 	var current_tab := get_current_graph_edit()
-	var db : Dictionary = current_tab.db_to_dict()
+	var db: Dictionary = current_tab.db_to_dict()
 	var db_data := JSON.stringify(db, "\t", false, true)
-	var db_path : String = current_tab.db_file_path
+	var db_path: String = current_tab.db_file_path
 	db_path = Array(db_path.split("/", false)).back()
 	JavaScriptBridge.download_buffer(
 		db_data.to_utf8_buffer(), db_path,
@@ -697,7 +698,7 @@ func _on_upload_file_btn_pressed():
 	upload_mode = "dialogue"
 	html_file_dialogue.show()
 
-func upload_file(file:HTML5FileHandle) -> String:
+func upload_file(file: HTML5FileHandle) -> String:
 	var text := await file.as_text()
 	var cloud_file_path := "user://" + file.name
 	var cloud_file = FileAccess.open(
@@ -706,14 +707,14 @@ func upload_file(file:HTML5FileHandle) -> String:
 	cloud_file.close()
 	return cloud_file_path
 
-func _on_html_5_file_dialog_file_selected(file:HTML5FileHandle):
+func _on_html_5_file_dialog_file_selected(file: HTML5FileHandle):
 	$WelcomeWindow.hide()
 	var current_tab := get_current_graph_edit()
 	match upload_mode:
 		"dialogue":
 			new_graph_edit()
 			file_selected(await upload_file(file), 1)
-		"db": 
+		"db":
 			side_panel_node.hide()
 			current_tab.load_db(await upload_file(file))
 			side_panel_node.show_config()
