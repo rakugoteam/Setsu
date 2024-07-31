@@ -146,7 +146,6 @@ func _process_node(node: Dictionary):
 			next_id = node.get("NextID")
 			
 			var processed_sentence = process_conditional_text(node.get("Sentence"))
-			# var speaker_name = node.get("DisplaySpeakerName") if node.get("DisplaySpeakerName") else get_speaker(node.get("SpeakerID"))
 			var speaker_name := str(node["SpeakerID"])
 			for character in characters:
 				if int(character["ID"]) == int(node["SpeakerID"]):
