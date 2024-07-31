@@ -12,7 +12,6 @@ const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
 var options = []
 
-
 func _ready():
 	node_type = "NodeChoice"
 	title = node_type

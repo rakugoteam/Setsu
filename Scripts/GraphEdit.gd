@@ -30,19 +30,45 @@ func shortcut(key: InputEventKey):
 				if node.node_type != "RootNode":
 					node.queue_free()
 
-		KEY_S: control_node.add_node("Sentence")
-		KEY_C: control_node.add_node("Choice")
-		KEY_D: control_node.add_node("DiceRoll")
-		KEY_B: control_node.add_node("Bridge")
+		KEY_S:
+			var gn: GraphNode = control_node.add_node("Sentence")
+			try_connecting_from_selected(gn)
+
+		KEY_C:
+			var gn: GraphNode = control_node.add_node("Choice")
+			try_connecting_from_selected(gn)
+
+		KEY_D:
+			var gn: GraphNode = control_node.add_node("DiceRoll")
+			try_connecting_from_selected(gn)
+
+		KEY_B:
+			var gn: GraphNode = control_node.add_node("Bridge")
+			try_connecting_from_selected(gn)
+
 		KEY_N: control_node.add_node("Condition")
-		KEY_A: control_node.add_node("Action")
-		KEY_E: control_node.add_node("EndPath")
-		KEY_V: control_node.add_node("Event")
-		KEY_SLASH: control_node.add_node("Comment")
+		KEY_A:
+			var gn: GraphNode = control_node.add_node("Action")
+			try_connecting_from_selected(gn)
+
+		KEY_E:
+			var gn: GraphNode = control_node.add_node("EndPath")
+			try_connecting_from_selected(gn)
+		
 		KEY_1:
 			var c: ChoiceNode = control_node.add_node("Choice")
 			c.options.clear()
 			c.gen_options(1)
+			try_connecting_from_selected(c)
+
+		KEY_V: control_node.add_node("Event")
+		KEY_SLASH: control_node.add_node("Comment")
+		
+
+func try_connecting_from_selected(node: GraphNode):
+	if selected_nodes.size() != 1: return
+	var fnode := selected_nodes[0] as GraphNode
+	connect_node(fnode.name, 0, node.name, 0)
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
