@@ -16,12 +16,14 @@ var options = []
 func _ready():
 	node_type = "NodeChoice"
 	title = node_type
-	
 	if len(options) <= 0:
-		for _i in range(2):
-			var opt_ref = option_reference.instantiate()
-			add_child(opt_ref)
-			options.append(opt_ref._to_dict())
+		gen_options()
+
+func gen_options(number:=2):
+	for _i in number:
+		var opt_ref = option_reference.instantiate()
+		add_child(opt_ref)
+		options.append(opt_ref._to_dict())
 	
 	_update()
 
@@ -39,7 +41,6 @@ func _to_dict() -> Dictionary:
 
 func _from_dict(dict):
 	id = dict.get("ID")
-	
 	options.clear()
 	
 	var nodes = get_parent().data.get("ListNodes")

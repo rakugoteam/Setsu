@@ -16,14 +16,33 @@ var data: Dictionary
 
 var control_node
 
-func _input(event):
+func _gui_input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
-		if key.is_pressed() and key.key_label == KEY_DELETE:
+		if key.is_pressed(): shortcut(event)
+
+func shortcut(key: InputEventKey):
+	match key.key_label:
+		KEY_DELETE:
 			if !selected_nodes: return
 			for node in selected_nodes:
+				if not node: return
 				if node.node_type != "RootNode":
 					node.queue_free()
+
+		KEY_S: control_node.add_node("Sentence")
+		KEY_C: control_node.add_node("Choice")
+		KEY_D: control_node.add_node("DiceRoll")
+		KEY_B: control_node.add_node("Bridge")
+		KEY_N: control_node.add_node("Condition")
+		KEY_A: control_node.add_node("Action")
+		KEY_E: control_node.add_node("EndPath")
+		KEY_V: control_node.add_node("Event")
+		KEY_SLASH: control_node.add_node("Comment")
+		KEY_1:
+			var c: ChoiceNode = control_node.add_node("Choice")
+			c.options.clear()
+			c.gen_options(1)
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
