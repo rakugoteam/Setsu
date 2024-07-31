@@ -10,9 +10,6 @@ var speakers = []
 var variables = []
 var mouse_pressed = false
 var selection_mode = false
-
-var graphnode_selected = false
-var moving_mode = false
 var selected_nodes: Array[Node] = []
 
 var data: Dictionary
@@ -20,15 +17,6 @@ var data: Dictionary
 var control_node
 
 func _input(event):
-	if event is InputEventMouseButton:
-		mouse_pressed = event.is_pressed()
-	
-	selection_mode = false
-	moving_mode = false
-	if event is InputEventMouseMotion and mouse_pressed:
-		selection_mode = true
-		moving_mode = graphnode_selected
-	
 	if event is InputEventKey:
 		var key := event as InputEventKey
 		if key.is_pressed() and key.key_label == KEY_DELETE:
@@ -36,7 +24,6 @@ func _input(event):
 			for node in selected_nodes:
 				if node.node_type != "RootNode":
 					node.queue_free()
-
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
@@ -94,11 +81,9 @@ func is_option_node_exciste(node_id):
 	return false
 
 func _on_node_selected(node):
-	graphnode_selected = true
 	selected_nodes.append(node)
 
 func _on_node_deselected(node):
-	graphnode_selected = false
 	var id := selected_nodes.find(node)
 	selected_nodes.remove_at(id)
 
