@@ -125,14 +125,18 @@ func is_option_node_exciste(node_id):
 			return true
 	return false
 
-func _on_node_selected(node):
-	selected_nodes.append(node)
+func try_show_inspector(node):
 	if selected_nodes == [node]:
 		control_node.side_panel_node.show()
+
+func _on_node_selected(node):
+	selected_nodes.append(node)
+	try_show_inspector(node)
 
 func _on_node_deselected(node):
 	var id := selected_nodes.find(node)
 	selected_nodes.remove_at(id)
+	try_show_inspector(node)
 
 func free_graphnode(node: GraphNode):
 	# Disconnect all empty connections
