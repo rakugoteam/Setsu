@@ -24,21 +24,22 @@ func _ready():
 func _from_dict(dict: Dictionary):
 	id = dict.get("ID")
 	var condition = dict.get("Condition")
-	var variables_filter = variables.filter(func(v): return v.get("Name") == condition.get("Variable"))
+	var variables_filter = variables.filter(
+		func(v): return v.get("Name") == condition.get("Variable"))
 	
 	if variables_filter.size() > 0:
 		for i in variable_drop_node.item_count:
 			if variable_drop_node.get_item_text(i) == condition.get("Variable"):
 				variable_drop_node.select(i)
 			
-	
 	for i in operator_drop_node.item_count:
 		if operator_drop_node.get_item_text(i) == condition.get("Operator"):
 			operator_drop_node.select(i)
 	
 	var value = condition.get("Value")
 	if value != null and variables_filter.size() > 0:
-		var variable = variables.filter(func(v): return v.get("Name") == condition.get("Variable"))[0]
+		var variable = variables.filter(
+			func(v): return v.get("Name") == condition.get("Variable"))[0]
 		match variable.get("Type"):
 			"Boolean":
 				boolean_edit.button_pressed = value
@@ -56,7 +57,8 @@ func update_all_condition():
 	var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 	if not variable_name:
 		return
-	var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
+	var variable = variables.filter(
+		func (v): return v.get("Name") == variable_name)[0]
 	
 	boolean_edit.hide()
 	number_edit.hide()
@@ -70,17 +72,12 @@ func update_all_condition():
 	match variable.get("Type"):
 		"Boolean":
 			boolean_edit.show()
-			boolean_edit.grab_focus()
 		"Integer":
 			number_edit.show()
-			number_edit.grab_focus()
 		"String":
 			string_edit.show()
-			string_edit.grab_focus()
 		_:
 			default_label.show()
-			default_label.grab_focus()
-
 
 func get_value():
 	if variable_drop_node.selected < 0:
@@ -89,7 +86,8 @@ func get_value():
 	var variable_name = variable_drop_node.get_item_text(variable_drop_node.selected)
 	if not variable_name:
 		return null
-	var variable = variables.filter(func (v): return v.get("Name") == variable_name)[0]
+	var variable = variables.filter(
+		func (v): return v.get("Name") == variable_name)[0]
 	
 	match variable.get("Type"):
 		"Boolean":

@@ -21,6 +21,7 @@ func _common_update(_panel = null):
 	if _panel:
 		id = _panel.id
 
+
 func _connect_to_panel(sgnl):
 	sgnl.connect(_update)
 	sgnl.connect(_common_update)

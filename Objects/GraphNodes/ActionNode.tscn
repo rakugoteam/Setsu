@@ -140,8 +140,8 @@ slot/1/left_icon = null
 slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
-slot/1/right_icon = ExtResource("2_25hre")
-slot/1/draw_stylebox = false
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
 slot/2/left_enabled = false
 slot/2/left_type = 0
 slot/2/left_color = Color(1, 1, 1, 1)
@@ -149,8 +149,8 @@ slot/2/left_icon = null
 slot/2/right_enabled = false
 slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
-slot/2/right_icon = ExtResource("2_25hre")
-slot/2/draw_stylebox = false
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
 slot/3/left_enabled = false
 slot/3/left_type = 0
 slot/3/left_color = Color(1, 1, 1, 1)
@@ -191,7 +191,6 @@ text = "action type"
 label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="OptionMarginContainer" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 2
 
 [node name="OptionContainer" type="HBoxContainer" parent="OptionMarginContainer"]
@@ -287,6 +286,7 @@ layout_mode = 2
 text = "seconds"
 
 [node name="CustomMarginContainer" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="CustomContainer" type="HBoxContainer" parent="CustomMarginContainer"]
