@@ -1,17 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cifg2nritn8t6"]
+[gd_scene load_steps=7 format=3 uid="uid://cifg2nritn8t6"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/NodeSentence.gd" id="1_at5jy"]
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_hvs86"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_5kymc"]
 [ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="4_6ycci"]
 [ext_resource type="Resource" uid="uid://74bogqdd04tt" path="res://Test/Data/markdown_settings.tres" id="5_puklo"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v075a"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryo67"]
 content_margin_left = 10.0
@@ -31,7 +24,6 @@ offset_bottom = 100.0
 size_flags_vertical = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_v075a")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_ryo67")
 title = "NodeSentence"
 slot/0/left_enabled = true
