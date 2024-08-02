@@ -127,6 +127,8 @@ func is_option_node_exciste(node_id):
 
 func _on_node_selected(node):
 	selected_nodes.append(node)
+	if selected_nodes == [node]:
+		control_node.side_panel_node.show()
 
 func _on_node_deselected(node):
 	var id := selected_nodes.find(node)
