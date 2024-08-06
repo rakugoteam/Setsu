@@ -116,7 +116,11 @@ func free_graphnode(node: GraphNode):
 			if (co.get("from_node") == node.name
 				and co.get("to_node") == n.name):
 				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
-		
+	
+	if node in selected_nodes:
+		var id := selected_nodes.find(node)
+		selected_nodes.remove_at(id)
+
 	node.queue_free()
 
 func _on_child_entered_tree(node: Node):
@@ -186,14 +190,65 @@ func db_from_dict(dict: Dictionary):
 	variables = dict["Variables"]
 
 func _on_duplicate_nodes_request():
-	if selected_nodes.size() != 1 : return
-	var node = selected_nodes[0]
-	if node is RootNode: return
-	var dup := node.duplicate()
-	dup.position_offset.y += node.size.y + 10
-	dup.id = UUID.v4()
-	dup.name += dup.id
+	if selected_nodes.size() != 1:
+		await control_node.alert("Duplicating works only for 1 node at one time :(")
+		return
 
-	add_child(dup)
-	node.selected = false
-	dup.selected = true
+	var node := selected_nodes[0] as MonologueGraphNode
+	if node is RootNode:
+		await control_node.alert("You can't duplicate RootNode")
+		return
+
+	var node_data := node._to_dict() as Dictionary
+	if !node_data:
+		await control_node.alert("You can't duplicate this node node_type: %s" % node.node_type)
+		return
+	
+	var node_type := node_data["$type"] as String
+	node_type = node_type.trim_prefix("Node")
+	var dup := control_node.add_node(node_type) as MonologueGraphNode
+	if !dup:
+		await control_node.alert("You can't duplicate this node node_type: %s" % node_data["$type"])
+		return
+	
+	var dup_data := dup._to_dict() as Dictionary
+	match node_type:
+		"Sentence":
+			dup_data["Sentence"] = node_data["Sentence"]
+			dup_data["SpeakerID"] = node_data["SpeakerID"]
+
+		"Choice":
+			var options := control_node.get_options_nodes(
+				node_data["OptionsID"]) as Array
+			for op in options:
+				var duo_op := op.duplicate() as Dictionary
+				duo_op.id = UUID.v4()
+				data["ListNodes"].append(duo_op)
+				dup.options.append(duo_op)
+				dup_data["OptionsID"].append(duo_op.id)
+				print("dup choidce")
+			
+		"DiceRoll":
+			dup["Skill"] = node_data["Skill"]
+			dup["Target"] = node_data["Target"]
+			
+		"Event", "Condition":
+			dup["Condition"] = node_data["Condition"]
+
+		"Action":
+			dup_data["Action"] = node_data["Action"]
+
+		"EndPath":
+			dup_data["NextStoryName"] = node_data["NextStoryName"]
+			
+		"Comment":
+			dup_data["Comment"] = node_data["Comment"]
+		
+		"BridgeIn", "BridgeOut":
+			dup_data["NumberSelector"] = node_data["NumberSelector"]
+		
+		_:
+			await control_node.alert("You duplicate not supported node_type: %s" % node_data["$type"])
+
+	dup._from_dict(dup_data)
+	set_selected(dup)
