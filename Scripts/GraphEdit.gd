@@ -16,7 +16,17 @@ var data: Dictionary
 
 var control_node
 
-func _gui_input(event):
+func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
+	var connections := []
+	for fid in node.get_output_port_count():
+		for n in nodes:
+			if n == node: continue
+			for tid in n.get_input_port_count():
+				if is_node_connected(node.name, fid, n.name, tid):
+					connections.append([fid, node, tid])
+	return connections
+
+func _input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
 		if key.is_pressed(): shortcut(event)
@@ -28,7 +38,7 @@ func shortcut(key: InputEventKey):
 			for node in selected_nodes:
 				if not node: return
 				if node.node_type != "RootNode":
-					node.queue_free()
+					free_graphnode(node)
 
 		KEY_S:
 			var gn: GraphNode = control_node.add_node("Sentence")
@@ -130,15 +140,21 @@ func try_show_inspector(node):
 		control_node.side_panel_node.show()
 
 func _on_node_selected(node):
+	if node in selected_nodes:
+		set_selected(node)
+		return
+
 	selected_nodes.append(node)
 	try_show_inspector(node)
 
 func _on_node_deselected(node):
+	if node not in selected_nodes: return
 	var id := selected_nodes.find(node)
 	selected_nodes.remove_at(id)
 	try_show_inspector(node)
 
 func free_graphnode(node: GraphNode):
+	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
 	for n in get_all_connections_to_node(node.name):
 		for co in get_connection_list():
@@ -219,3 +235,16 @@ func db_from_dict(dict: Dictionary):
 		id += 1
 	
 	variables = dict["Variables"]
+
+func _on_duplicate_nodes_request():
+	if selected_nodes.size() != 1 : return
+	var node = selected_nodes[0]
+	if node is RootNode: return
+	var dup := node.duplicate()
+	dup.position_offset.y += node.size.y + 10
+	dup.id = UUID.v4()
+	dup.name += dup.id
+
+	add_child(dup)
+	node.selected = false
+	dup.selected = true
