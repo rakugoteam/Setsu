@@ -181,26 +181,14 @@ func db_from_dict(dict: Dictionary):
 	variables = dict["Variables"]
 
 func _on_duplicate_nodes_request():
-	if !selected_nodes: return
-	var refs := {}
-	var nodes := selected_nodes.duplicate(true)
-	for node: GraphNode in nodes:
-		if node is RootNode: continue
-		var dup := node.duplicate()
-		dup.position_offset.y += node.size.y + 10
-		dup.id = UUID.v4()
-		dup.name += dup.id
+	if selected_nodes.size() != 1 : return
+	var node = selected_nodes[0]
+	if node is RootNode: return
+	var dup := node.duplicate()
+	dup.position_offset.y += node.size.y + 10
+	dup.id = UUID.v4()
+	dup.name += dup.id
 
-		refs[node] = dup
-
-		add_child(dup)
-		node.selected = false
-		dup.selected = true
-	
-	for node: GraphNode in refs:
-		var fnode := refs[node] as GraphNode
-		var connections := get_connected_nodes(node, nodes)
-		if connections:
-			for c in connections:
-				var tonode := refs[c[1]] as GraphNode
-				connect_node(fnode.name, c[0], tonode.name, c[2])
+	add_child(dup)
+	node.selected = false
+	dup.selected = true
