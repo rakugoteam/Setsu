@@ -16,7 +16,17 @@ var data: Dictionary
 
 var control_node
 
-func _gui_input(event):
+func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
+	var connections := []
+	for fid in node.get_output_port_count():
+		for n in nodes:
+			if n == node: continue
+			for tid in n.get_input_port_count():
+				if is_node_connected(node.name, fid, n.name, tid):
+					connections.append([fid, node, tid])
+	return connections
+
+func _input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
 		if key.is_pressed(): shortcut(event)
