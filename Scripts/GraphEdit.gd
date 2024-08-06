@@ -16,24 +16,59 @@ var data: Dictionary
 
 var control_node
 
-func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
-	var connections := []
-	for fid in node.get_output_port_count():
-		for n in nodes:
-			if n == node: continue
-			for tid in n.get_input_port_count():
-				if is_node_connected(node.name, fid, n.name, tid):
-					connections.append([fid, node, tid])
-	return connections
-
-func _input(event):
+func _gui_input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
-		if key.is_pressed() and key.key_label == KEY_DELETE:
+		if key.is_pressed(): shortcut(event)
+
+func shortcut(key: InputEventKey):
+	match key.key_label:
+		KEY_DELETE:
 			if !selected_nodes: return
 			for node in selected_nodes:
+				if not node: return
 				if node.node_type != "RootNode":
 					free_graphnode(node)
+
+		KEY_S:
+			var gn: GraphNode = control_node.add_node("Sentence")
+			try_connecting_from_selected(gn)
+
+		KEY_C:
+			var gn: GraphNode = control_node.add_node("Choice")
+			try_connecting_from_selected(gn)
+
+		KEY_D:
+			var gn: GraphNode = control_node.add_node("DiceRoll")
+			try_connecting_from_selected(gn)
+
+		KEY_B:
+			var gn: GraphNode = control_node.add_node("Bridge")
+			try_connecting_from_selected(gn)
+
+		KEY_N: control_node.add_node("Condition")
+		KEY_A:
+			var gn: GraphNode = control_node.add_node("Action")
+			try_connecting_from_selected(gn)
+
+		KEY_E:
+			var gn: GraphNode = control_node.add_node("EndPath")
+			try_connecting_from_selected(gn)
+		
+		KEY_1:
+			var c: ChoiceNode = control_node.add_node("Choice")
+			c.options.clear()
+			c.gen_options(1)
+			try_connecting_from_selected(c)
+
+		KEY_V: control_node.add_node("Event")
+		KEY_SLASH: control_node.add_node("Comment")
+		
+
+func try_connecting_from_selected(node: GraphNode):
+	if selected_nodes.size() != 1: return
+	var fnode := selected_nodes[0] as GraphNode
+	connect_node(fnode.name, 0, node.name, 0)
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
@@ -90,17 +125,23 @@ func is_option_node_exciste(node_id):
 			return true
 	return false
 
+func try_show_inspector(node):
+	if selected_nodes == [node]:
+		control_node.side_panel_node.show()
+
 func _on_node_selected(node):
 	if node in selected_nodes:
 		set_selected(node)
 		return
 
 	selected_nodes.append(node)
+	try_show_inspector(node)
 
 func _on_node_deselected(node):
 	if node not in selected_nodes: return
 	var id := selected_nodes.find(node)
 	selected_nodes.remove_at(id)
+	try_show_inspector(node)
 
 func free_graphnode(node: GraphNode):
 	control_node.side_panel_node.hide()

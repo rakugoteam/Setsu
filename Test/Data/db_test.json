@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.2.1",
+	"EditorVersion": "2.2.2-AZ",
 	"RootNodeID": "4c51b0d7-4c09-4065-bdd2-b12a44386f41",
 	"ListNodes": [
 		{
@@ -14,21 +14,10 @@
 		{
 			"$type": "NodeRoot",
 			"ID": "4c51b0d7-4c09-4065-bdd2-b12a44386f41",
-			"NextID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
+			"NextID": "ab80e9dc-232b-4f83-8794-efba65a1ccfc",
 			"EditorPosition": {
 				"x": 0,
 				"y": 40
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
-			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
-			"Sentence": "test globlanych nazw charakterów",
-			"SpeakerID": 2,
-			"EditorPosition": {
-				"x": 1220,
-				"y": 100
 			}
 		},
 		{
@@ -44,13 +33,28 @@
 		},
 		{
 			"$type": "NodeSentence",
-			"ID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
-			"NextID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
-			"Sentence": "Test zewnątrznej bazy",
-			"SpeakerID": 1,
+			"ID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
+			"Sentence": "test globlanych nazw charakterów",
+			"SpeakerID": 2,
 			"EditorPosition": {
-				"x": 660,
+				"x": 1220,
 				"y": 100
+			}
+		},
+		{
+			"$type": "NodeAction",
+			"ID": "ab80e9dc-232b-4f83-8794-efba65a1ccfc",
+			"NextID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"Action": {
+				"$type": "ActionVariable",
+				"Operator": "+",
+				"Variable": "JakaśLiczba",
+				"Value": 1
+			},
+			"EditorPosition": {
+				"x": 580,
+				"y": -180
 			}
 		}
 	],

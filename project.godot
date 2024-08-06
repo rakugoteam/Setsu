@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Monologue-AZ"
-config/version="2.2.1"
+config/version="2.2.2-AZ"
 run/main_scene="res://Scenes/App.tscn"
 config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
@@ -71,7 +71,7 @@ version_hint=""
 
 [gui]
 
-theme/custom="res://Assets/MainTheme.tres"
+theme/custom="res://Assets/godot-minimal-theme.tres"
 theme/default_font_subpixel_positioning=0
 theme/lcd_subpixel_layout=0
 

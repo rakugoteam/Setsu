@@ -2,18 +2,22 @@
 	"Characters": [
 		{
 			"Reference": "_NARRATOR",
+			"DisplaySpeakerName": "",
 			"ID": 0
 		},
 		{
 			"Reference": "Lazy God",
+			"DisplaySpeakerName": "Lazy God",
 			"ID": 1
 		},
 		{
 			"Reference": "The Architect",
+			"DisplaySpeakerName": "The Architect",
 			"ID": 2
 		},
 		{
 			"Reference": "Douglas Adams",
+			"DisplaySpeakerName": "Douglas Adams",
 			"ID": 3
 		}
 	],
