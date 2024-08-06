@@ -240,19 +240,16 @@ func file_selected(path, open_mode):
 	
 	load_project(path)
 
-
 func get_root_dict(nodes):
 	for node in nodes:
 		if node.get("$type") == "NodeRoot":
 			return node
-
 
 func get_root_node_ref():
 	for node in get_graph_nodes():
 		if (!node.is_queued_for_deletion()
 			and node.id == root_dict.get("ID")):
 			return node
-
 
 func save(quick: bool = false):
 	save_progress_bar.value = 0
@@ -402,21 +399,19 @@ func load_project(path):
 		save(true)
 		root_node_ref = get_root_node_ref()
 	
-	
 func get_node_by_id(id):
 	for node in get_graph_nodes():
 		if node.id == id:
 			return node
 	return null
 	
-func get_options_nodes(node_list, options_id):
+func get_options_nodes(options_id):
 	var options = []
 	
-	for node in node_list:
+	for node in live_dict["ListNodes"]:
 		if node.get("ID") in options_id:
 			options.append(node)
 	return options
-
 
 ###############################
 #  New node buttons callback  #
@@ -436,7 +431,7 @@ func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
 	add_node(node_type)
 
-func add_node(node_type):
+func add_node(node_type) -> MonologueGraphNode:
 	if node_type == "Bridge":
 		var number = get_current_graph_edit().get_free_bridge_number()
 	
@@ -472,13 +467,17 @@ func add_node(node_type):
 			node = event_node
 		"Comment":
 			node = comment_node
+		"BridgeIn":
+			node = bridge_in_node
+		"BridgeOut":
+			node = bridge_out_node
+		
 	
-	if not node:
-		return
-	
+	if not node: return null
 	node = node.instantiate()
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
+	return node
 	
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
 	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
