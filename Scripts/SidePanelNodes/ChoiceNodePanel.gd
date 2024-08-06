@@ -25,12 +25,12 @@ func _from_dict(dict):
 	change.emit(self)
 
 
-func new_option():
-	var option = option_panel.instantiate()
-	option.panel_node = self
+func new_option(sentence := ""):
+	var option = option_panel.instantiate() as OptionNode
 	option.graph_node = graph_node
 	
 	options_container.add_child(option)
+	option.sentence = sentence
 	option.update_ref()
 
 
