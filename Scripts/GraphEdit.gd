@@ -33,7 +33,7 @@ func _input(event):
 			if !selected_nodes: return
 			for node in selected_nodes:
 				if node.node_type != "RootNode":
-					node.queue_free()
+					free_graphnode(node)
 
 func get_all_connections_from_node(from_node: StringName):
 	var connections = []
@@ -91,6 +91,10 @@ func is_option_node_exciste(node_id):
 	return false
 
 func _on_node_selected(node):
+	if node in selected_nodes:
+		set_selected(node)
+		return
+
 	selected_nodes.append(node)
 
 func _on_node_deselected(node):
@@ -99,6 +103,7 @@ func _on_node_deselected(node):
 	selected_nodes.remove_at(id)
 
 func free_graphnode(node: GraphNode):
+	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
 	for n in get_all_connections_to_node(node.name):
 		for co in get_connection_list():
