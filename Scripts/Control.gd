@@ -426,11 +426,7 @@ func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
 	add_node(node_type)
 
-<<<<<<< HEAD
-func add_node(node_type) -> Node:
-=======
 func add_node(node_type) -> MonologueGraphNode:
->>>>>>> 87b4aa2723dffb2a3595df78232029eceb6b173b
 	if node_type == "Bridge":
 		var number = get_current_graph_edit().get_free_bridge_number()
 	
@@ -470,7 +466,6 @@ func add_node(node_type) -> MonologueGraphNode:
 			node = bridge_in_node
 		"BridgeOut":
 			node = bridge_out_node
-		
 	
 	if not node: return null
 	node = node.instantiate()
