@@ -26,9 +26,14 @@ func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 					connections.append([fid, node, tid])
 	return connections
 
-func _input(event):
+func _gui_input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
+		if true in [
+			key.ctrl_pressed,
+			key.alt_pressed,
+			key.shift_pressed,
+		]: return
 		if key.is_pressed(): shortcut(event)
 
 func shortcut(key: InputEventKey):
