@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bwfykyaajuu4i"]
+[gd_scene load_steps=8 format=3 uid="uid://bwfykyaajuu4i"]
 
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_svvlx"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_6ccxk"]
@@ -14,6 +14,20 @@ corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ku68m"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.32549, 0.588235, 0.737255, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sipot"]
 content_margin_left = 5.0
@@ -39,6 +53,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_ko5jj")
+theme_override_styles/titlebar_selected = SubResource("StyleBoxFlat_ku68m")
 title = "EventNode"
 slot/0/left_enabled = false
 slot/0/left_type = 0
