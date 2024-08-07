@@ -21,15 +21,12 @@ func _from_dict(dict):
 	
 	change.emit(self)
 
-
-func new_option(sentence := ""):
+func new_option():
 	var option = option_panel.instantiate() as OptionNode
+	option.panel_node = self
 	option.graph_node = graph_node
-	
 	options_container.add_child(option)
-	option.sentence = sentence
 	option.update_ref()
-
 
 func _on_add_option_pressed():
 	new_option()

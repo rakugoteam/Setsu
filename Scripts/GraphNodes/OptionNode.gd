@@ -16,7 +16,6 @@ var sentence = ""
 var enable = true
 var one_shot = false
 
-
 func _to_dict():
 	return {
 		"$type": node_type,
@@ -25,7 +24,6 @@ func _to_dict():
 		"Enable": enable,
 		"OneShot": one_shot
 	}
-
 
 func _from_dict(dict):
 	if dict != null:
@@ -40,18 +38,16 @@ func _from_dict(dict):
 	
 	id_label.text = id + " (click to copy)"
 
-
 func _on_delete_pressed():
 	queue_free()
 	update_ref()
-
 
 func _on_id_label_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		DisplayServer.clipboard_set(id)
 
-
 func update_ref():
+	if !panel_node: return
 	id_label.text = id + " (click to copy)"
 	
 	sentence = sentence_node.text
