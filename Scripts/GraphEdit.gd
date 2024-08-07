@@ -3,6 +3,8 @@ extends GraphEdit
 
 @onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
 
+@onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
+
 var file_path: String
 var db_file_path: String
 
@@ -73,7 +75,7 @@ func shortcut(key: InputEventKey):
 		KEY_1:
 			var c: ChoiceNode = control_node.add_node("Choice")
 			c.options.clear()
-			c.gen_options(1)
+			c.gen_options([""])
 			try_connecting_from_selected(c)
 
 		KEY_V: control_node.add_node("Event")
@@ -254,57 +256,69 @@ func _on_duplicate_nodes_request():
 	if node is RootNode:
 		await control_node.alert("You can't duplicate RootNode")
 		return
-
-	var node_data := node._to_dict() as Dictionary
-	if !node_data:
-		await control_node.alert("You can't duplicate this node node_type: %s" % node.node_type)
-		return
 	
-	var node_type := node_data["$type"] as String
+	var node_type := node.node_type as String
 	node_type = node_type.trim_prefix("Node")
-	var dup := control_node.add_node(node_type) as MonologueGraphNode
-	if !dup:
-		await control_node.alert("You can't duplicate this node node_type: %s" % node_data["$type"])
+	var copy := control_node.add_node(node_type) as MonologueGraphNode
+	if !copy:
+		await control_node.alert("You can't duplicate this node node_type: %s" % node_type)
 		return
 	
-	var dup_data := dup._to_dict() as Dictionary
+	var copy_dict := copy._to_dict() as Dictionary
+	var node_dict := node._to_dict() as Dictionary
+	
 	match node_type:
 		"Sentence":
-			dup_data["Sentence"] = node_data["Sentence"]
-			dup_data["SpeakerID"] = node_data["SpeakerID"]
+			var sentence_node := node as SentenceNode
+			var sentence_copy := copy as SentenceNode
+			sentence_copy.sentence = sentence_node.sentence
+			sentence_copy.speaker_id = sentence_node.speaker_id
+			copy_dict = sentence_copy._to_dict()
 
 		"Choice":
-			var options := control_node.get_options_nodes(
-				node_data["OptionsID"]) as Array
-			for op in options:
-				var duo_op := op.duplicate() as Dictionary
-				duo_op.id = UUID.v4()
-				data["ListNodes"].append(duo_op)
-				dup.options.append(duo_op)
-				dup_data["OptionsID"].append(duo_op.id)
-				print("dup choidce")
+			var choice_node := node as ChoiceNode
+			var choice_copy := copy as ChoiceNode
 			
+			var options := []
+			for op in choice_node.get_children():
+				var option_ref := op as OptionReference
+				options.append(option_ref.sentence)
+
+			choice_copy.options.clear()
+			choice_copy.gen_options(options)
+			set_selected(copy)
+			return
+
 		"DiceRoll":
-			dup["Skill"] = node_data["Skill"]
-			dup["Target"] = node_data["Target"]
+			var dice_roll_node := node as DiceRollNode
+			var dice_roll_copy := copy as DiceRollNode
+			dice_roll_copy.skill = dice_roll_node.skill
+			dice_roll_copy.target_number = dice_roll_node.target_number
+			copy_dict = dice_roll_copy._to_dict()
 			
 		"Event", "Condition":
-			dup["Condition"] = node_data["Condition"]
+			copy_dict["Condition"] = node_dict["Condition"]
 
 		"Action":
-			dup_data["Action"] = node_data["Action"]
+			copy_dict["Action"] = node_dict["Action"]
 
 		"EndPath":
-			dup_data["NextStoryName"] = node_data["NextStoryName"]
+			var end_path_node := node as EndPathNode
+			var end_path_copy := copy as EndPathNode
+			end_path_copy.next_story_name = end_path_node.next_story_name
+			copy_dict = end_path_copy._to_dict()
 			
 		"Comment":
-			dup_data["Comment"] = node_data["Comment"]
+			var comment_node := node as CommentNode
+			var comment_copy := copy as CommentNode
+			comment_copy.comment_edit.text = comment_node.comment_edit.text
+			copy_dict = comment_copy._to_dict()
 		
 		"BridgeIn", "BridgeOut":
-			dup_data["NumberSelector"] = node_data["NumberSelector"]
+			copy_dict["NumberSelector"] = node_dict["NumberSelector"]
 		
 		_:
-			await control_node.alert("You duplicate not supported node_type: %s" % node_data["$type"])
+			await control_node.alert("You duplicate not supported node_type: %s" % node_dict["$type"])
 
-	dup._from_dict(dup_data)
-	set_selected(dup)
+	copy._from_dict(copy_dict)
+	set_selected(copy)
