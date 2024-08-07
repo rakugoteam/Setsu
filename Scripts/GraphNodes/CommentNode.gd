@@ -1,6 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Comment.png")
 
-class_name CommentNpde
+class_name CommentNode
 
 extends MonologueGraphNode
 
