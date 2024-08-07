@@ -15,9 +15,10 @@ func _ready():
 	if len(options) <= 0:
 		gen_options()
 
-func gen_options(number:=2):
-	for _i in number:
+func gen_options(ops:=["", ""]):
+	for op in ops:
 		var opt_ref = option_reference.instantiate()
+		opt_ref.sentence = op
 		add_child(opt_ref)
 		options.append(opt_ref._to_dict())
 	
