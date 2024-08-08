@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://3k3dukisluyn"]
+[gd_scene load_steps=5 format=3 uid="uid://3k3dukisluyn"]
 
 [ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="2_du61s"]
+[ext_resource type="Script" path="res://Objects/SidePanelNodes/WebTextEdit.gd" id="2_n133y"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/OptionNode.gd" id="4_5yoga"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_52w5v"]
@@ -30,7 +31,7 @@ size_flags_vertical = 0
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/MainContainer/SentenceContainer"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -41,6 +42,7 @@ custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 size_flags_horizontal = 3
 wrap_mode = 1
+script = ExtResource("2_n133y")
 
 [node name="DeleteBtnContainer" type="MarginContainer" parent="MarginContainer/MainContainer/SentenceContainer"]
 layout_mode = 2
