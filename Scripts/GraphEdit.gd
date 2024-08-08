@@ -13,6 +13,7 @@ var variables = []
 var mouse_pressed = false
 var selection_mode = false
 var selected_nodes: Array[Node] = []
+var removed_nodes: Dictionary = {}
 
 var data: Dictionary
 
@@ -31,14 +32,21 @@ func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 func _gui_input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
-		if true in [
-			key.ctrl_pressed,
-			key.alt_pressed,
-			key.shift_pressed,
-		]: return
-		if key.is_pressed(): shortcut(event)
+		if key.is_pressed():
+			if key.ctrl_pressed and key.key_label == KEY_Z:
+				if removed_nodes.size() > 0:
+					restore_node(removed_nodes.keys().back())
+				return
+
+			shortcut(event)
 
 func shortcut(key: InputEventKey):
+	if true in [
+		key.ctrl_pressed,
+		key.alt_pressed,
+		key.shift_pressed,
+	]: return
+	
 	match key.key_label:
 		KEY_DELETE:
 			if !selected_nodes: return
@@ -160,26 +168,47 @@ func _on_node_deselected(node):
 	selected_nodes.remove_at(id)
 	try_show_inspector(node)
 
+func disconnect_all(node, n) -> Array:
+	var connections := []
+	for co in get_connection_list():
+		if (co.get("from_node") == node.name
+			and co.get("to_node") == n.name):
+			disconnect_node(
+				co.get("from_node"), co.get("from_port"),
+				co.get("to_node"), co.get("to_port")
+			)
+		connections.append([
+			co.get("from_node"), co.get("from_port"),
+			co.get("to_node"), co.get("to_port")
+		])
+	return connections
+
+func restore_node(node: GraphNode):
+	var connections := removed_nodes[node] as Array
+	removed_nodes.erase(node)
+	node.show()
+
+	for co in connections:
+		connect_node(co[0], co[1], co[2], co[3])
+
 func free_graphnode(node: GraphNode):
 	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
+	var connections := []
 	for n in get_all_connections_to_node(node.name):
-		for co in get_connection_list():
-			if (co.get("from_node") == n.name
-				and co.get("to_node") == node.name):
-				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
+		connections.append_array(disconnect_all(node, n))
+		connections.append_array(disconnect_all(n, node))
 	
 	for n in get_all_connections_from_node(node.name):
-		for co in get_connection_list():
-			if (co.get("from_node") == node.name
-				and co.get("to_node") == n.name):
-				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
+		connections.append_array(disconnect_all(node, n))
+		connections.append_array(disconnect_all(n, node))
 	
 	if node in selected_nodes:
 		var id := selected_nodes.find(node)
 		selected_nodes.remove_at(id)
 
-	node.queue_free()
+	node.hide()
+	removed_nodes[node] = connections
 
 func _on_child_entered_tree(node: Node):
 	if node is RootNode or not node is GraphNode:
