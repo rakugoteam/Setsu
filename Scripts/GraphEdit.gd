@@ -207,6 +207,11 @@ func free_graphnode(node: GraphNode):
 		var id := selected_nodes.find(node)
 		selected_nodes.remove_at(id)
 
+	if removed_nodes.size() > 1024:
+		var first := removed_nodes.keys()[0] as Node
+		removed_nodes.erase(first)
+		first.queue_free()
+
 	node.hide()
 	removed_nodes[node] = connections
 
