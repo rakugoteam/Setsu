@@ -34,8 +34,7 @@ func _gui_input(event):
 		var key := event as InputEventKey
 		if key.is_pressed():
 			if key.ctrl_pressed and key.key_label == KEY_Z:
-				if removed_nodes.size() > 0:
-					restore_node(removed_nodes.back())
+				if removed_nodes: restore_node(removed_nodes.back())
 				return
 
 			shortcut(event)
@@ -50,7 +49,7 @@ func shortcut(key: InputEventKey):
 	match key.key_label:
 		KEY_DELETE:
 			if !selected_nodes: return
-			free_graphnode(selected_nodes)
+			free_graphnode(selected_nodes.duplicate())
 
 		KEY_S:
 			var gn: GraphNode = control_node.add_node("Sentence")
