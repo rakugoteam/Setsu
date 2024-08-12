@@ -13,6 +13,7 @@ var variables = []
 var mouse_pressed = false
 var selection_mode = false
 var selected_nodes: Array[Node] = []
+var removed_nodes: Array[Dictionary] = []
 
 var data: Dictionary
 
@@ -31,21 +32,24 @@ func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 func _gui_input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
-		if true in [
-			key.ctrl_pressed,
-			key.alt_pressed,
-			key.shift_pressed,
-		]: return
-		if key.is_pressed(): shortcut(event)
+		if key.is_pressed():
+			if key.ctrl_pressed and key.key_label == KEY_Z:
+				if removed_nodes: restore_node(removed_nodes.back())
+				return
+
+			shortcut(event)
 
 func shortcut(key: InputEventKey):
+	if true in [
+		key.ctrl_pressed,
+		key.alt_pressed,
+		key.shift_pressed,
+	]: return
+	
 	match key.key_label:
 		KEY_DELETE:
 			if !selected_nodes: return
-			for node in selected_nodes:
-				if not node: return
-				if node.node_type != "RootNode":
-					free_graphnode(node)
+			free_graphnode(selected_nodes.duplicate())
 
 		KEY_S:
 			var gn: GraphNode = control_node.add_node("Sentence")
@@ -135,51 +139,81 @@ func get_free_bridge_number(_n = 1, lp_max = 50):
 
 func is_option_node_exciste(node_id):
 	for node in get_children():
-		if node.node_type != "NodeChoice":
-			continue
+		if node.node_type != "NodeChoice": continue
 		var node_options_id: Array = node.get_all_options_id()
-		if node_options_id.has(node_id):
-			return true
+		if node_options_id.has(node_id): return true
 	return false
 
 func try_show_inspector(node):
 	if selected_nodes == [node]:
 		control_node.side_panel_node.show()
+	else: control_node.side_panel_node.hide()
 
 func _on_node_selected(node):
-	if node in selected_nodes:
-		set_selected(node)
-		return
-
 	selected_nodes.append(node)
 	try_show_inspector(node)
 
 func _on_node_deselected(node):
-	if node not in selected_nodes: return
 	var id := selected_nodes.find(node)
 	selected_nodes.remove_at(id)
 	try_show_inspector(node)
 
-func free_graphnode(node: GraphNode):
+func disconnect_all(node, n) -> Array:
+	var connections := []
+	for co in get_connection_list():
+		if (co.get("from_node") == node.name
+			and co.get("to_node") == n.name):
+			disconnect_node(
+				co.get("from_node"), co.get("from_port"),
+				co.get("to_node"), co.get("to_port")
+			)
+		connections.append([
+			co.get("from_node"), co.get("from_port"),
+			co.get("to_node"), co.get("to_port")
+		])
+	return connections
+
+func restore_node(nodes: Dictionary):
+	for node in nodes:
+		var connections := nodes[node] as Array
+		node.show()
+
+		for co in connections:
+			connect_node(co[0], co[1], co[2], co[3])
+	
+	var nodes_id := removed_nodes.find(nodes)
+	removed_nodes.remove_at(nodes_id)
+
+func free_graphnode(nodes: Array[Node]):
 	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
-	for n in get_all_connections_to_node(node.name):
-		for co in get_connection_list():
-			if (co.get("from_node") == n.name
-				and co.get("to_node") == node.name):
-				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
-	
-	for n in get_all_connections_from_node(node.name):
-		for co in get_connection_list():
-			if (co.get("from_node") == node.name
-				and co.get("to_node") == n.name):
-				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
-	
-	if node in selected_nodes:
-		var id := selected_nodes.find(node)
-		selected_nodes.remove_at(id)
+	var nodes_to_remove := {}
+	for node: GraphNode in nodes:
+		if node is RootNode: continue
 
-	node.queue_free()
+		var connections := []
+		for n in get_all_connections_to_node(node.name):
+			connections.append_array(disconnect_all(node, n))
+			connections.append_array(disconnect_all(n, node))
+		
+		for n in get_all_connections_from_node(node.name):
+			connections.append_array(disconnect_all(node, n))
+			connections.append_array(disconnect_all(n, node))
+		
+		if node in selected_nodes:
+			node.selected = false
+
+		if removed_nodes.size() > 1023:
+			var first := removed_nodes[0] as Dictionary
+			for fnode in first:
+				fnode.queue_free()
+			removed_nodes.remove_at(0)
+			
+		nodes_to_remove[node] = connections
+		print("removed node: %s" % node.name)
+		node.hide()
+
+	removed_nodes.append(nodes_to_remove)
 
 func _on_child_entered_tree(node: Node):
 	if node is RootNode or not node is GraphNode:
@@ -187,7 +221,7 @@ func _on_child_entered_tree(node: Node):
 	
 	var node_header = node.get_children(true)[0]
 	var close_btn: TextureButton = close_button.instantiate()
-	close_btn.connect("pressed", free_graphnode.bind(node))
+	close_btn.connect("pressed", free_graphnode.bind([node]))
 	node_header.add_child(close_btn)
 
 func shorten_db_path(path: String):
