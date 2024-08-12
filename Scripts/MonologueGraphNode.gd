@@ -19,6 +19,8 @@ func _common_update(_panel = null):
 	if _panel: id = _panel.id
 
 func _gui_input(event):
+	if !graph_edit: graph_edit = get_parent()
+	
 	if event is InputEventMouseButton:
 		var mouse_ev := event as InputEventMouseButton
 		if mouse_ev.button_index != MOUSE_BUTTON_LEFT: return
