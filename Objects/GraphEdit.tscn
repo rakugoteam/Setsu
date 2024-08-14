@@ -23,3 +23,4 @@ script = ExtResource("1_r0ncd")
 [connection signal="duplicate_nodes_request" from="." to="." method="_on_duplicate_nodes_request"]
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

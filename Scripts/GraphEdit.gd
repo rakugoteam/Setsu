@@ -31,13 +31,14 @@ func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 
 func _gui_input(event):
 	if event is InputEventKey:
-		var key := event as InputEventKey
-		if key.is_pressed():
-			if key.ctrl_pressed and key.key_label == KEY_Z:
-				if removed_nodes: restore_node(removed_nodes.back())
-				return
+		if not event.is_pressed(): return
+		if event.ctrl_pressed:
+			match event.key_label:
+				KEY_Z: if removed_nodes: restore_node(removed_nodes.back())
+				KEY_F: control_node.get_node("SearchDialog").popup_centered()
+			return
 
-			shortcut(event)
+		shortcut(event)
 
 func shortcut(key: InputEventKey):
 	if true in [
@@ -84,7 +85,6 @@ func shortcut(key: InputEventKey):
 
 		KEY_V: control_node.add_node("Event")
 		KEY_SLASH: control_node.add_node("Comment")
-		
 
 func try_connecting_from_selected(node: GraphNode):
 	if selected_nodes.size() != 1: return
@@ -356,3 +356,6 @@ func _on_duplicate_nodes_request():
 
 	copy._from_dict(copy_dict)
 	set_selected(copy)
+
+func _on_visibility_changed():
+	if visible: grab_focus()
