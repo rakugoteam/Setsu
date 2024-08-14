@@ -26,15 +26,20 @@ func _on_search_edit_text_submitted(new_text):
 
 func add_btn_to_node(node: MonologueGraphNode, value: String):
 	var btn := Button.new()
-var style := node.get_theme_stylebox("titlebar")
+	var style := node.get_theme_stylebox("titlebar")
 	btn.add_theme_stylebox_override("normal", style)
 	btn.add_theme_stylebox_override("hover", style)
-	btn.add_theme_stylebox_override("pressed", style)	
+	btn.add_theme_stylebox_override("pressed", style)
 	btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	btn.text = "%s:\n%s" % [		node.node_type, value	]
+	btn.text = "%s:\n%s" % [node.node_type, value]
 	btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_WORD_ELLIPSIS
 	btn.pressed.connect(_on_found_pressed.bind(node))
 	%NodesContainer.add_child(btn)
+
+func _gui_input(event):
+	if event is InputEventKey:
+		if not event.is_pressed(): return
+		if event.key_label == KEY_ESCAPE: hide()
 
 func _on_found_pressed(node: MonologueGraphNode):
 	hide()
