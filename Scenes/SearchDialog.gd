@@ -14,6 +14,8 @@ func _on_visibility_changed():
 	if not visible:
 		%SearchEdit.text = ""
 		%ScrollNodesContainer.hide()
+		for ch: Node in %NodesContainer.get_children():
+			ch.queue_free()
 		return
 	
 	%SearchEdit.grab_focus()
