@@ -31,8 +31,10 @@ var volume: float = 0.0
 var pitch: float = 1.0
 var value = false
 
+func _get_node_type() -> StringName:
+	return &"NodeAction"
+
 func _ready():
-	node_type = "NodeAction"
 	title = node_type
 
 func _to_dict() -> Dictionary:

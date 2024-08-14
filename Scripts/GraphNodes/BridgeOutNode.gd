@@ -6,11 +6,11 @@ extends MonologueGraphNode
 
 @onready var number_selector = $MarginContainer/HBoxContainer/LinkNumber
 
+func _get_node_type() -> StringName:
+	return &"NodeBridgeOut"
 
 func _ready():
-	node_type = "NodeBridgeOut"
 	title = node_type
-
 
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)

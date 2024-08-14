@@ -8,11 +8,11 @@ var loaded_text := ""
 var sentence := ""
 var speaker_id := 0
 
+func _get_node_type() -> StringName:
+	return &"NodeSentence"
 
 func _ready():
-	node_type = "NodeSentence"
 	title = node_type
-
 
 func _to_dict() -> Dictionary:
 	var next_id_node = get_parent().get_all_connections_from_slot(name, 0)

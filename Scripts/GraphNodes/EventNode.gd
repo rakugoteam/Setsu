@@ -13,8 +13,10 @@ var variable_name: String = ""
 var operator: String = ""
 var value = null
 
+func _get_node_type() -> StringName:
+	return &"NodeEvent"
+
 func _ready():
-	node_type = "NodeEvent"
 	title = node_type
 
 func _to_dict() -> Dictionary:
