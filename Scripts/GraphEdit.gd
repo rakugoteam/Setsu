@@ -1,23 +1,22 @@
 extends GraphEdit
 
+@onready
+var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
 
-@onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
-
-@onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
+@onready
+var option_ref = preload("res://Objects/SubComponents/OptionReference.tscn")
 
 var file_path: String
 var db_file_path: String
+var data: Dictionary
 
+var control_node
 var speakers = []
 var variables = []
 var mouse_pressed = false
 var selection_mode = false
 var selected_nodes: Array[Node] = []
 var removed_nodes: Array[Dictionary] = []
-
-var data: Dictionary
-
-var control_node
 
 func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 	var connections := []
@@ -315,8 +314,8 @@ func _on_duplicate_nodes_request():
 			
 			var options := []
 			for op in choice_node.get_children():
-				var option_ref := op as OptionReference
-				options.append(option_ref.sentence)
+				var option := op as OptionReference
+				options.append(option.sentence)
 
 			choice_copy.options.clear()
 			choice_copy.gen_options(options)

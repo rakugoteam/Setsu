@@ -362,13 +362,15 @@ clip_tabs = false
 tab_close_display_policy = 1
 tab_0/title = "+"
 
-[node name="GraphEdits" type="Control" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
+[node name="GraphEdits" type="TabContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+tabs_visible = false
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
-layout_mode = 1
+layout_mode = 2
+scroll_offset = Vector2(0, -31)
 show_arrange_button = false
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
