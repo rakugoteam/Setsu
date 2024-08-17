@@ -34,7 +34,7 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 	var path = dialogue_name + ".json"
 	# no neeed for using "\\" inside godot project
 	dir_path = path.split("/")
-	dir_path.remove_at(len(dir_path)-1)
+	dir_path.remove_at(len(dir_path) - 1)
 	dir_path = "/".join(dir_path)
 	assert(FileAccess.file_exists(path), "Can't find dialogs file")
 	
@@ -44,8 +44,8 @@ func load_dialogue(dialogue_name, custom_start_point = -1):
 	assert(data.has("RootNodeID"), "Invalid json file, can't find 'RootNodeID'")
 	assert(data.has("ListNodes"), "Invalid json file, can't find 'ListNodes'")
 
-	var db : Dictionary
-	var db_file_path : String
+	var db: Dictionary
+	var db_file_path: String
 
 	if "DBFile" in data:
 		db_file_path = data["DBFile"] as String
@@ -127,17 +127,7 @@ func next():
 	
 func _process_node(node: Dictionary):
 	match node.get("$type"):
-		"NodeRoot":
-			next_id = node.get("NextID")
-			next()
-			return
-
-		"NodeBridgeIn":
-			next_id = node.get("NextID")
-			next()
-			return
-
-		"NodeBridgeOut":
+		"NodeRoot", "NodeBridgeIn", "NodeBridgeOut", "NodeReroute":
 			next_id = node.get("NextID")
 			next()
 			return

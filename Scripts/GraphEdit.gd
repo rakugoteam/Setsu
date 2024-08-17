@@ -76,6 +76,10 @@ func shortcut(key: InputEventKey):
 			var gn: GraphNode = control_node.add_node("EndPath")
 			try_connecting_from_selected(gn)
 		
+		KEY_R:
+			var gn: GraphNode = control_node.add_node("Reroute")
+			try_connecting_from_selected(gn)
+		
 		KEY_1:
 			var c: ChoiceNode = control_node.add_node("Choice")
 			c.options.clear()
@@ -183,7 +187,7 @@ func restore_node(nodes: Dictionary):
 	var nodes_id := removed_nodes.find(nodes)
 	removed_nodes.remove_at(nodes_id)
 
-func free_graphnode(nodes: Array[Node]):
+func free_graphnode(nodes: Array):
 	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
 	var nodes_to_remove := {}
@@ -209,7 +213,7 @@ func free_graphnode(nodes: Array[Node]):
 			removed_nodes.remove_at(0)
 			
 		nodes_to_remove[node] = connections
-		print("removed node: %s" % node.name)
+		# print("removed node: %s" % node.name)
 		node.hide()
 
 	removed_nodes.append(nodes_to_remove)
@@ -350,11 +354,18 @@ func _on_duplicate_nodes_request():
 		"BridgeIn", "BridgeOut":
 			copy_dict["NumberSelector"] = node_dict["NumberSelector"]
 		
+		"Reroute":
+			set_selected(copy)
+			return
+		
 		_:
-			await control_node.alert("You duplicate not supported node_type: %s" % node_dict["$type"])
+			await control_node.alert("You duplicate unsupported node_type: %s" % node_dict["$type"])
 
 	copy._from_dict(copy_dict)
 	set_selected(copy)
 
 func _on_visibility_changed():
 	if visible: grab_focus()
+
+func _on_connection_request(from_node, from_port, to_node, to_port):
+	connect_node(from_node, from_port, to_node, to_port)

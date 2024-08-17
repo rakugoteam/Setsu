@@ -25,6 +25,7 @@ const icon_finder_script := \
 @onready var action_node = preload("res://Objects/GraphNodes/ActionNode.tscn")
 @onready var comment_node = preload("res://Objects/GraphNodes/CommentNode.tscn")
 @onready var event_node = preload("res://Objects/GraphNodes/EventNode.tscn")
+@onready var reroute_node = preload("res://Objects/GraphNodes/RerouteNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
@@ -344,6 +345,8 @@ func load_project(path):
 				new_node = comment_node.instantiate()
 			"NodeEvent":
 				new_node = event_node.instantiate()
+			"NodeReroute":
+				new_node = reroute_node.instantiate()
 		
 		if not new_node: continue
 		new_node.id = node.get("ID")
@@ -356,7 +359,7 @@ func load_project(path):
 		
 		var current_node = get_node_by_id(node.get("ID"))
 		match node.get("$type"):
-			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
+			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent", "NodeReroute":
 				if node.get("NextID") is String:
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
@@ -469,6 +472,8 @@ func add_node(node_type) -> MonologueGraphNode:
 			node = bridge_in_node
 		"BridgeOut":
 			node = bridge_out_node
+		"Reroute":
+			node = reroute_node
 	
 	if not node: return null
 	node = node.instantiate()
