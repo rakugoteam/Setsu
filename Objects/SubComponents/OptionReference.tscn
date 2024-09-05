@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqivnwp0bw2ux"]
+[gd_scene load_steps=6 format=3 uid="uid://dqivnwp0bw2ux"]
 
 [ext_resource type="Script" path="res://Scripts/SubComponents/OptionReference.gd" id="1_me3e4"]
+[ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="2_eby50"]
+[ext_resource type="Resource" uid="uid://74bogqdd04tt" path="res://Test/Data/markdown_settings.tres" id="3_uf7kh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jqboc"]
 
@@ -31,10 +33,12 @@ clip_text = true
 text_overrun_behavior = 3
 max_lines_visible = 1
 
-[node name="SentencePreview" type="Label" parent="MainContainer/VBoxContainer"]
+[node name="SentencePreview" type="RichTextLabel" parent="MainContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-label_settings = SubResource("LabelSettings_xgf1c")
-clip_text = true
-text_overrun_behavior = 3
-max_lines_visible = 1
+bbcode_enabled = true
+text = "SentencePreview"
+fit_content = true
+script = ExtResource("2_eby50")
+_text = "SentencePreview"
+parser = ExtResource("3_uf7kh")

@@ -57,4 +57,4 @@ func _update(panel: SentenceNodePanel = null):
 		display_speaker_name = panel.display_speaker_name
 		display_variant = panel.display_variant
 	
-	text_label.text = sentence
+	text_label._text = sentence

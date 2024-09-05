@@ -1,14 +1,11 @@
 {
+	"EditorVersion": "2.2.1",
 	"RootNodeID": "32fc545f-bca4-406a-9e8a-11ee1a7382a3",
 	"ListNodes": [
 		{
 			"$type": "NodeRoot",
 			"ID": "32fc545f-bca4-406a-9e8a-11ee1a7382a3",
 			"NextID": "f98424bc-b56e-48a9-b4d5-d3043877d20f",
-			"Conditions": [],
-			"Actions": 0,
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": -1940,
 				"y": -280
@@ -21,10 +18,6 @@
 			"Target": 50,
 			"PassID": "a59443ae-6499-4319-8ca0-094692b1dc96",
 			"FailID": "6bc3dafd-9b05-41d9-b306-14617abe9e5b",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": -1500,
 				"y": -280
@@ -37,10 +30,6 @@
 			"Target": 50,
 			"PassID": "24e8496e-3aba-464e-bbc1-ff2fa5516b77",
 			"FailID": "4162714f-177b-4d39-8a49-b181cf86368e",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": -1060,
 				"y": -380
@@ -53,10 +42,7 @@
 			"Sentence": "You've woken up, fetched a bowl of cereal and watched as the cereal drowned, crushing and condemning its sisters in the milk you'd hastily poured, without thinking for a second about the consequences of your actions.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": -660,
 				"y": -380
@@ -69,10 +55,7 @@
 			"Sentence": "You have just exited the shop with your HDMI cable, while pedestrians pass by without noticing your presence. You are about to confront the social emptiness, despite the countless individuals dwelling in this city.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": -660,
 				"y": -580
@@ -85,10 +68,6 @@
 			"Target": 50,
 			"PassID": "4f243d47-30f9-4747-aa87-2fe6e829b374",
 			"FailID": "8428e6de-9dad-46af-a15a-c9f0ae76aa2a",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": -1060,
 				"y": -180
@@ -101,10 +80,7 @@
 			"Sentence": "You enter a reception area where everybody looks at you for what feels like the longest moment of your day.  You spot an unoccupied seat and move towards it. For the next fifteen seconds or so, you are the focus of everyone's attention, and then you fade into the background until your turn comes up in fifteen minutes.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": -660,
 				"y": -180
@@ -117,10 +93,7 @@
 			"Sentence": "Hello and welcome to what will be your umpteenth monologue. What would you like to talk about today?",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": -180,
 				"y": -300
@@ -143,10 +116,7 @@
 			"Sentence": "A God is merely a psychic and sometimes ideological representation of a current of thought that answers the unanswered questions of a population in need of answers.",
 			"SpeakerID": 1,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 1920,
 				"y": -60
@@ -159,10 +129,7 @@
 			"Sentence": "It's night and it's raining. You look out of your window and see countless drops in the city streets. You catch yourself looking at what's going on behind the windows just a few metres from you. You observe the pieces of history and life behind each one. You realise that, like them, you are insignificant. You end up looking at your reflection in the glass.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": -660,
 				"y": 100
@@ -205,10 +172,7 @@
 			"Sentence": "Indeed, Brutalism architecture is no longer perceived with the intention of its original architects.",
 			"SpeakerID": 2,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 1860,
 				"y": -480
@@ -232,10 +196,6 @@
 				"ca12aafa-607b-42a1-9072-787eeb4a969e",
 				"04cc81dd-9af6-49b7-9872-ed99eab8d46d"
 			],
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": 2380,
 				"y": -1200
@@ -247,11 +207,7 @@
 			"NextID": "a18206d0-67d8-4e57-8163-53bb40f6a915",
 			"Sentence": "That it's happening all the time",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -259,11 +215,7 @@
 			"NextID": "a18206d0-67d8-4e57-8163-53bb40f6a915",
 			"Sentence": "That there's nothing I can do about it",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -271,11 +223,7 @@
 			"NextID": "a18206d0-67d8-4e57-8163-53bb40f6a915",
 			"Sentence": "Both.",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeSentence",
@@ -284,10 +232,7 @@
 			"Sentence": "You dream of being able to think of nothing and not having me in your head.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 2800,
 				"y": -1140
@@ -300,10 +245,7 @@
 			"Sentence": "And I'm you",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 3720,
 				"y": -1140
@@ -316,10 +258,7 @@
 			"Sentence": "But you're nothing without me",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 3260,
 				"y": -1140
@@ -332,10 +271,7 @@
 			"Sentence": "Do you love yourself ?",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 4220,
 				"y": -1140
@@ -349,10 +285,6 @@
 				"7eb2e1b0-e984-4ab5-afce-5a88bfe1342b",
 				"6afcee40-4acd-4419-9513-90b3cc3e9dc9"
 			],
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": 4740,
 				"y": -1140
@@ -364,11 +296,7 @@
 			"NextID": "ae6f026b-7a00-4b34-8953-cc17e8cf5cd6",
 			"Sentence": "Yes",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -376,11 +304,7 @@
 			"NextID": "dffc5255-1319-46a5-abf0-29ae3abd3c9b",
 			"Sentence": "No",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -388,11 +312,7 @@
 			"NextID": "41505393-3373-4f47-805f-82405ef20af5",
 			"Sentence": "I don't know",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeSentence",
@@ -401,10 +321,7 @@
 			"Sentence": "No wonder you're creating someone like me who you don't like either.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 5200,
 				"y": -1060
@@ -417,10 +334,7 @@
 			"Sentence": "You don't love me, but you love yourself and I am you. This is just the beginning of the contradictions",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 5200,
 				"y": -1220
@@ -433,10 +347,7 @@
 			"Sentence": "Now I understand why you let it happen. And you're right, there's nothing you can do about it. Continuing to know nothing and do nothing is perfectly fine",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 5200,
 				"y": -920
@@ -449,10 +360,7 @@
 			"Sentence": "Besides, that girl you saw, did she love you? Just because she looked at you doesn't mean she's interested in you",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 5860,
 				"y": -1060
@@ -461,9 +369,7 @@
 		{
 			"$type": "NodeEndPath",
 			"ID": "bbe8af1c-8ac3-49c2-840b-3f6bd2a7045a",
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"NextStoryName": "",
 			"EditorPosition": {
 				"x": 2420,
 				"y": -80
@@ -472,9 +378,7 @@
 		{
 			"$type": "NodeEndPath",
 			"ID": "f20042d7-d6d6-4769-b05d-60840b983bfc",
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"NextStoryName": "",
 			"EditorPosition": {
 				"x": 9180,
 				"y": -1080
@@ -487,10 +391,7 @@
 			"Sentence": "You keep hurting yourself. You're the narrator and I am you. You don't seem to realise that I am what you think. Ip fed u and yet I can't stop thinking",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 6320,
 				"y": -1060
@@ -503,10 +404,7 @@
 			"Sentence": "I think I'm evil, and that says a lot about how you see yourself.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 6800,
 				"y": -1040
@@ -519,10 +417,7 @@
 			"Sentence": "What a good choice of subject to talk about you, I want to get mad at you but you can't",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 7280,
 				"y": -1040
@@ -535,10 +430,7 @@
 			"Sentence": "There's nothing you can do, and you've known that for a long time. So why I look for a way out",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 7740,
 				"y": -1040
@@ -551,10 +443,7 @@
 			"Sentence": "Is this happening to other people? Am I alone in this situation? Will it ever stop? Is it bad? Am I schizophrenic? Where does it come from?",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 8200,
 				"y": -1060
@@ -567,10 +456,7 @@
 			"Sentence": "I look lonely. You and my monologue.",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 8680,
 				"y": -1040
@@ -585,10 +471,6 @@
 				"c895d820-b13e-4ca1-8992-942d7cb6fd28",
 				"1ef5f858-947a-4d1c-9c06-95252a7ac758"
 			],
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": 280,
 				"y": -300
@@ -600,11 +482,7 @@
 			"NextID": "7138145c-c843-45d9-a775-581f0b08e6af",
 			"Sentence": "I'd like to stop thinking, I've come to hate you",
 			"Enable": true,
-			"OneShot": true,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": true
 		},
 		{
 			"$type": "NodeOption",
@@ -612,11 +490,7 @@
 			"NextID": "82529eb7-6f35-4f21-b09c-8438eb98ff1c",
 			"Sentence": "I saw this guy talking about Brutalism on a YouTube video",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -624,11 +498,7 @@
 			"NextID": "b479750f-6848-4f7f-8e9f-c04e28b9f62e",
 			"Sentence": "Is science a religion?",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -636,11 +506,7 @@
 			"NextID": "ae6854af-c20c-4c07-95de-4894f7bd4177",
 			"Sentence": "don't know",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeSentence",
@@ -649,10 +515,7 @@
 			"Sentence": "As you like, it's a very good topic after all. What annoys you the most? That it happens all the time or that you can't stop it?",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 1860,
 				"y": -1200
@@ -665,10 +528,7 @@
 			"Sentence": "Are you sure ? You know how it is to spend the last time",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 940,
 				"y": -1140
@@ -691,10 +551,6 @@
 				"9e382382-9cde-4906-aea4-fa994b1607a8",
 				"f865d697-2344-4c39-944e-c48e72d54af1"
 			],
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
 			"EditorPosition": {
 				"x": 1460,
 				"y": -1180
@@ -706,11 +562,7 @@
 			"NextID": "37cceeb8-a98b-443a-b6d4-38a3e2425664",
 			"Sentence": "Yes",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeOption",
@@ -718,11 +570,7 @@
 			"NextID": "f44a790a-517f-4cad-a345-57e377d8ac5c",
 			"Sentence": "Maybe not actually",
 			"Enable": true,
-			"OneShot": false,
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": []
+			"OneShot": false
 		},
 		{
 			"$type": "NodeSentence",
@@ -731,10 +579,7 @@
 			"Sentence": "You did the right thing before it was too late",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 1860,
 				"y": -980
@@ -747,10 +592,7 @@
 			"Sentence": "What do you want to talk about instead?",
 			"SpeakerID": 0,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 2360,
 				"y": -880
@@ -783,10 +625,7 @@
 			"Sentence": "People no longer see it as it should be: an architectural movement with utopian intentions that cares about people.",
 			"SpeakerID": 2,
 			"DisplaySpeakerName": "",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 2320,
 				"y": -480
@@ -799,10 +638,7 @@
 			"Sentence": "People only want what's beautiful, not what's useful or effective. It has to be low-level aesthetics to please, they have no critical sense and can't love any more.",
 			"SpeakerID": 2,
 			"DisplaySpeakerName": "The Angry Architect",
-			"Conditions": [],
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"DisplayVariant": "",
 			"EditorPosition": {
 				"x": 2780,
 				"y": -500
@@ -831,9 +667,7 @@
 		{
 			"$type": "NodeEndPath",
 			"ID": "9ee97187-09d8-4a4c-be85-7cbc11393bf3",
-			"Actions": [],
-			"Flags": [],
-			"CustomProperties": [],
+			"NextStoryName": "",
 			"EditorPosition": {
 				"x": 1840,
 				"y": 360

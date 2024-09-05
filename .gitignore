@@ -14,6 +14,7 @@ data_*/
 mono_crash.*.json
 addons/ColorPreview/
 addons/script-ide
+addons/open_external_editor
 
 # Exports
 *.pck
