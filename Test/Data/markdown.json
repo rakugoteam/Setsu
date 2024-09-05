@@ -1,0 +1,29 @@
+{
+	"EditorVersion": "2.2.1",
+	"RootNodeID": "4f0f437e-c0cd-43ba-9b28-08a4e46d0902",
+	"ListNodes": [
+		{
+			"$type": "NodeSentence",
+			"ID": "885365cd-1b44-4adc-91af-1b85d964d9a3",
+			"NextID": -1,
+			"Sentence": "# Tytuł\n## Nagłówek 1\n### Nagłówek 2\n**gruby**\n*kursywa*\n@u{podkeślenie}\n~~przekeślenie~~\n@>center<@\n@>na prawo>@\n@<wyjustowanie, którego istnienia nie trawię>@\n@|wcięcie|@\n[link](jakiś://tam_address)\n@color=red{czerwony}\n@table=2\n{\n|można|nawet|mieć|tablekę|\n}\n- lista\n- punktów\n1. numerowa\n2. lista\n@wave amp=50 freq=2{ text }\n@tornado radius=5 freq=2{ text }\n@shake rate=5 level=10{ text }\n@rainbow freq=0.2 sat=10 val=20{ text }\n@[podpowiedź](podopowiedź)\n![](res://icon.png)\n:sunglasses:",
+			"SpeakerID": 0,
+			"DisplaySpeakerName": "",
+			"DisplayVariant": "",
+			"EditorPosition": {
+				"x": 540,
+				"y": 0
+			}
+		},
+		{
+			"$type": "NodeRoot",
+			"ID": "4f0f437e-c0cd-43ba-9b28-08a4e46d0902",
+			"NextID": "885365cd-1b44-4adc-91af-1b85d964d9a3",
+			"EditorPosition": {
+				"x": 40,
+				"y": 0
+			}
+		}
+	],
+	"DBFile": "md_db.json"
+}

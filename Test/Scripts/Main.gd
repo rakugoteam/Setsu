@@ -21,6 +21,7 @@ extends MonologueProcess
 var _from_node_id = null
 
 var is_completed: bool = true
+@export var dump := "this is a workaround, don't remove it!"
 
 func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
@@ -131,12 +132,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 
 
 func _instantiate_option(option):
-	# var new_option : Button = option_button.instantiate()
 	var new_option : AdvancedTextButton = option_button.instantiate()
-	# new_option.fit_content = true
-	# new_option.scroll_active = false
-	# new_option.shortcut_keys_enabled = false
-	# new_option.parser = markup
 	new_option.text = option.get("Sentence")
 	new_option.connect("pressed", option_selected.bind(option))
 	return new_option

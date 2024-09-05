@@ -1,20 +1,26 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
 
 class_name RootNodePanel
-
 extends VBoxContainer
 
+var file_dialog : FileDialog
 
-@onready var character_node = preload("res://Objects/SubComponents/Character.tscn")
-@onready var characters_container = $CharactersMainContainer/CharactersContainer
+@onready
+var line_edit_db := $DataBaseContainer/LineEditDB
 
-@onready var variable_node = preload("res://Objects/SubComponents/Variable.tscn")
-@onready var variables_container = $VariablesMainContainer/VariablesContainer
+@onready
+var character_node = preload("res://Objects/SubComponents/Character.tscn")
+@onready
+var characters_container = $CharactersMainContainer/CharactersContainer
+
+@onready
+var variable_node = preload("res://Objects/SubComponents/Variable.tscn")
+@onready
+var variables_container = $VariablesMainContainer/VariablesContainer
 
 var graph_node
-
 var id = ""
-
+var db_file = ""
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
@@ -22,10 +28,11 @@ func _ready():
 	
 	for variable in graph_node.get_parent().variables:
 		add_variable(true, variable)
+	
+	line_edit_db.text = graph_node.get_parent().db_file_path
 
 func _from_dict(dict):
 	id = dict.get("ID")
-
 
 func add_character(reference: String = ""):
 	var new_node = character_node.instantiate()
@@ -41,7 +48,7 @@ func add_character(reference: String = ""):
 	
 	update_speakers()
 
- 
+
 func add_variable(init: bool = false, dict: Dictionary = {}):
 	var new_node = variable_node.instantiate()
 	new_node.update_callback = update_variables
@@ -97,3 +104,39 @@ func update_variables():
 		updated_variables.append(child._to_dict())
 		
 	graph_node.get_parent().variables = updated_variables
+
+func _on_save_db_pressed():
+	file_dialog = $FileDialogSave
+	if OS.get_name().to_lower() == "web":
+		file_dialog.access = FileDialog.ACCESS_USERDATA
+	file_dialog.popup_centered()
+
+func _on_load_db_pressed():
+	file_dialog = $FileDialogOpen
+	file_dialog.popup_centered()
+
+func _on_file_dialog_file_selected(path):
+	match file_dialog.mode:
+		FileDialog.FILE_MODE_SAVE_FILE:
+			graph_node.get_parent().save_db(path)
+			
+		
+		FileDialog.FILE_MODE_OPEN_FILE:
+			graph_node.get_parent().load_db(path)
+			for ch in characters_container.get_children():
+				ch.queue_free()
+			
+			for ch in variables_container.get_children():
+				ch.queue_free()
+			
+			for character in graph_node.get_parent().speakers:
+				add_character(character.get("Reference"))
+			
+			for variable in graph_node.get_parent().variables:
+				add_variable(true, variable)
+			
+		
+	line_edit_db.text = graph_node.get_parent().db_file_path
+
+func _on_line_edit_db_text_submitted(new_text):
+	graph_node.get_parent().load_db(new_text)
