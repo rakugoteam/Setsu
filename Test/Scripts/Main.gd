@@ -21,7 +21,14 @@ extends MonologueProcess
 var _from_node_id = null
 
 var is_completed: bool = true
-@export var dump := "this is a workaround, don't remove it!"
+
+var char_assets := [
+	preload("res://Test/Assets/AlbertoMielgo01.png"),
+	preload("res://Test/Assets/AlbertoMielgo02.png"),
+	preload("res://Test/Assets/AlbertoMielgo03.png"),
+	preload("res://Test/Assets/AlbertoMielgo04.png"),
+	preload("res://Test/Assets/AlbertoMielgo05.png"),
+]
 
 func _ready():
 	var global_vars = get_node("/root/GlobalVariables")
@@ -45,27 +52,8 @@ func _handle_scrollbar_changed():
 	sp_scroll_container.scroll_vertical = int(sp_scrollbar.max_value)
 
 func get_character_asset(character: String, _variant = null):
-	if character.begins_with("_"):
-		return
-		
-	rng.seed = hash(character)
-	var rng_nbr = rng.randi_range(0, 5)
-	match  rng_nbr:
-		0:
-			return
-		1:
-			return preload("res://Test/Assets/AlbertoMielgo01.png")
-		2:
-			return preload("res://Test/Assets/AlbertoMielgo02.png")
-		3:
-			return preload("res://Test/Assets/AlbertoMielgo03.png")
-		4:
-			return preload("res://Test/Assets/AlbertoMielgo04.png")
-		5:
-			return preload("res://Test/Assets/AlbertoMielgo05.png")
-	
-	return
-
+	if character.begins_with("_"): return
+	return char_assets.pick_random()
 
 func _on_monologue_end(raw_end):
 	if not raw_end or not raw_end.get("NextStoryName"):
@@ -107,7 +95,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		if not character_container.visible:
 			character_container.position.x = -character_container.size.x
 			character_container.show()
-			character_container._texture = char_asset
+			character_container.texture = char_asset
 			get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
 	else:
 		character_container.position.x = 50
@@ -132,7 +120,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 
 
 func _instantiate_option(option):
-	var new_option : AdvancedTextButton = option_button.instantiate()
+	var new_option: AdvancedTextButton = option_button.instantiate()
 	new_option.text = option.get("Sentence")
 	new_option.connect("pressed", option_selected.bind(option))
 	return new_option

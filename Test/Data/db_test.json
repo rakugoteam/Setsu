@@ -7,21 +7,8 @@
 			"ID": "a5070226-8319-43b5-bb76-b911ac4e07e5",
 			"NextStoryName": "",
 			"EditorPosition": {
-				"x": 1188.90063476562,
-				"y": 97.8806915283203
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
-			"NextID": "a5070226-8319-43b5-bb76-b911ac4e07e5",
-			"Sentence": "Test zewnątrznej bazy",
-			"SpeakerID": 1,
-			"DisplaySpeakerName": "Ziomek",
-			"DisplayVariant": "Ziom",
-			"EditorPosition": {
-				"x": 618.584411621094,
-				"y": 81.9437103271484
+				"x": 2640,
+				"y": 320
 			}
 		},
 		{
@@ -31,6 +18,39 @@
 			"EditorPosition": {
 				"x": 0,
 				"y": 40
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
+			"Sentence": "test globlanych nazw charakterów",
+			"SpeakerID": 2,
+			"EditorPosition": {
+				"x": 1220,
+				"y": 100
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
+			"NextID": "a5070226-8319-43b5-bb76-b911ac4e07e5",
+			"Sentence": "pauza",
+			"SpeakerID": 0,
+			"EditorPosition": {
+				"x": 1940,
+				"y": 20
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
+			"NextID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"Sentence": "Test zewnątrznej bazy",
+			"SpeakerID": 1,
+			"EditorPosition": {
+				"x": 660,
+				"y": 100
 			}
 		}
 	],
