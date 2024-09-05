@@ -1,7 +1,5 @@
 @icon("res://Assets/Icons/NodesIcons/Condition.svg")
-
 class_name ConditionNode
-
 extends MonologueGraphNode
 
 
@@ -13,8 +11,10 @@ var variable_name: String = ""
 var operator: String = ""
 var value = null
 
+func _get_node_type() -> StringName:
+	return &"NodeCondition"
+
 func _ready():
-	node_type = "NodeCondition"
 	title = node_type
 
 func _to_dict() -> Dictionary:
@@ -32,7 +32,6 @@ func _to_dict() -> Dictionary:
 			"y": position_offset.y
 		}
 	}
-
 
 func _from_dict(dict: Dictionary):
 	id = dict.get("ID")
@@ -52,14 +51,12 @@ func _from_dict(dict: Dictionary):
 	
 	_update()
 
-
 func _condtion_to_dict() -> Dictionary:
 	return {
 		"Variable": variable_name,
 		"Operator": operator,
 		"Value": value
 	}
-
 
 func _update(panel: ConditionNodePanel = null):
 	if panel != null:
@@ -71,7 +68,6 @@ func _update(panel: ConditionNodePanel = null):
 	variable_label.text = variable_name
 	operator_label.text = operator
 	value_label.text = str(value)
-
 
 func _on_close_request():
 	queue_free()

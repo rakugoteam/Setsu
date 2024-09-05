@@ -62,7 +62,7 @@
 		{
 			"$type": "NodeOption",
 			"ID": "01c26f73-2770-451e-b880-2faa8cdfe1ee",
-			"NextID": -1,
+			"NextID": "435e62c3-2eec-43e3-b90e-7f3302cb7cab",
 			"Sentence": "xx",
 			"Enable": true,
 			"OneShot": false
@@ -82,6 +82,15 @@
 			"Sentence": "zz",
 			"Enable": true,
 			"OneShot": false
+		},
+		{
+			"$type": "NodeReroute",
+			"ID": "435e62c3-2eec-43e3-b90e-7f3302cb7cab",
+			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
+			"EditorPosition": {
+				"x": 1560,
+				"y": -60
+			}
 		}
 	],
 	"DBFile": "db.json"

@@ -25,3 +25,6 @@ func _on_action_selector_pressed():
 
 func _on_end_path_selector_pressed():
 	control_node.add_node("EndPath")
+
+func _on_reroute_selector_pressed():
+	control_node.add_node("Reroute")

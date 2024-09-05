@@ -1,18 +1,16 @@
 @icon("res://Assets/Icons/NodesIcons/DiceRoll.svg")
-
 class_name DiceRollNode
-
 extends MonologueGraphNode
-
 
 @onready var pass_value = $PassContainer/PassValue
 @onready var fail_value = $FailContainer/FailValue
 
 var target_number = 0
 
+func _get_node_type() -> StringName:
+	return &"NodeDiceRoll"
 
 func _ready():
-	node_type = "NodeDiceRoll"
 	title = node_type
 
 

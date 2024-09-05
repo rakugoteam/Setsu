@@ -7,7 +7,10 @@ const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
 
 @onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
 
-var options = []
+var options := []
+
+func _get_node_type() -> StringName:
+	return &"NodeChoice"
 
 func _ready():
 	node_type = "NodeChoice"

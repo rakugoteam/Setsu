@@ -1,23 +1,22 @@
 extends GraphEdit
 
+@onready
+var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
 
-@onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
-
-@onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
+@onready
+var option_ref = preload("res://Objects/SubComponents/OptionReference.tscn")
 
 var file_path: String
 var db_file_path: String
+var data: Dictionary
 
+var control_node
 var speakers = []
 var variables = []
 var mouse_pressed = false
 var selection_mode = false
 var selected_nodes: Array[Node] = []
 var removed_nodes: Array[Dictionary] = []
-
-var data: Dictionary
-
-var control_node
 
 func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 	var connections := []
@@ -31,13 +30,14 @@ func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
 
 func _gui_input(event):
 	if event is InputEventKey:
-		var key := event as InputEventKey
-		if key.is_pressed():
-			if key.ctrl_pressed and key.key_label == KEY_Z:
-				if removed_nodes: restore_node(removed_nodes.back())
-				return
+		if not event.is_pressed(): return
+		if event.ctrl_pressed:
+			match event.key_label:
+				KEY_Z: if removed_nodes: restore_node(removed_nodes.back())
+				KEY_F: control_node.get_node("SearchDialog").popup_centered()
+			return
 
-			shortcut(event)
+		shortcut(event)
 
 func shortcut(key: InputEventKey):
 	if true in [
@@ -76,6 +76,10 @@ func shortcut(key: InputEventKey):
 			var gn: GraphNode = control_node.add_node("EndPath")
 			try_connecting_from_selected(gn)
 		
+		KEY_R:
+			var gn: GraphNode = control_node.add_node("Reroute")
+			try_connecting_from_selected(gn)
+		
 		KEY_1:
 			var c: ChoiceNode = control_node.add_node("Choice")
 			c.options.clear()
@@ -84,7 +88,6 @@ func shortcut(key: InputEventKey):
 
 		KEY_V: control_node.add_node("Event")
 		KEY_SLASH: control_node.add_node("Comment")
-		
 
 func try_connecting_from_selected(node: GraphNode):
 	if selected_nodes.size() != 1: return
@@ -184,7 +187,7 @@ func restore_node(nodes: Dictionary):
 	var nodes_id := removed_nodes.find(nodes)
 	removed_nodes.remove_at(nodes_id)
 
-func free_graphnode(nodes: Array[Node]):
+func free_graphnode(nodes: Array):
 	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
 	var nodes_to_remove := {}
@@ -210,7 +213,7 @@ func free_graphnode(nodes: Array[Node]):
 			removed_nodes.remove_at(0)
 			
 		nodes_to_remove[node] = connections
-		print("removed node: %s" % node.name)
+		# print("removed node: %s" % node.name)
 		node.hide()
 
 	removed_nodes.append(nodes_to_remove)
@@ -315,8 +318,8 @@ func _on_duplicate_nodes_request():
 			
 			var options := []
 			for op in choice_node.get_children():
-				var option_ref := op as OptionReference
-				options.append(option_ref.sentence)
+				var option := op as OptionReference
+				options.append(option.sentence)
 
 			choice_copy.options.clear()
 			choice_copy.gen_options(options)
@@ -351,8 +354,18 @@ func _on_duplicate_nodes_request():
 		"BridgeIn", "BridgeOut":
 			copy_dict["NumberSelector"] = node_dict["NumberSelector"]
 		
+		"Reroute":
+			set_selected(copy)
+			return
+		
 		_:
-			await control_node.alert("You duplicate not supported node_type: %s" % node_dict["$type"])
+			await control_node.alert("You duplicate unsupported node_type: %s" % node_dict["$type"])
 
 	copy._from_dict(copy_dict)
 	set_selected(copy)
+
+func _on_visibility_changed():
+	if visible: grab_focus()
+
+func _on_connection_request(from_node, from_port, to_node, to_port):
+	connect_node(from_node, from_port, to_node, to_port)

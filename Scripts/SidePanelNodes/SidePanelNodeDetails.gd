@@ -52,7 +52,9 @@ func on_graph_node_selected(node):
 		"NodeEvent":
 			new_panel = condition_node_panel_instance.instantiate()
 	
-	if new_panel == null: return
+	if new_panel == null:
+		hide()
+		return
 	
 	clear_current_panel()
 	

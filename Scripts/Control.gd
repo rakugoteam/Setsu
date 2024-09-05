@@ -5,6 +5,7 @@ var dialog = {}
 var dialog_for_localisation = []
 var emoji_finder: Window
 var icon_search: Window
+var file_menu := false
 
 const HISTORY_FILE_PATH: String = "user://history.save"
 const emoji_finder_path := \
@@ -24,12 +25,13 @@ const icon_finder_script := \
 @onready var action_node = preload("res://Objects/GraphNodes/ActionNode.tscn")
 @onready var comment_node = preload("res://Objects/GraphNodes/CommentNode.tscn")
 @onready var event_node = preload("res://Objects/GraphNodes/EventNode.tscn")
+@onready var reroute_node = preload("res://Objects/GraphNodes/RerouteNode.tscn")
 @onready var option_panel = preload("res://Objects/SubComponents/OptionNode.tscn")
 
 @onready var recent_file_button = preload("res://Objects/SubComponents/RecentFileButton.tscn")
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
-@onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
+@onready var graph_edits: TabContainer = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
 @onready var side_panel_node := $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
 @onready var saved_notification := $MarginContainer/MainContainer/Header/SavedNotification
 @onready var graph_node_selecter := $GraphNodeSelecter
@@ -58,7 +60,6 @@ var picker_mode: bool = false
 var picker_from_node
 var picker_from_port
 var picker_position
-
 
 func _ready():
 	var new_root_node = root_node.instantiate()
@@ -344,21 +345,21 @@ func load_project(path):
 				new_node = comment_node.instantiate()
 			"NodeEvent":
 				new_node = event_node.instantiate()
+			"NodeReroute":
+				new_node = reroute_node.instantiate()
 		
-		if not new_node:
-			continue
+		if not new_node: continue
 		new_node.id = node.get("ID")
 		
 		graph_edit.add_child(new_node)
 		new_node._from_dict(node)
 	
 	for node in node_list:
-		if not node.has("ID"):
-			continue
+		if not node.has("ID"): continue
 		
 		var current_node = get_node_by_id(node.get("ID"))
 		match node.get("$type"):
-			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent":
+			"NodeRoot", "NodeSentence", "NodeBridgeOut", "NodeAction", "NodeEvent", "NodeReroute":
 				if node.get("NextID") is String:
 					var next_node = get_node_by_id(node.get("NextID"))
 					graph_edit.connect_node(current_node.name, 0, next_node.name, 0)
@@ -381,8 +382,8 @@ func load_project(path):
 					var else_node = get_node_by_id(node.get("ElseNextID"))
 					graph_edit.connect_node(current_node.name, 1, else_node.name, 0)
 		
-		if not current_node: # OptionNode
-			continue
+		# if OptionNode
+		if not current_node: continue
 		
 		if node.has("EditorPosition"):
 			current_node.position_offset.x = node.EditorPosition.get("x")
@@ -399,8 +400,7 @@ func load_project(path):
 	
 func get_node_by_id(id):
 	for node in get_graph_nodes():
-		if node.id == id:
-			return node
+		if node.id == id: return node
 	return null
 	
 func get_options_nodes(options_id):
@@ -423,7 +423,10 @@ func center_node_in_graph_edit(node):
 		disable_picker_mode()
 		return
 	
-	node.position_offset = ((graph_edit.size / 2) + graph_edit.scroll_offset) / graph_edit.zoom
+	node.position_offset = (
+		(graph_edit.size / 2)
+		+ graph_edit.scroll_offset
+		) / graph_edit.zoom
 
 func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
@@ -469,6 +472,8 @@ func add_node(node_type) -> MonologueGraphNode:
 			node = bridge_in_node
 		"BridgeOut":
 			node = bridge_out_node
+		"Reroute":
+			node = reroute_node
 	
 	if not node: return null
 	node = node.instantiate()
@@ -477,7 +482,7 @@ func add_node(node_type) -> MonologueGraphNode:
 	return node
 	
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
-	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
+	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size():
 		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)
 
 func _on_graph_edit_disconnection_request(from, from_slot, to, to_slot):
@@ -534,40 +539,35 @@ func _on_graph_edit_connection_to_empty(from_node, from_port, _release_position)
 	
 	picker_from_node = from_node
 	picker_from_port = from_port
-	picker_position = (get_local_mouse_position() + get_current_graph_edit().scroll_offset) / get_current_graph_edit().zoom
+	picker_position = (
+		get_local_mouse_position()
+		+ get_current_graph_edit().scroll_offset
+		) / get_current_graph_edit().zoom
 	
 	picker_mode = true
 	$NoInteractions.show()
-
 
 func disable_picker_mode():
 	graph_node_selecter.hide()
 	picker_mode = false
 	$NoInteractions.hide()
 
-
 func _on_graph_node_selecter_focus_exited():
 	disable_picker_mode()
-
 
 func _on_graph_node_selecter_close_requested():
 	disable_picker_mode()
 
-
-func tab_changed(_idx):
+func tab_changed(idx):
 	side_panel_node.hide()
 	if get_current_tab_name() != "+":
-		for ge in graph_edits.get_children():
-			ge.visible = graph_edits.get_child(
-				tab_bar.current_tab) == ge
-			
+		graph_edits.current_tab = idx
 		return
 	
 	new_graph_edit()
 	cancel_file_btn.show()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
-
 
 func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("connection_to_empty", _on_graph_edit_connection_to_empty)
@@ -576,13 +576,10 @@ func connect_graph_edit_signal(graph_edit: GraphEdit) -> void:
 	graph_edit.connect("node_selected", side_panel_node.on_graph_node_selected)
 	graph_edit.connect("node_deselected", side_panel_node.on_graph_node_deselected)
 
-
 func tab_close_pressed(tab):
 	graph_edits.get_child(tab).queue_free()
 	tab_bar.remove_tab(tab)
 	tab_changed(tab)
-
-var file_menu := false
 
 func _on_file_id_pressed(id):
 	file_menu = true
@@ -620,7 +617,6 @@ func new_graph_edit():
 	for ge in graph_edits.get_children():
 		ge.visible = ge == graph_edit
 
-
 func _on_new_file_btn_pressed():
 	$WelcomeWindow.hide()
 	var new_file_path = await new_file_select()
@@ -629,7 +625,6 @@ func _on_new_file_btn_pressed():
 		return
 		
 	return await file_selected(new_file_path, 0)
-
 
 func _on_open_file_btn_pressed():
 	$WelcomeWindow.hide()
@@ -640,14 +635,12 @@ func _on_open_file_btn_pressed():
 		
 	return await file_selected(new_file_path, 1)
 
-
 func _on_help_id_pressed(id):
 	match id:
 		0:
 			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")
 		1:
 			OS.shell_open("https://rakugoteam.github.io/advanced-text-docs/2.0/Markdown/")
-
 
 func _on_file_dialog_canceled():
 	if file_menu:
