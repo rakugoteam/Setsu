@@ -2,14 +2,17 @@
 	"Characters": [
 		{
 			"Reference": "_NARRATOR",
+			"DisplaySpeakerName": "",
 			"ID": 0
 		},
 		{
 			"Reference": "TestChar",
+			"DisplaySpeakerName": "test",
 			"ID": 1
 		},
 		{
 			"Reference": "TesCharCs",
+			"DisplaySpeakerName": "cs",
 			"ID": 2
 		}
 	],
