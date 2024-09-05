@@ -1,12 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cm2caiiwpfydd"]
+[gd_scene load_steps=4 format=3 uid="uid://cm2caiiwpfydd"]
 
 [ext_resource type="FontFile" uid="uid://sx7iusrmfmsg" path="res://Test/Font/VCREAS 3.0.ttf" id="1_nj665"]
+[ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="2_f7sxj"]
+[ext_resource type="Resource" uid="uid://74bogqdd04tt" path="res://Test/Data/markdown_settings.tres" id="3_ipeq2"]
 
 [node name="TextLabel" type="RichTextLabel"]
 texture_filter = 1
 offset_right = 674.0
-theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("1_nj665")
 bbcode_enabled = true
 fit_content = true
 scroll_following = true
+script = ExtResource("2_f7sxj")
+parser = ExtResource("3_ipeq2")
