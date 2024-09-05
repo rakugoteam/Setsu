@@ -62,7 +62,7 @@
 		{
 			"$type": "NodeOption",
 			"ID": "01c26f73-2770-451e-b880-2faa8cdfe1ee",
-			"NextID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"NextID": -1,
 			"Sentence": "xx",
 			"Enable": true,
 			"OneShot": false
@@ -82,17 +82,6 @@
 			"Sentence": "zz",
 			"Enable": true,
 			"OneShot": false
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
-			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
-			"Sentence": "test globlanych nazw charakterów",
-			"SpeakerID": 2,
-			"EditorPosition": {
-				"x": 1440,
-				"y": 40
-			}
 		}
 	],
 	"DBFile": "db.json"

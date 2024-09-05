@@ -10,4 +10,5 @@ func _ready():
 		uplaod_btn.queue_free()
 
 func _on_control_resized():
-	move_to_center()
+	if is_node_ready():
+		move_to_center()

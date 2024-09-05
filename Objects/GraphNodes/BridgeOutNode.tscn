@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c75iblt2kuvr2"]
+[gd_scene load_steps=6 format=3 uid="uid://c75iblt2kuvr2"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/BridgeOutNode.gd" id="1_6kxjr"]
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_fu8e6"]
@@ -15,6 +15,19 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m6gpm"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.827451, 0.631373, 0.333333, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
 [node name="BridgeOutNode" type="GraphNode"]
 offset_right = 160.0
 offset_bottom = 108.0
@@ -22,6 +35,7 @@ scale = Vector2(0.6, 0.6)
 mouse_filter = 1
 mouse_default_cursor_shape = 6
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_j1huj")
+theme_override_styles/titlebar_selected = SubResource("StyleBoxFlat_m6gpm")
 title = "BridgeOut"
 slot/0/left_enabled = false
 slot/0/left_type = 0

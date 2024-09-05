@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=54 format=3 uid="uid://bcibt73qths3v"]
+[gd_resource type="Theme" load_steps=55 format=3 uid="uid://bcibt73qths3v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jduyo"]
 content_margin_left = 5.0
@@ -266,6 +266,15 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfvhr"]
+bg_color = Color(0.180392, 0.180392, 0.180392, 1)
+border_width_left = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3jjh"]
 bg_color = Color(1, 1, 1, 0.0392157)
@@ -656,6 +665,7 @@ FlatMenuButton/styles/disabled = SubResource("StyleBoxEmpty_65mu5")
 FlatMenuButton/styles/hover = SubResource("StyleBoxFlat_a4v87")
 FlatMenuButton/styles/normal = SubResource("StyleBoxFlat_sxnkh")
 FlatMenuButton/styles/pressed = SubResource("StyleBoxFlat_fkpl4")
+GraphNode/styles/panel_selected = SubResource("StyleBoxFlat_pfvhr")
 HBoxContainer/constants/separation = 2
 HSplitContainer/constants/autohide = 1
 HSplitContainer/constants/minimum_grab_thickness = 6
