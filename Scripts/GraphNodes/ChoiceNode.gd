@@ -84,7 +84,7 @@ func _update(panel: ChoiceNodePanel = null):
 		new_ref._from_dict(option)
 		
 		add_child(new_ref)
-		new_ref.sentence_preview.text = option.get("Sentence")
+		new_ref.sentence_preview._text = option.get("Sentence")
 		
 		var is_first = get_child_count() <= 1
 		set_slot(get_child_count() - 1, is_first, 0, Color("ffffff"), true, 0, Color("ffffff"), arrow_texture01, arrow_texture02, false)

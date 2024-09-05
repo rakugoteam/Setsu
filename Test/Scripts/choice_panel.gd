@@ -2,10 +2,9 @@ extends VBoxContainer
 
 var option_button_instance = preload("res://Test/Objects/option_button.tscn")
 
-
 func add_button(text, callback: Callable):
-	var new_button: Button = option_button_instance.instantiate()
-	new_button.text = text
+	var new_button: AdvancedTextButton = option_button_instance.instantiate()
+	new_button._text = text
 	new_button.tooltip_text = text
 	
 	new_button.pressed.connect(callback)

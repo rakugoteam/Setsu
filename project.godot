@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Monologue"
-config/version="2.2.1"
+config/name="Setsu"
+config/version="1.0"
 run/main_scene="res://Scenes/App.tscn"
 config/features=PackedStringArray("4.2")
 run/low_processor_mode=true
@@ -26,6 +26,9 @@ uuid="*res://Scripts/Global/UUID.gd"
 Util="*res://Scripts/Global/Util.gd"
 GlobalVariables="*res://Scripts/Global/GlobalVariables.gd"
 SfxLoader="*res://Test/Scripts/SfxLoader.gd"
+AdvancedText="*res://addons/advanced-text/AdvancedText.gd"
+MaterialIconsDB="*res://addons/material-design-icons/icons/icons.gd"
+EmojisDB="*res://addons/emojis-for-godot/emojis/emojis.gd"
 
 [display]
 
@@ -36,7 +39,7 @@ window/size/fullscreen=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Todo_Manager/plugin.cfg")
+enabled=PackedStringArray("res://addons/advanced-text/plugin.cfg", "res://addons/emojis-for-godot/plugin.cfg", "res://addons/material-design-icons/plugin.cfg")
 
 [file_customization]
 

@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cifg2nritn8t6"]
+[gd_scene load_steps=8 format=3 uid="uid://cifg2nritn8t6"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/NodeSentence.gd" id="1_at5jy"]
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_hvs86"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_5kymc"]
+[ext_resource type="Script" path="res://addons/advanced-text/nodes/AdvancedTextLabel.gd" id="4_6ycci"]
+[ext_resource type="Resource" uid="uid://74bogqdd04tt" path="res://Test/Data/markdown_settings.tres" id="5_puklo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v075a"]
 content_margin_left = 10.0
@@ -56,5 +58,7 @@ theme_override_colors/default_color = Color(0.72549, 0.72549, 0.72549, 1)
 bbcode_enabled = true
 fit_content = true
 scroll_following = true
+script = ExtResource("4_6ycci")
+parser = ExtResource("5_puklo")
 
 [connection signal="resize_request" from="." to="." method="_on_GraphNode_resize_request"]

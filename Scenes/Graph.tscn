@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=35 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dl3u1xdqd3d66" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
 [ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
+[ext_resource type="Texture2D" uid="uid://uakrgb3bynrb" path="res://addons/advanced-text/icons/AdvancedTextLabel.svg" id="12_jcq6l"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
@@ -266,9 +267,12 @@ item_8/id = 8
 
 [node name="Help" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(126, 247)
-item_count = 1
-item_0/text = "Wiki"
+item_count = 2
+item_0/text = "Monologue"
 item_0/id = 0
+item_1/text = "Markdown"
+item_1/icon = ExtResource("12_jcq6l")
+item_1/id = 1
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2

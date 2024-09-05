@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://cw88rixpfkpbu"]
+
+[ext_resource type="FontFile" uid="uid://be10y8fgoiayy" path="res://addons/emojis-for-godot/emojis/NotoColorEmoji.ttf" id="1_wwttj"]
+[ext_resource type="Script" path="res://addons/emojis-for-godot/nodes/EmojiButton.gd" id="1_y6n06"]
+[ext_resource type="Script" path="res://addons/emojis-for-godot/nodes/EmojiIcon.gd" id="2_5php0"]
+[ext_resource type="Script" path="res://addons/emojis-for-godot/examples/LabelWithEmojis.gd" id="3_1wvin"]
+
+[node name="Examples" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EmojiButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_fonts/font = ExtResource("1_wwttj")
+theme_override_font_sizes/font_size = 36
+text = "😎"
+script = ExtResource("1_y6n06")
+emoji_name = "smiling_face_with_sunglasses"
+
+[node name="EmojiIcon" type="Label" parent="."]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 7.0
+offset_right = 87.0
+offset_bottom = 57.0
+theme_override_fonts/font = ExtResource("1_wwttj")
+theme_override_font_sizes/font_size = 36
+text = "😎"
+script = ExtResource("2_5php0")
+emoji_name = "smiling_face_with_sunglasses"
+
+[node name="LabelWithEmojis" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 97.0
+offset_top = 7.0
+offset_right = 382.0
+offset_bottom = 77.0
+bbcode_enabled = true
+text = "Cool Label [font=res://addons/emojis-for-godot/emojis/NotoColorEmoji.ttf]😎[/font]  [font_size=72][font=res://addons/emojis-for-godot/emojis/NotoColorEmoji.ttf]😎[/font][/font_size] "
+script = ExtResource("3_1wvin")
+text_with_emojis = "Cool Label :smiling_face_with_sunglasses:  :smiling_face_with_sunglasses, 72: "

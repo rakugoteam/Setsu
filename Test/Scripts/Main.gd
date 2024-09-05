@@ -1,5 +1,6 @@
 extends MonologueProcess
 
+@onready var markup = preload("res://Test/Data/markdown_settings.tres")
 
 @onready var menu_scene = preload("res://Test/Menu.tscn").instantiate()
 @onready var text_box = preload("res://Test/Objects/text_box.tscn")
@@ -35,7 +36,8 @@ func _ready():
 		
 
 func _input(event):
-	if event.is_action_pressed("ui_accept") and is_completed and not sp_choice_container.visible:
+	if (event.is_action_pressed("ui_accept")
+	and is_completed and not sp_choice_container.visible):
 		next()
 
 func _handle_scrollbar_changed():
@@ -79,22 +81,23 @@ func _exit():
 
 func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = false):
 	# Textbox
-	var new_textbox: RichTextLabel = text_box.instantiate()
-	tb_text_label.text = ""
+	var new_textbox: AdvancedTextLabel = text_box.instantiate()
+	tb_text_label._text = ""
 	
 	if speaker_name.begins_with("_"):
-		new_textbox.text = sentence
+		new_textbox._text = sentence
 		new_textbox.visible_characters = 0
 		
-		tb_text_label.text = sentence
+		tb_text_label._text = sentence
 		tb_text_label.visible_characters = 0
+		
 	else:
-		new_textbox.text = "[color=e75a41]" + speaker_name + "[/color]\n"
-		new_textbox.text += sentence
+		new_textbox._text = "[color=e75a41]" + speaker_name + "[/color]\n"
+		new_textbox._text += sentence
 		new_textbox.visible_characters = len(speaker_name)
 		
-		tb_text_label.text = "[color=e75a41]" + speaker_name + "[/color]\n"
-		tb_text_label.text += sentence
+		tb_text_label._text = "[color=e75a41]" + speaker_name + "[/color]\n"
+		tb_text_label._text += sentence
 		tb_text_label.visible_characters = len(speaker_name)
 	
 	# Speaker
@@ -103,7 +106,7 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		if not character_container.visible:
 			character_container.position.x = -character_container.size.x
 			character_container.show()
-			character_container.texture = char_asset
+			character_container._texture = char_asset
 			get_tree().create_tween().tween_property(character_container, "position:x", 50, 0.1)
 	else:
 		character_container.position.x = 50
@@ -111,25 +114,31 @@ func _on_monologue_sentence(sentence, speaker, speaker_name, instant: bool = fal
 		
 		character_container.hide()
 	
-	for tb: RichTextLabel in sp_text_box_container.get_children():
-		tb.modulate = Color(1, 1, 1, 0.6)
+	# for tb: AdvancedTextLabel in sp_text_box_container.get_children():
+	# 	tb.modulate = Color(1, 1, 1, 0.6)
 	
 	sp_text_box_container.add_child(new_textbox)
 	
 	if instant:
-		new_textbox.visible_characters = len(new_textbox.text)
-		tb_text_label.visible_characters = len(tb_text_label.text)
+		new_textbox.visible_characters = len(new_textbox._text)
+		tb_text_label.visible_characters = len(tb_text_label._text)
 		return
 	
-	get_tree().create_tween().tween_property(new_textbox, "visible_characters", len(new_textbox.text), 0.5)
-	get_tree().create_tween().tween_property(tb_text_label, "visible_characters", len(tb_text_label.text), 0.5)
+	get_tree().create_tween().tween_property(
+		new_textbox, "visible_characters", len(new_textbox._text), 0.5)
+	get_tree().create_tween().tween_property(
+		tb_text_label, "visible_characters", len(tb_text_label._text), 0.5)
 
 
 func _instantiate_option(option):
-	var new_option = option_button.instantiate()
+	# var new_option : Button = option_button.instantiate()
+	var new_option : AdvancedTextButton = option_button.instantiate()
+	# new_option.fit_content = true
+	# new_option.scroll_active = false
+	# new_option.shortcut_keys_enabled = false
+	# new_option.parser = markup
 	new_option.text = option.get("Sentence")
 	new_option.connect("pressed", option_selected.bind(option))
-	
 	return new_option
 
 func _on_monologue_new_choice(options):
@@ -139,7 +148,6 @@ func _on_monologue_new_choice(options):
 	
 	tb_choice_container.show()
 	sp_choice_container.show()
-
 
 func _on_monologue_option_choosed(_raw_option):
 	tb_choice_container.hide()
