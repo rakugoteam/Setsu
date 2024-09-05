@@ -1,15 +1,14 @@
 @icon("res://Assets/Icons/NodesIcons/Exit.svg")
-
 class_name EndPathNode
-
 extends MonologueGraphNode
 
 
 var next_story_name = ""
 
+func _get_node_type() -> StringName:
+	return &"NodeEndPath"
 
 func _ready():
-	node_type = "NodeEndPath"
 	title = node_type
 
 

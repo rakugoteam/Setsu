@@ -1,14 +1,14 @@
 @icon("res://Assets/Icons/NodesIcons/Root.svg")
-
 class_name RootNode
-
 extends MonologueGraphNode
 
 
 var characters := []
 
+func _get_node_type() -> StringName:
+	return &"NodeRoot"
+
 func _ready():
-	node_type = "NodeRoot"
 	title = node_type
 
 

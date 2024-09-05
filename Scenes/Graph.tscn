@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=39 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -22,6 +22,8 @@
 [ext_resource type="Texture2D" uid="uid://d2e2kxb6bfi02" path="res://addons/emojis-for-godot/icon.png" id="13_t8kxb"]
 [ext_resource type="Texture2D" uid="uid://c0mm85a01jrvn" path="res://addons/material-design-icons/nodes/MaterialIcon.svg" id="14_3p25i"]
 [ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
+[ext_resource type="Texture2D" uid="uid://buakgxhfpg4en" path="res://Assets/Icons/NodesIcons/ToolConnect.svg" id="23_0eobf"]
+[ext_resource type="Script" path="res://Scenes/SearchDialog.gd" id="24_8y2b7"]
 [ext_resource type="Script" path="res://addons/html5_file_dialog/HTML5FileDialog.gd" id="26_8j74u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
@@ -227,35 +229,38 @@ item_3/text = "Download DB"
 item_3/id = 3
 
 [node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
-size = Vector2i(119, 100)
-item_count = 9
+size = Vector2i(134, 302)
+item_count = 10
 item_0/text = "Sentence"
 item_0/icon = ExtResource("3_pk5un")
 item_0/id = 0
-item_1/text = "Choice"
-item_1/icon = ExtResource("4_2u3tl")
+item_1/text = "Reroute"
+item_1/icon = ExtResource("23_0eobf")
 item_1/id = 1
-item_2/text = "DiceRoll"
-item_2/icon = ExtResource("5_qjglw")
+item_2/text = "Choice"
+item_2/icon = ExtResource("4_2u3tl")
 item_2/id = 2
-item_3/text = "Bridge"
-item_3/icon = ExtResource("6_gcn4v")
+item_3/text = "DiceRoll"
+item_3/icon = ExtResource("5_qjglw")
 item_3/id = 3
-item_4/text = "Condition"
-item_4/icon = ExtResource("7_nh0w0")
+item_4/text = "Bridge"
+item_4/icon = ExtResource("6_gcn4v")
 item_4/id = 4
-item_5/text = "Action"
-item_5/icon = ExtResource("8_hffb8")
+item_5/text = "Condition"
+item_5/icon = ExtResource("7_nh0w0")
 item_5/id = 5
-item_6/text = "EndPath"
-item_6/icon = ExtResource("8_hudw3")
+item_6/text = "Action"
+item_6/icon = ExtResource("8_hffb8")
 item_6/id = 6
-item_7/text = "Event"
-item_7/icon = ExtResource("10_2h2fa")
+item_7/text = "EndPath"
+item_7/icon = ExtResource("8_hudw3")
 item_7/id = 7
-item_8/text = "Comment"
-item_8/icon = ExtResource("11_ppvxf")
+item_8/text = "Event"
+item_8/icon = ExtResource("10_2h2fa")
 item_8/id = 8
+item_9/text = "Comment"
+item_9/icon = ExtResource("11_ppvxf")
+item_9/id = 9
 
 [node name="Help" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(126, 247)
@@ -361,15 +366,17 @@ clip_tabs = false
 tab_close_display_policy = 1
 tab_0/title = "+"
 
-[node name="GraphEdits" type="Control" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
+[node name="GraphEdits" type="TabContainer" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+tabs_visible = false
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
-layout_mode = 1
-scroll_offset = Vector2(0, -24)
+layout_mode = 2
+scroll_offset = Vector2(0, -32)
 show_arrange_button = false
+metadata/_tab_index = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -431,7 +438,10 @@ mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_f42wd")
 stretch_mode = 3
 
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="MarginContainer/MainContainer"]
+
 [node name="NoInteractions" type="ColorRect" parent="."]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -441,86 +451,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="GraphNodeSelecter" type="Window" parent="." node_paths=PackedStringArray("control_node")]
-title = "Graph Node Picker"
-position = Vector2i(495, 305)
-size = Vector2i(185, 281)
-visible = false
-unresizable = true
-always_on_top = true
-popup_window = true
-extend_to_title = true
-content_scale_mode = 1
-script = ExtResource("14_uv77t")
-control_node = NodePath("..")
-
-[node name="PanelContainer" type="MarginContainer" parent="GraphNodeSelecter"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GraphNodeSelecter/PanelContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 10
-
-[node name="SentenceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node Sentence"
-icon = ExtResource("3_pk5un")
-
-[node name="ChoiceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node Choice"
-icon = ExtResource("4_2u3tl")
-
-[node name="DiceRollSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node DiceRoll"
-icon = ExtResource("5_qjglw")
-
-[node name="BridgeSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Nodes Bridge"
-icon = ExtResource("6_gcn4v")
-
-[node name="ConditionSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node Condition"
-icon = ExtResource("7_nh0w0")
-
-[node name="ActionSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node Action"
-icon = ExtResource("8_hffb8")
-
-[node name="EndPathSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_default_cursor_shape = 2
-text = "Node EndPath"
-icon = ExtResource("8_hudw3")
-
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
 size = Vector2i(500, 300)
+visible = false
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -606,6 +541,93 @@ size_flags_vertical = 8
 text = "v.X.X.X"
 label_settings = SubResource("LabelSettings_7mcdy")
 
+[node name="GraphNodeSelecter" type="Window" parent="." node_paths=PackedStringArray("control_node")]
+title = "Graph Node Picker"
+position = Vector2i(495, 305)
+size = Vector2i(200, 336)
+visible = false
+unresizable = true
+always_on_top = true
+popup_window = true
+extend_to_title = true
+content_scale_mode = 1
+script = ExtResource("14_uv77t")
+control_node = NodePath("..")
+
+[node name="PanelContainer" type="MarginContainer" parent="GraphNodeSelecter"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GraphNodeSelecter/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="SentenceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Sentence"
+icon = ExtResource("3_pk5un")
+
+[node name="RerouteSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Reroute"
+icon = ExtResource("23_0eobf")
+
+[node name="ChoiceSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Choice"
+icon = ExtResource("4_2u3tl")
+
+[node name="DiceRollSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node DiceRoll"
+icon = ExtResource("5_qjglw")
+
+[node name="BridgeSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Nodes Bridge"
+icon = ExtResource("6_gcn4v")
+
+[node name="ConditionSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Condition"
+icon = ExtResource("7_nh0w0")
+
+[node name="ActionSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node Action"
+icon = ExtResource("8_hffb8")
+
+[node name="EndPathSelector" type="Button" parent="GraphNodeSelecter/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "Node EndPath"
+icon = ExtResource("8_hudw3")
+
 [node name="FileDialog" type="FileDialog" parent="."]
 initial_position = 2
 size = Vector2i(778, 450)
@@ -616,10 +638,63 @@ filters = PackedStringArray("*.json")
 script = ExtResource("26_8j74u")
 filters = PackedStringArray("application/json")
 
-[node name="AcceptDialog" type="AcceptDialog" parent="."]
+[node name="SearchDialog" type="Window" parent="."]
+title = "Search in Nodes"
 initial_position = 2
-size = Vector2i(300, 100)
-dialog_autowrap = true
+size = Vector2i(300, 70)
+visible = false
+script = ExtResource("24_8y2b7")
+
+[node name="MarginContainer" type="MarginContainer" parent="SearchDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SearchDialog/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+
+[node name="SearchEdit" type="LineEdit" parent="SearchDialog/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Search in Nodes"
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SearchDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Search" type="Button" parent="SearchDialog/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Search
+"
+
+[node name="Cancel" type="Button" parent="SearchDialog/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="ScrollNodesContainer" type="ScrollContainer" parent="SearchDialog/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NodesContainer" type="VBoxContainer" parent="SearchDialog/MarginContainer/VBoxContainer/ScrollNodesContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [connection signal="resized" from="." to="WelcomeWindow" method="_on_control_resized"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/File" to="." method="_on_file_id_pressed"]
@@ -637,18 +712,23 @@ dialog_autowrap = true
 [connection signal="text_changed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/LineEditID" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_line_edit_id_text_changed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="." method="_on_close_node_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn" to="." method="_on_cancel_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn" to="." method="_on_upload_file_btn_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="GraphNodeSelecter" method="_on_sentence_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/RerouteSelector" to="GraphNodeSelecter" method="_on_reroute_selector_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="GraphNodeSelecter" method="_on_choice_selector_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="GraphNodeSelecter" method="_on_dice_roll_selector_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="GraphNodeSelecter" method="_on_bridge_selector_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="GraphNodeSelecter" method="_on_condition_selector_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="GraphNodeSelecter" method="_on_action_selector_pressed"]
 [connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="GraphNodeSelecter" method="_on_end_path_selector_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn" to="." method="_on_cancel_file_btn_pressed"]
-[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn" to="." method="_on_upload_file_btn_pressed"]
 [connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
 [connection signal="file_selected" from="HTML5FileDialog" to="." method="_on_html_5_file_dialog_file_selected"]
+[connection signal="visibility_changed" from="SearchDialog" to="SearchDialog" method="_on_visibility_changed"]
+[connection signal="text_submitted" from="SearchDialog/MarginContainer/VBoxContainer/SearchEdit" to="SearchDialog" method="_on_search_edit_text_submitted"]
+[connection signal="pressed" from="SearchDialog/MarginContainer/VBoxContainer/HBoxContainer/Search" to="SearchDialog" method="_on_search_pressed"]
+[connection signal="pressed" from="SearchDialog/MarginContainer/VBoxContainer/HBoxContainer/Cancel" to="SearchDialog" method="_on_cancel_pressed"]

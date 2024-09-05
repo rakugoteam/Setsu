@@ -3,7 +3,11 @@ extends GraphNode
 
 var graph_edit : GraphEdit
 var id: String = UUID.v4()
-var node_type: String = "NodeUnknown"
+var node_type: String :
+	get: return _get_node_type() 
+
+func _get_node_type() -> StringName:
+	return &"NodeUnknown"
 
 func _from_dict(_dict: Dictionary):
 	pass
