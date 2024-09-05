@@ -64,7 +64,7 @@ import/blender/enabled=false
 
 [gui]
 
-theme/custom="res://Assets/MainTheme.tres"
+theme/custom="res://Assets/godot-minimal-theme.tres"
 theme/default_font_subpixel_positioning=0
 theme/lcd_subpixel_layout=0
 

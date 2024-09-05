@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dnxbsvukyu6a2"]
+[gd_scene load_steps=11 format=3 uid="uid://dnxbsvukyu6a2"]
 
 [ext_resource type="Script" path="res://Test/Scripts/Main.gd" id="1_8rud0"]
 [ext_resource type="Texture2D" uid="uid://371ns5r4jx2n" path="res://Test/Assets/background.png" id="2_0y34q"]
@@ -10,9 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://bn7uq5c73oqcw" path="res://Assets/Icons/TextboxMode.png" id="7_2ymld"]
 [ext_resource type="FontFile" uid="uid://sx7iusrmfmsg" path="res://Test/Font/VCREAS 3.0.ttf" id="7_if5ck"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8kgr"]
-bg_color = Color(0.141176, 0.14902, 0.192157, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jgb4"]
 content_margin_left = 7.0
 content_margin_right = 7.0
@@ -21,15 +18,6 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2i5c"]
-bg_color = Color(0.141176, 0.14902, 0.192157, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xalfy"]
-bg_color = Color(0.141176, 0.14902, 0.192157, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41p1n"]
-bg_color = Color(0.898039, 0.713726, 0.368627, 1)
 
 [node name="Control2" type="Control"]
 layout_mode = 3
@@ -92,7 +80,6 @@ theme_override_constants/margin_right = 25
 [node name="PanelContainer" type="PanelContainer" parent="SidePanelContainer"]
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_j8kgr")
 
 [node name="MarginContainer" type="MarginContainer" parent="SidePanelContainer"]
 layout_mode = 2
@@ -184,7 +171,6 @@ theme_override_constants/margin_bottom = 25
 [node name="Panel" type="Panel" parent="TextBoxContainer"]
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_x2i5c")
 
 [node name="MarginContainer" type="MarginContainer" parent="TextBoxContainer/Panel"]
 layout_mode = 1
@@ -247,7 +233,6 @@ offset_top = 10.0
 offset_right = 150.0
 offset_bottom = 70.0
 grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xalfy")
 script = ExtResource("6_kev1j")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Notification"]
@@ -257,7 +242,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_41p1n")
 
 [node name="MarginContainer" type="MarginContainer" parent="Notification/VBoxContainer"]
 layout_mode = 2
