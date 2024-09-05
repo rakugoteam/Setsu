@@ -1,0 +1,38 @@
+{
+	"EditorVersion": "2.2.1",
+	"RootNodeID": "4c51b0d7-4c09-4065-bdd2-b12a44386f41",
+	"ListNodes": [
+		{
+			"$type": "NodeEndPath",
+			"ID": "a5070226-8319-43b5-bb76-b911ac4e07e5",
+			"NextStoryName": "",
+			"EditorPosition": {
+				"x": 1188.90063476562,
+				"y": 97.8806915283203
+			}
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
+			"NextID": "a5070226-8319-43b5-bb76-b911ac4e07e5",
+			"Sentence": "Test zewnątrznej bazy",
+			"SpeakerID": 1,
+			"DisplaySpeakerName": "Ziomek",
+			"DisplayVariant": "Ziom",
+			"EditorPosition": {
+				"x": 618.584411621094,
+				"y": 81.9437103271484
+			}
+		},
+		{
+			"$type": "NodeRoot",
+			"ID": "4c51b0d7-4c09-4065-bdd2-b12a44386f41",
+			"NextID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
+			"EditorPosition": {
+				"x": 0,
+				"y": 40
+			}
+		}
+	],
+	"DBFile": "db.json"
+}

@@ -1,10 +1,15 @@
 extends Control
 
-
 var dialog = {}
 var dialog_for_localisation = []
+var emoji_finder : Window
+var icon_search : Window
 
 const HISTORY_FILE_PATH: String = "user://history.save"
+const emoji_finder_path :=\
+"res://addons/emojis-for-godot/EmojiPanel/EmojiPanel.tscn"
+const icon_finder_script :=\
+	"res://addons/material-design-icons/icon_finder/IconFinder.tscn"
 
 @onready var graph_edit_inst = preload("res://Objects/GraphEdit.tscn")
 @onready var root_node = preload("res://Objects/GraphNodes/RootNode.tscn")
@@ -33,6 +38,7 @@ const HISTORY_FILE_PATH: String = "user://history.save"
 @onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
 @onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
 @onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
+@onready var cancel_file_btn = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
 
 var live_dict: Dictionary
 
@@ -112,6 +118,7 @@ func _to_dict() -> Dictionary:
 	for node in get_graph_nodes():
 		if node.is_queued_for_deletion():
 			continue
+
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
 			for child in node.get_children():
@@ -122,16 +129,32 @@ func _to_dict() -> Dictionary:
 	root_dict = get_root_dict(list_nodes)
 	root_node_ref = get_root_node_ref()
 	
+	if get_current_graph_edit().db_file_path:
+		save_progress_bar.max_value += 1
+		save_progress_bar.value += 1
+		get_current_graph_edit().save_db()
+		save_progress_bar.value += 1
+
+		return {
+			"EditorVersion": ProjectSettings.get_setting(
+				"application/config/version", "unknown"),
+			"RootNodeID": root_dict.get("ID"),
+			"ListNodes": list_nodes,
+			"DBFile": get_current_graph_edit().db_file_path,
+		}
+
 	var characters = get_current_graph_edit().speakers
 	if get_current_graph_edit().speakers.size() <= 0:
 		characters.append({
 			"Reference": "_NARRATOR",
 			"ID": 0
 		})
-	save_progress_bar.value += 1
 	
+	save_progress_bar.value += 1
+
 	return {
-		"EditorVersion": ProjectSettings.get_setting("application/config/version", "unknown"),
+		"EditorVersion": ProjectSettings.get_setting(
+			"application/config/version", "unknown"),
 		"RootNodeID": root_dict.get("ID"),
 		"ListNodes": list_nodes,
 		"Characters": characters,
@@ -214,7 +237,8 @@ func save(quick: bool = false):
 		save_button.show()
 		test_button.show()
 	
-	var file = FileAccess.open(get_current_graph_edit().file_path, FileAccess.WRITE)
+	var file = FileAccess.open(
+		get_current_graph_edit().file_path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
 	
@@ -245,12 +269,22 @@ func load_project(path):
 		save(true)
 	
 	live_dict = data
+
+	if "DBFile" in data:
+		var db_file := data["DBFile"] as String
+		# prints("DBFile:", db_file)
+		get_current_graph_edit().load_db(db_file)
+
+	else:
+		# prints("DBFile: null")
+		graph_edit.speakers = data.get("Characters")
+		graph_edit.variables = data.get("Variables")
 	
-	graph_edit.speakers = data.get("Characters")
-	graph_edit.variables = data.get("Variables")
+	# prints("loaded db:", graph_edit.db_to_dict())
 	
 	for node in graph_edit.get_children():
 		node.queue_free()
+	
 	graph_edit.clear_connections()
 	graph_edit.data = data
 	
@@ -441,8 +475,10 @@ func test_project(from_selected_node: bool = false):
 
 func new_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	$FileDialog.title = "Crate New File"
-	$FileDialog.ok_button_text = "Crate"
+	if OS.get_name().to_lower() == "web":
+		$FileDialog.access = FileDialog.ACCESS_USERDATA
+	$FileDialog.title = "Create New File"
+	$FileDialog.ok_button_text = "Create"
 	$FileDialog.popup_centered()
 	var new_file_path = await $FileDialog.file_selected
 
@@ -454,6 +490,8 @@ func new_file_select():
 
 func open_file_select():
 	$FileDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	if OS.get_name().to_lower() == "web":
+		$FileDialog.access = FileDialog.ACCESS_USERDATA
 	$FileDialog.title = "Open File"
 	$FileDialog.ok_button_text = "Open"
 	$FileDialog.popup_centered()
@@ -490,12 +528,13 @@ func _on_graph_node_selecter_close_requested():
 func tab_changed(_idx):
 	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
 		for ge in graph_edits.get_children():
-			ge.visible = graph_edits.get_child(tab_bar.current_tab) == ge
+			ge.visible = graph_edits.get_child(
+				tab_bar.current_tab) == ge
 		
 		return
 	
 	new_graph_edit()
-
+	cancel_file_btn.show()
 	$WelcomeWindow.show()
 	$NoInteractions.show()
 
@@ -513,15 +552,16 @@ func tab_close_pressed(tab):
 	tab_bar.remove_tab(tab)
 	tab_changed(tab)
 
+var file_menu := false
+
 func _on_file_id_pressed(id):
+	file_menu = true
 	match id:
 		0: # Open file
 			var new_file_path = await open_file_select()
 			if new_file_path == null:
 				return
 				
-			$WelcomeWindow.hide()
-			$FileDialog.hide()
 			new_graph_edit()
 			return await file_selected(new_file_path, 1)
 
@@ -529,17 +569,9 @@ func _on_file_id_pressed(id):
 			var new_file_path = await new_file_select()
 			if new_file_path == null:
 				return
-				
-			$WelcomeWindow.hide()
-			$FileDialog.hide()
+			
 			new_graph_edit()
 			return await file_selected(new_file_path, 0)
-
-		3: # Config
-			side_panel_node.show_config()
-
-		4: # Test
-			test_project()
 
 func new_graph_edit():
 	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
@@ -581,3 +613,33 @@ func _on_help_id_pressed(id):
 			OS.shell_open("https://github.com/atomic-junky/Monologue/wiki")
 		1:
 			OS.shell_open("https://rakugoteam.github.io/advanced-text-docs/2.0/Markdown/")
+
+
+func _on_file_dialog_canceled():
+	if file_menu:
+		file_menu = false
+		return
+	
+	$WelcomeWindow.show()
+
+func _on_cancel_file_btn_pressed():
+	$WelcomeWindow.hide()
+	$NoInteractions.hide()
+	if tab_bar.get_tab_title(tab_bar.current_tab) == "+":
+		tab_bar.current_tab -= 1
+
+func _on_edit_conf_btn_pressed():
+	side_panel_node.show_config()
+
+func _on_emojis_btn_pressed():
+	if emoji_finder == null:
+		emoji_finder = load(emoji_finder_path).instantiate() as Window
+		add_child(emoji_finder)
+	emoji_finder.popup_centered()
+
+func _on_icons_btn_pressed():
+	if icon_search == null:
+		icon_search = load(icon_finder_script).instantiate() as Window
+		add_child.call_deferred(icon_search)
+	
+	icon_search.popup_centered()

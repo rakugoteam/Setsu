@@ -19,7 +19,7 @@ content_margin_right = 7.0
 bg_color = Color(0.768627, 0.180392, 0.25098, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
-corner_radius_bottom_right = 6
+corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2i5c"]
@@ -31,7 +31,7 @@ bg_color = Color(0.141176, 0.14902, 0.192157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41p1n"]
 bg_color = Color(0.898039, 0.713726, 0.368627, 1)
 
-[node name="Control" type="Control"]
+[node name="Control2" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,6 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8rud0")
+dump = "don't remove it!"
 metadata/_edit_use_anchors_ = true
 
 [node name="Background" type="TextureRect" parent="."]
