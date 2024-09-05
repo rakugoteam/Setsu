@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://coq74c18uq3d3"]
+[gd_scene load_steps=4 format=3 uid="uid://coq74c18uq3d3"]
 
 [ext_resource type="Script" path="res://Scripts/GraphNodes/ChoiceNode.gd" id="1_nn3v2"]
 
@@ -8,10 +8,22 @@ content_margin_top = 2.0
 content_margin_right = 10.0
 content_margin_bottom = 2.0
 bg_color = Color(0.776471, 0.486275, 0.32549, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxh05"]
+content_margin_left = 10.0
+content_margin_top = 2.0
+content_margin_right = 10.0
+content_margin_bottom = 2.0
+bg_color = Color(0.776471, 0.486275, 0.32549, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
 
 [node name="ChoiceNode" type="GraphNode" groups=["graph_nodes"]]
 offset_right = 320.0
@@ -20,6 +32,7 @@ size_flags_vertical = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/separation = 15
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_t5fox")
+theme_override_styles/titlebar_selected = SubResource("StyleBoxFlat_vxh05")
 title = "ChoiceNode"
 script = ExtResource("1_nn3v2")
 

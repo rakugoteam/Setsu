@@ -137,6 +137,9 @@ func _to_dict() -> Dictionary:
 	for node in get_graph_nodes():
 		if node.is_queued_for_deletion():
 			continue
+		
+		if node in get_current_graph_edit().removed_nodes:
+			continue
 
 		list_nodes.append(node._to_dict())
 		if node.node_type == "NodeChoice":
