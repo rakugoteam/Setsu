@@ -1,5 +1,5 @@
 {
-	"EditorVersion": "2.2.1",
+	"EditorVersion": "2.2.2-AZ",
 	"RootNodeID": "4c51b0d7-4c09-4065-bdd2-b12a44386f41",
 	"ListNodes": [
 		{
@@ -14,21 +14,10 @@
 		{
 			"$type": "NodeRoot",
 			"ID": "4c51b0d7-4c09-4065-bdd2-b12a44386f41",
-			"NextID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
+			"NextID": "ab80e9dc-232b-4f83-8794-efba65a1ccfc",
 			"EditorPosition": {
 				"x": 0,
 				"y": 40
-			}
-		},
-		{
-			"$type": "NodeSentence",
-			"ID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
-			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
-			"Sentence": "test globlanych nazw charakterów",
-			"SpeakerID": 2,
-			"EditorPosition": {
-				"x": 1220,
-				"y": 100
 			}
 		},
 		{
@@ -43,14 +32,66 @@
 			}
 		},
 		{
-			"$type": "NodeSentence",
-			"ID": "eba7e20b-1dc1-4503-9c3a-90c68e0b442b",
-			"NextID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
-			"Sentence": "Test zewnątrznej bazy",
-			"SpeakerID": 1,
+			"$type": "NodeAction",
+			"ID": "ab80e9dc-232b-4f83-8794-efba65a1ccfc",
+			"NextID": "d8dd8f1d-81fb-44f2-a593-ad0e652f1601",
+			"Action": {
+				"$type": "ActionVariable",
+				"Operator": "+",
+				"Variable": "JakaśLiczba",
+				"Value": 1
+			},
 			"EditorPosition": {
-				"x": 660,
-				"y": 100
+				"x": 580,
+				"y": -180
+			}
+		},
+		{
+			"$type": "NodeChoice",
+			"ID": "d8dd8f1d-81fb-44f2-a593-ad0e652f1601",
+			"OptionsID": [
+				"01c26f73-2770-451e-b880-2faa8cdfe1ee",
+				"065ca471-db5c-4883-b27a-c52b1292a7cc",
+				"d8dea393-5a3c-4f0b-92bc-d53c21430566"
+			],
+			"EditorPosition": {
+				"x": 980,
+				"y": -220
+			}
+		},
+		{
+			"$type": "NodeOption",
+			"ID": "01c26f73-2770-451e-b880-2faa8cdfe1ee",
+			"NextID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"Sentence": "xx",
+			"Enable": true,
+			"OneShot": false
+		},
+		{
+			"$type": "NodeOption",
+			"ID": "065ca471-db5c-4883-b27a-c52b1292a7cc",
+			"NextID": -1,
+			"Sentence": "ss",
+			"Enable": true,
+			"OneShot": false
+		},
+		{
+			"$type": "NodeOption",
+			"ID": "d8dea393-5a3c-4f0b-92bc-d53c21430566",
+			"NextID": -1,
+			"Sentence": "zz",
+			"Enable": true,
+			"OneShot": false
+		},
+		{
+			"$type": "NodeSentence",
+			"ID": "4688d724-a65a-474b-8fd7-9cd922fae1e6",
+			"NextID": "4e41260a-9e1f-457f-b417-c9253e7cbdf1",
+			"Sentence": "test globlanych nazw charakterów",
+			"SpeakerID": 2,
+			"EditorPosition": {
+				"x": 1440,
+				"y": 40
 			}
 		}
 	],

@@ -5,7 +5,7 @@ extends VBoxContainer
 signal change(panel)
 
 
-var graph_node: MonologueGraphNode = null : set = _set_gn
+var graph_node: MonologueGraphNode = null: set = _set_gn
 var id
 
 func _ready():

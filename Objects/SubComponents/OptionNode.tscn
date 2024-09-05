@@ -1,13 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://3k3dukisluyn"]
+[gd_scene load_steps=4 format=3 uid="uid://3k3dukisluyn"]
 
 [ext_resource type="Texture2D" uid="uid://cupclxlgjwjmg" path="res://Assets/Icons/trash_icon.png" id="2_du61s"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/OptionNode.gd" id="4_5yoga"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_803ep"]
-draw_center = false
-border_width_bottom = 2
-border_color = Color(0.0862745, 0.101961, 0.12549, 1)
-expand_margin_bottom = 5.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_52w5v"]
 font_size = 11
@@ -18,7 +12,6 @@ offset_right = 349.0
 offset_bottom = 165.0
 size_flags_vertical = 0
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_803ep")
 script = ExtResource("4_5yoga")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
