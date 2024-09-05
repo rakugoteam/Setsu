@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=39 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -22,7 +22,6 @@
 [ext_resource type="Texture2D" uid="uid://d2e2kxb6bfi02" path="res://addons/emojis-for-godot/icon.png" id="13_t8kxb"]
 [ext_resource type="Texture2D" uid="uid://c0mm85a01jrvn" path="res://addons/material-design-icons/nodes/MaterialIcon.svg" id="14_3p25i"]
 [ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
-[ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 [ext_resource type="Script" path="res://addons/html5_file_dialog/HTML5FileDialog.gd" id="26_8j74u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
@@ -128,9 +127,6 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ehqk"]
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28b4a"]
 content_margin_left = 7.0
 content_margin_right = 7.0
@@ -157,18 +153,6 @@ content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0.128906, 0.148438, 0.179688, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wb4lr"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
-content_margin_bottom = 20.0
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jst2r"]
 content_margin_left = 5.0
@@ -402,7 +386,7 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -24)
+scroll_offset = Vector2(0, -32)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -423,7 +407,6 @@ theme_override_constants/margin_bottom = 20
 
 [node name="SidePanelNodeDetails" type="PanelContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0ehqk")
 script = ExtResource("9_cxmnj")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails"]
@@ -556,7 +539,7 @@ icon = ExtResource("8_hudw3")
 [node name="WelcomeWindow" type="Window" parent="."]
 transparent_bg = true
 initial_position = 2
-size = Vector2i(563, 100)
+size = Vector2i(500, 300)
 wrap_controls = true
 unresizable = true
 borderless = true
@@ -570,7 +553,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_wb4lr")
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="WelcomeWindow/PanelContainer"]
 layout_mode = 2
@@ -581,16 +565,19 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 20
 
 [node name="NewFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "New File"
 icon = ExtResource("5_vkhra")
 
 [node name="OpenFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("6_vjwwg")
@@ -598,12 +585,14 @@ icon = ExtResource("6_vjwwg")
 [node name="CancelFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 text = "Cancel"
 icon = ExtResource("5_f42wd")
 
 [node name="VSeparator" type="VSeparator" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="UploadFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
 custom_minimum_size = Vector2(132, 0)
@@ -616,14 +605,17 @@ text = "Upload file"
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 visible = false
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="RecentFilesLabel" type="Label" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 text = "Recent files"
 label_settings = SubResource("LabelSettings_1l82f")
 
 [node name="ButtonContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 10
 
 [node name="VersionLabel" type="Label" parent="WelcomeWindow/PanelContainer"]
@@ -636,7 +628,6 @@ label_settings = SubResource("LabelSettings_7mcdy")
 [node name="FileDialog" type="FileDialog" parent="."]
 initial_position = 2
 size = Vector2i(778, 450)
-theme = ExtResource("17_2g74o")
 access = 2
 filters = PackedStringArray("*.json")
 

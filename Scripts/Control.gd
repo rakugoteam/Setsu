@@ -43,7 +43,6 @@ const icon_finder_script := \
 @onready var html_file_dialogue := $HTML5FileDialog
 @onready var sync_menu := $MarginContainer/MainContainer/Header/MenuBar/Sync
 @onready var edit_conf_btn := $MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn
-@onready var upload_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/UploadFileBtn
 
 var live_dict: Dictionary
 
@@ -69,7 +68,6 @@ func _ready():
 	if OS.get_name().to_lower() != "web":
 		sync_menu.queue_free()
 		html_file_dialogue.queue_free()
-		upload_btn.queue_free()
 
 	icon_search = load(icon_finder_script).instantiate()
 	icon_search.hide()
@@ -121,18 +119,15 @@ func _ready():
 	$WelcomeWindow.show()
 	$NoInteractions.show()
 
-
 func _shortcut_input(event):
 	if event.is_action_pressed("Save"):
 		save(false)
-
 
 func get_current_graph_edit() -> GraphEdit:
 	return graph_edits.get_child(tab_bar.current_tab)
 
 func get_graph_nodes() -> Array[Node]:
 	return get_current_graph_edit().get_children()
-
 
 func _to_dict() -> Dictionary:
 	var list_nodes = []
@@ -436,7 +431,7 @@ func _on_add_id_pressed(id):
 	var node_type = add_menu_bar.get_item_text(id)
 	add_node(node_type)
 
-func add_node(node_type):
+func add_node(node_type) -> Node:
 	if node_type == "Bridge":
 		var number = get_current_graph_edit().get_free_bridge_number()
 	
@@ -473,13 +468,13 @@ func add_node(node_type):
 		"Comment":
 			node = comment_node
 	
-	if not node:
-		return
-	
+	if not node: return null
 	node = node.instantiate()
 	get_current_graph_edit().add_child(node)
 	center_node_in_graph_edit(node)
-	
+	return node
+
+
 func _on_graph_edit_connection_request(from, from_slot, to, to_slot):
 	if get_current_graph_edit().get_all_connections_from_slot(from, from_slot).size() <= 0:
 		get_current_graph_edit().connect_node(from, from_slot, to, to_slot)

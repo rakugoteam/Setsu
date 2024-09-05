@@ -5,12 +5,34 @@
 [ext_resource type="FontFile" uid="uid://dtcui621somwd" path="res://Test/Font/VT323-Regular.ttf" id="4_drbhn"]
 [ext_resource type="PackedScene" uid="uid://cj80aa4ckke2i" path="res://Test/Objects/option_button.tscn" id="4_qmtb7"]
 
-[sub_resource type="Gradient" id="Gradient_qe2wi"]
-offsets = PackedFloat32Array(1)
-colors = PackedColorArray(0.176471, 0.2, 0.258824, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wapt7"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.0392157)
+border_color = Color(1, 1, 1, 0.0509804)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_6uux6"]
-gradient = SubResource("Gradient_qe2wi")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ubyga"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.0784314)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.117647)
+border_blend = true
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="LabelSettings" id="LabelSettings_x388r"]
 font_color = Color(0.768627, 0.180392, 0.25098, 1)
@@ -27,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e8xk2")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
@@ -35,9 +57,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_6uux6")
-expand_mode = 1
-stretch_mode = 6
+color = Color(0.262932, 0.262932, 0.262932, 1)
 
 [node name="Title" type="TextureRect" parent="."]
 texture_filter = 1
@@ -81,6 +101,8 @@ layout_mode = 2
 
 [node name="TestButtonModern" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2" instance=ExtResource("4_qmtb7")]
 layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_wapt7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ubyga")
 text = "Test this story"
 
 [node name="CustomIDLabel" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2"]
@@ -101,6 +123,8 @@ horizontal_alignment = 1
 
 [node name="ReturnToEditorButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("4_qmtb7")]
 layout_mode = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_wapt7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ubyga")
 text = "Return to the editor"
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/VBoxContainer2/TestButtonModern" to="." method="_on_test_button_modern_pressed"]
