@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bqjfdabrxujp7"]
+[gd_scene load_steps=39 format=3 uid="uid://bqjfdabrxujp7"]
 
 [ext_resource type="Script" path="res://Scripts/Control.gd" id="2_1tprk"]
 [ext_resource type="Script" path="res://Scripts/Windows/WelcomeWindow.gd" id="3_bs36t"]
@@ -15,8 +15,13 @@
 [ext_resource type="Script" path="res://Scripts/SidePanelNodes/SidePanelNodeDetails.gd" id="9_cxmnj"]
 [ext_resource type="Texture2D" uid="uid://dl3u1xdqd3d66" path="res://Assets/Icons/NodesIcons/Event.svg" id="10_2h2fa"]
 [ext_resource type="PackedScene" uid="uid://qdgl8co6qy6" path="res://Objects/GraphEdit.tscn" id="10_qja7f"]
+[ext_resource type="Texture2D" uid="uid://bh1xpymnqcl5d" path="res://Assets/Icons/help_icon.png" id="11_bl0px"]
 [ext_resource type="Texture2D" uid="uid://dia7vp7k000po" path="res://Assets/Icons/NodesIcons/Comment.png" id="11_ppvxf"]
-[ext_resource type="Texture2D" uid="uid://uakrgb3bynrb" path="res://addons/advanced-text/icons/AdvancedTextLabel.svg" id="12_jcq6l"]
+[ext_resource type="Texture2D" uid="uid://bl0hk7s0pdeuk" path="res://addons/advanced-text/icons/md.svg" id="12_kyvfa"]
+[ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="13_qww5m"]
+[ext_resource type="Texture2D" uid="uid://d2e2kxb6bfi02" path="res://addons/emojis-for-godot/icon.png" id="13_t8kxb"]
+[ext_resource type="Texture2D" uid="uid://c0mm85a01jrvn" path="res://addons/material-design-icons/nodes/MaterialIcon.svg" id="14_3p25i"]
+[ext_resource type="Script" path="res://Scripts/GraphNodeSelecter.gd" id="14_uv77t"]
 [ext_resource type="Theme" uid="uid://budfhk1hudcfj" path="res://Assets/MainTheme.tres" id="17_2g74o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_22xm7"]
@@ -145,14 +150,6 @@ expand_margin_top = 35.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
 
-[sub_resource type="GDScript" id="GDScript_n7pld"]
-script/source = "extends Window
-
-
-func _ready():
-	hide()
-"
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whi7p"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -221,18 +218,11 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_ao7wf")
 [node name="File" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 transparent_bg = true
 size = Vector2i(119, 100)
-item_count = 5
+item_count = 2
 item_0/text = "Open"
 item_0/id = 0
 item_1/text = "New"
 item_1/id = 1
-item_2/text = ""
-item_2/id = 2
-item_2/separator = true
-item_3/text = "Edit Config"
-item_3/id = 3
-item_4/text = "Test File"
-item_4/id = 4
 
 [node name="Add" type="PopupMenu" parent="MarginContainer/MainContainer/Header/MenuBar"]
 size = Vector2i(119, 100)
@@ -269,9 +259,10 @@ item_8/id = 8
 size = Vector2i(126, 247)
 item_count = 2
 item_0/text = "Monologue"
+item_0/icon = ExtResource("11_bl0px")
 item_0/id = 0
 item_1/text = "Markdown"
-item_1/icon = ExtResource("12_jcq6l")
+item_1/icon = ExtResource("12_kyvfa")
 item_1/id = 1
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/MainContainer/Header"]
@@ -302,14 +293,36 @@ show_percentage = false
 
 [node name="SavedNotification" type="Label" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
-text = "✅ SAVED"
+text = "SAVED"
 label_settings = SubResource("LabelSettings_gptd3")
 vertical_alignment = 1
 
 [node name="TestBtnContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 15
 alignment = 2
+
+[node name="EmojisBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+text = "Find Emoji"
+icon = ExtResource("13_t8kxb")
+
+[node name="IconsBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+text = "Find Material Icon"
+icon = ExtResource("14_3p25i")
+
+[node name="EditConfBtn" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+text = "Edit Config"
+icon = ExtResource("8_hffb8")
 
 [node name="Test" type="Button" parent="MarginContainer/MainContainer/Header/TestBtnContainer"]
 layout_mode = 2
@@ -318,6 +331,7 @@ theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_tyw4k")
 theme_override_styles/focus = SubResource("StyleBoxFlat_tyw4k")
 text = "Test"
+icon = ExtResource("13_qww5m")
 
 [node name="GraphEditsArea" type="Control" parent="MarginContainer/MainContainer"]
 layout_mode = 2
@@ -351,7 +365,6 @@ mouse_filter = 2
 
 [node name="Default" parent="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits" instance=ExtResource("10_qja7f")]
 layout_mode = 1
-scroll_offset = Vector2(0, -23)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/MainContainer/GraphEditsArea"]
 layout_mode = 1
@@ -424,7 +437,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.196078)
 
-[node name="GraphNodeSelecter" type="Window" parent="."]
+[node name="GraphNodeSelecter" type="Window" parent="." node_paths=PackedStringArray("control_node")]
 title = "Graph Node Picker"
 position = Vector2i(0, 36)
 size = Vector2i(210, 241)
@@ -435,7 +448,8 @@ popup_window = true
 extend_to_title = true
 content_scale_mode = 1
 theme_override_styles/embedded_border = SubResource("StyleBoxFlat_qj61b")
-script = SubResource("GDScript_n7pld")
+script = ExtResource("14_uv77t")
+control_node = NodePath("..")
 
 [node name="PanelContainer" type="PanelContainer" parent="GraphNodeSelecter"]
 anchors_preset = 15
@@ -543,6 +557,13 @@ mouse_default_cursor_shape = 2
 text = "Open File..."
 icon = ExtResource("6_vjwwg")
 
+[node name="CancelFileBtn" type="Button" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer"]
+visible = false
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Cancel"
+icon = ExtResource("5_f42wd")
+
 [node name="RecentFilesContainer" type="VBoxContainer" parent="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2"]
 visible = false
 layout_mode = 2
@@ -576,6 +597,9 @@ use_native_dialog = true
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Add" to="." method="_on_add_id_pressed"]
 [connection signal="id_pressed" from="MarginContainer/MainContainer/Header/MenuBar/Help" to="." method="_on_help_id_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/Save" to="." method="save"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EmojisBtn" to="." method="_on_emojis_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/IconsBtn" to="." method="_on_icons_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn" to="." method="_on_edit_conf_btn_pressed"]
 [connection signal="pressed" from="MarginContainer/MainContainer/Header/TestBtnContainer/Test" to="." method="test_project"]
 [connection signal="tab_changed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_changed"]
 [connection signal="tab_close_pressed" from="MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar" to="." method="tab_close_pressed"]
@@ -583,5 +607,14 @@ use_native_dialog = true
 [connection signal="pressed" from="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails/MarginContainer/ScrollContainer/PanelContainer/HBoxContainer/TextureButton" to="MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails" method="_on_texture_button_pressed"]
 [connection signal="close_requested" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_close_requested"]
 [connection signal="focus_exited" from="GraphNodeSelecter" to="." method="_on_graph_node_selecter_focus_exited"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/SentenceSelector" to="GraphNodeSelecter" method="_on_sentence_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ChoiceSelector" to="GraphNodeSelecter" method="_on_choice_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/DiceRollSelector" to="GraphNodeSelecter" method="_on_dice_roll_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/BridgeSelector" to="GraphNodeSelecter" method="_on_bridge_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ConditionSelector" to="GraphNodeSelecter" method="_on_condition_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/ActionSelector" to="GraphNodeSelecter" method="_on_action_selector_pressed"]
+[connection signal="pressed" from="GraphNodeSelecter/PanelContainer/VBoxContainer/EndPathSelector" to="GraphNodeSelecter" method="_on_end_path_selector_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/NewFileBtn" to="." method="_on_new_file_btn_pressed"]
 [connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/OpenFileBtn" to="." method="_on_open_file_btn_pressed"]
+[connection signal="pressed" from="WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn" to="." method="_on_cancel_file_btn_pressed"]
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]

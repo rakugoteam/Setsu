@@ -1,0 +1,32 @@
+{
+	"Characters": [
+		{
+			"Reference": "_NARRATOR",
+			"ID": 0
+		},
+		{
+			"Reference": "Lazy God",
+			"ID": 1
+		},
+		{
+			"Reference": "The Architect",
+			"ID": 2
+		},
+		{
+			"Reference": "Douglas Adams",
+			"ID": 3
+		}
+	],
+	"Variables": [
+		{
+			"Name": "SomeTestBool",
+			"Value": true,
+			"Type": "Boolean"
+		},
+		{
+			"Name": "SomeTestInt",
+			"Value": 69,
+			"Type": "Integer"
+		}
+	]
+}

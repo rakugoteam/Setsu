@@ -45,5 +45,5 @@ theme_override_constants/margin_bottom = 5
 
 [node name="Label" type="Label" parent="Connection"]
 layout_mode = 2
-text = "Select this node to edit settings"
+text = "Select this node to load/edit global Vars/Charcters"
 label_settings = SubResource("LabelSettings_afdty")
