@@ -38,6 +38,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_8rud0")
 metadata/_edit_use_anchors_ = true
 
@@ -90,6 +91,7 @@ theme_override_constants/margin_right = 25
 
 [node name="PanelContainer" type="PanelContainer" parent="SidePanelContainer"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_j8kgr")
 
 [node name="MarginContainer" type="MarginContainer" parent="SidePanelContainer"]
@@ -181,6 +183,7 @@ theme_override_constants/margin_bottom = 25
 
 [node name="Panel" type="Panel" parent="TextBoxContainer"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_x2i5c")
 
 [node name="MarginContainer" type="MarginContainer" parent="TextBoxContainer/Panel"]

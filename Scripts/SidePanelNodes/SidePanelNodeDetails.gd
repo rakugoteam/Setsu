@@ -25,13 +25,12 @@ func clear_current_panel():
 		current_panel.queue_free()
 		current_panel = null
 
-
 func on_graph_node_selected(node):
 	var graph_edit = control_node.get_current_graph_edit()
 	await get_tree().create_timer(0.1).timeout
-	if graph_edit.selection_mode or graph_edit.moving_mode:
-		return
-		
+	
+	if graph_edit.selected_nodes != [node]: return
+	
 	line_edit_id.text = node.id
 
 	var new_panel = null
@@ -53,8 +52,7 @@ func on_graph_node_selected(node):
 		"NodeEvent":
 			new_panel = condition_node_panel_instance.instantiate()
 	
-	if new_panel == null:
-		return
+	if new_panel == null: return
 	
 	clear_current_panel()
 	
@@ -67,16 +65,13 @@ func on_graph_node_selected(node):
 		
 	show()
 
-
 func _on_texture_button_pressed():
 	hide()
-
 
 func show_config():
 	clear_current_panel()
 	
 	var root_node = control_node.root_node_ref
-	
 	root_node.selected = true
 
 	var new_panel = root_node_panel_instance.instantiate()
@@ -90,14 +85,11 @@ func show_config():
 	
 	show()
 
-
 func _on_graph_edit_child_exiting_tree(_node):
 	hide()
 
-
 func on_graph_node_deselected(_node):
 	hide()
-
 
 func _on_line_edit_id_text_changed(new_id):
 	if control_node.get_node_by_id(new_id):
