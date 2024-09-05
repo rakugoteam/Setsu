@@ -25,7 +25,10 @@ var db_file = ""
 
 func _ready():
 	for character in graph_node.get_parent().speakers:
-		add_character(character.get("Reference"), character["DisplaySpeakerName"])
+		var speaker_name := ""
+		if "DisplaySpeakerName" in character:
+			speaker_name = character["DisplaySpeakerName"]
+		add_character(character.get("Reference"), speaker_name)
 	
 	for variable in graph_node.get_parent().variables:
 		add_variable(true, variable)

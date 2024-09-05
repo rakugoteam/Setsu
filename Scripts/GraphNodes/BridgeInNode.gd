@@ -29,7 +29,6 @@ func _to_dict() -> Dictionary:
 func _from_dict(dict):
 	id = dict.get("ID")
 	number_selector.value = dict.get("NumberSelector")
-	
 	position_offset.x = dict.EditorPosition.get("x")
 	position_offset.y = dict.EditorPosition.get("y")
 

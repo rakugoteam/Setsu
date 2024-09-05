@@ -59,15 +59,18 @@ func _from_dict(dict: Dictionary):
 	match action_type:
 		"ActionOption":
 			option_id = action.get("OptionID")
+
 		"ActionVariable":
 			operator = action.get("Operator")
 			variable_name = action.get("Variable")
+
 		"ActionCustom":
 			custom_type = action.get("CustomType", "")
 			if custom_type == "PlayAudio":
 				loop = action.get("Loop")
 				volume = action.get("Volume", 0.0)
 				pitch = action.get("Pitch", 1.0)
+
 	value = action.get("Value")
 	
 	_update()
@@ -78,45 +81,45 @@ func _from_dict(dict: Dictionary):
 	
 
 func _action_to_dict() -> Dictionary:
-	if action_type == "ActionOption":
-		return {
-			"$type": action_type,
-			"OptionID": option_id,
-			"Value": value
-		}
-	elif action_type == "ActionCustom":
-		if custom_type == "PlayAudio":
-			return {
+	match action_type:
+		"ActionOption": return {
 				"$type": action_type,
-				"CustomType": custom_type,
-				"Value": value,
-				"Volume": volume,
-				"Pitch": pitch,
-				"Loop": loop
+				"OptionID": option_id,
+				"Value": value
 			}
-		return {
-			"$type": action_type,
-			"CustomType": custom_type,
-			"Value": value
-		}
-	elif action_type == "ActionTimer":
-		return {
+
+		"ActionTimer": return {
 			"$type": action_type,
 			"Value": value
 		}
 		
-	# ActionVariable
-	return {
-		"$type": action_type,
-		"Operator": operator,
-		"Variable": variable_name,
-		"Value": value
-	}
+		"ActionVariable": return {
+			"$type": action_type,
+			"Operator": operator,
+			"Variable": variable_name,
+			"Value": value
+		}
+
+		_: # "ActionCustom":
+			if custom_type == "PlayAudio":
+				return {
+					"$type": action_type,
+					"CustomType": custom_type,
+					"Value": value,
+					"Volume": volume,
+					"Pitch": pitch,
+					"Loop": loop
+				}
+
+			else: return {
+				"$type": action_type,
+				"CustomType": custom_type,
+				"Value": value
+			}
 
 func _on_close_request():
 	queue_free()
 	get_parent().clear_all_empty_connections()
-
 
 func _update(panel: ActionNodePanel = null):
 	if panel != null:
@@ -126,22 +129,25 @@ func _update(panel: ActionNodePanel = null):
 		match action_type:
 			"ActionOption":
 				option_id = panel.option_id_edit.text
-				
+
 				if option_id != "":
 					var is_option_id_valid: bool = get_parent().is_option_node_exciste(option_id)
 					panel.option_not_find.visible = !is_option_id_valid
 				else:
 					panel.option_not_find.hide()
+
 			"ActionVariable":
 				if panel.variable_drop_node.selected >= 0:
 					variable_name = panel.variable_drop_node.get_item_text(panel.variable_drop_node.selected)
 				operator = panel.operator_drop_node.get_item_text(panel.operator_drop_node.selected)
+
 			"ActionCustom":
 				custom_type = panel.custom_drop_node.get_item_text(panel.custom_drop_node.selected)
 				custom_value_label.text = value
 				loop = panel.loop_edit.button_pressed
 				volume = panel.volume_value
 				pitch = panel.pitch_value
+			
 			"ActionTimer":
 				pass
 	
@@ -158,11 +164,13 @@ func _update(panel: ActionNodePanel = null):
 			option_id_label.text = option_id.split("-")[0] if option_id else "option id"
 			option_value_label.text = str(value) if value != null else "value"
 			option_container.show()
+
 		"ActionVariable":
 			variable_name_label.text = variable_name if variable_name else "variable"
 			variable_operator_label.text = operator if operator else "operator"
 			variable_value_label.text = str(value) if value != null else "value"
 			variable_container.show()
+
 		"ActionCustom":
 			custom_type_label.text = custom_type if custom_type else "custom type"
 			custom_value_label.text = str(value) if value else "nothing"
@@ -173,8 +181,10 @@ func _update(panel: ActionNodePanel = null):
 				"PlayAudio":
 					title = "🎵 " + node_type
 					loop_value_container.visible = loop
+
 				"UpdateBackground":
 					title = "🖼️ " + node_type
+					
 		"ActionTimer":
 			wait_value_label.text = str(value) if value else "0"
 			timer_container.show()

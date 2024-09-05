@@ -3,6 +3,8 @@ extends GraphEdit
 
 @onready var close_button = preload("res://Objects/SubComponents/CloseButton.tscn")
 
+@onready var option_reference = preload("res://Objects/SubComponents/OptionReference.tscn")
+
 var file_path: String
 var db_file_path: String
 
@@ -16,9 +18,24 @@ var data: Dictionary
 
 var control_node
 
+func get_connected_nodes(node: GraphNode, nodes: Array[Node]) -> Array:
+	var connections := []
+	for fid in node.get_output_port_count():
+		for n in nodes:
+			if n == node: continue
+			for tid in n.get_input_port_count():
+				if is_node_connected(node.name, fid, n.name, tid):
+					connections.append([fid, node, tid])
+	return connections
+
 func _gui_input(event):
 	if event is InputEventKey:
 		var key := event as InputEventKey
+		if true in [
+			key.ctrl_pressed,
+			key.alt_pressed,
+			key.shift_pressed,
+		]: return
 		if key.is_pressed(): shortcut(event)
 
 func shortcut(key: InputEventKey):
@@ -28,7 +45,7 @@ func shortcut(key: InputEventKey):
 			for node in selected_nodes:
 				if not node: return
 				if node.node_type != "RootNode":
-					node.queue_free()
+					free_graphnode(node)
 
 		KEY_S:
 			var gn: GraphNode = control_node.add_node("Sentence")
@@ -58,7 +75,7 @@ func shortcut(key: InputEventKey):
 		KEY_1:
 			var c: ChoiceNode = control_node.add_node("Choice")
 			c.options.clear()
-			c.gen_options(1)
+			c.gen_options([""])
 			try_connecting_from_selected(c)
 
 		KEY_V: control_node.add_node("Event")
@@ -125,14 +142,26 @@ func is_option_node_exciste(node_id):
 			return true
 	return false
 
+func try_show_inspector(node):
+	if selected_nodes == [node]:
+		control_node.side_panel_node.show()
+
 func _on_node_selected(node):
+	if node in selected_nodes:
+		set_selected(node)
+		return
+
 	selected_nodes.append(node)
+	try_show_inspector(node)
 
 func _on_node_deselected(node):
+	if node not in selected_nodes: return
 	var id := selected_nodes.find(node)
 	selected_nodes.remove_at(id)
+	try_show_inspector(node)
 
 func free_graphnode(node: GraphNode):
+	control_node.side_panel_node.hide()
 	# Disconnect all empty connections
 	for n in get_all_connections_to_node(node.name):
 		for co in get_connection_list():
@@ -145,7 +174,11 @@ func free_graphnode(node: GraphNode):
 			if (co.get("from_node") == node.name
 				and co.get("to_node") == n.name):
 				disconnect_node(co.get("from_node"), co.get("from_port"), co.get("to_node"), co.get("to_port"))
-		
+	
+	if node in selected_nodes:
+		var id := selected_nodes.find(node)
+		selected_nodes.remove_at(id)
+
 	node.queue_free()
 
 func _on_child_entered_tree(node: Node):
@@ -213,3 +246,79 @@ func db_from_dict(dict: Dictionary):
 		id += 1
 	
 	variables = dict["Variables"]
+
+func _on_duplicate_nodes_request():
+	if selected_nodes.size() != 1:
+		await control_node.alert("Duplicating works only for 1 node at one time :(")
+		return
+
+	var node := selected_nodes[0] as MonologueGraphNode
+	if node is RootNode:
+		await control_node.alert("You can't duplicate RootNode")
+		return
+	
+	var node_type := node.node_type as String
+	node_type = node_type.trim_prefix("Node")
+	var copy := control_node.add_node(node_type) as MonologueGraphNode
+	if !copy:
+		await control_node.alert("You can't duplicate this node node_type: %s" % node_type)
+		return
+	
+	var copy_dict := copy._to_dict() as Dictionary
+	var node_dict := node._to_dict() as Dictionary
+	
+	match node_type:
+		"Sentence":
+			var sentence_node := node as SentenceNode
+			var sentence_copy := copy as SentenceNode
+			sentence_copy.sentence = sentence_node.sentence
+			sentence_copy.speaker_id = sentence_node.speaker_id
+			copy_dict = sentence_copy._to_dict()
+
+		"Choice":
+			var choice_node := node as ChoiceNode
+			var choice_copy := copy as ChoiceNode
+			
+			var options := []
+			for op in choice_node.get_children():
+				var option_ref := op as OptionReference
+				options.append(option_ref.sentence)
+
+			choice_copy.options.clear()
+			choice_copy.gen_options(options)
+			set_selected(copy)
+			return
+
+		"DiceRoll":
+			var dice_roll_node := node as DiceRollNode
+			var dice_roll_copy := copy as DiceRollNode
+			dice_roll_copy.skill = dice_roll_node.skill
+			dice_roll_copy.target_number = dice_roll_node.target_number
+			copy_dict = dice_roll_copy._to_dict()
+			
+		"Event", "Condition":
+			copy_dict["Condition"] = node_dict["Condition"]
+
+		"Action":
+			copy_dict["Action"] = node_dict["Action"]
+
+		"EndPath":
+			var end_path_node := node as EndPathNode
+			var end_path_copy := copy as EndPathNode
+			end_path_copy.next_story_name = end_path_node.next_story_name
+			copy_dict = end_path_copy._to_dict()
+			
+		"Comment":
+			var comment_node := node as CommentNode
+			var comment_copy := copy as CommentNode
+			comment_copy.comment_edit.text = comment_node.comment_edit.text
+			copy_dict = comment_copy._to_dict()
+		
+		"BridgeIn", "BridgeOut":
+			copy_dict["NumberSelector"] = node_dict["NumberSelector"]
+		
+		_:
+			await control_node.alert("You duplicate not supported node_type: %s" % node_dict["$type"])
+
+	copy._from_dict(copy_dict)
+	set_selected(copy)

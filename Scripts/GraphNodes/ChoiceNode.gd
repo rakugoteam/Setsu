@@ -1,9 +1,6 @@
 @icon("res://Assets/Icons/NodesIcons/Multiple Choice.svg")
-
 class_name ChoiceNode
-
 extends MonologueGraphNode
-
 
 const arrow_texture01 = preload("res://Assets/Icons/NodesIcons/Arrow01.svg")
 const arrow_texture02 = preload("res://Assets/Icons/NodesIcons/Arrow02.svg")
@@ -18,9 +15,10 @@ func _ready():
 	if len(options) <= 0:
 		gen_options()
 
-func gen_options(number:=2):
-	for _i in number:
+func gen_options(ops:=["", ""]):
+	for op in ops:
 		var opt_ref = option_reference.instantiate()
+		opt_ref.sentence = op
 		add_child(opt_ref)
 		options.append(opt_ref._to_dict())
 	
@@ -37,7 +35,6 @@ func _to_dict() -> Dictionary:
 		}
 	}
 
-
 func _from_dict(dict):
 	id = dict.get("ID")
 	options.clear()
@@ -50,14 +47,12 @@ func _from_dict(dict):
 	
 	_update()
 
-
 func get_all_options_id() -> Array:
 	var ids = []
 	for child in get_children():
 		if is_instance_of(child, PanelContainer) and child.id != null:
 			ids.append(child.id)
 	return ids
-
 
 func get_graph_node(node_id):
 	for node in get_parent().get_children():

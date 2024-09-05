@@ -1,17 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://c02gpa5cixyfm"]
+[gd_scene load_steps=13 format=3 uid="uid://c02gpa5cixyfm"]
 
 [ext_resource type="Texture2D" uid="uid://px17kflnvnd7" path="res://Assets/Icons/NodesIcons/Arrow01.svg" id="1_i5rqj"]
 [ext_resource type="Texture2D" uid="uid://bexlgpgwakbrr" path="res://Assets/Icons/NodesIcons/Arrow02.svg" id="2_25hre"]
 [ext_resource type="Script" path="res://Scripts/GraphNodes/ActionNode.gd" id="3_fftd2"]
-
-[sub_resource type="Theme" id="Theme_llmqa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bcq14"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.129412, 0.14902, 0.180392, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f44r"]
 content_margin_left = 10.0
@@ -131,8 +122,6 @@ offset_bottom = 116.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-theme = SubResource("Theme_llmqa")
-theme_override_styles/panel = SubResource("StyleBoxFlat_bcq14")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_2f44r")
 title = "ActionNode"
 slot/0/left_enabled = true
@@ -151,8 +140,8 @@ slot/1/left_icon = null
 slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
-slot/1/right_icon = ExtResource("2_25hre")
-slot/1/draw_stylebox = false
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
 slot/2/left_enabled = false
 slot/2/left_type = 0
 slot/2/left_color = Color(1, 1, 1, 1)
@@ -160,8 +149,8 @@ slot/2/left_icon = null
 slot/2/right_enabled = false
 slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
-slot/2/right_icon = ExtResource("2_25hre")
-slot/2/draw_stylebox = false
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
 slot/3/left_enabled = false
 slot/3/left_type = 0
 slot/3/left_color = Color(1, 1, 1, 1)
@@ -202,7 +191,6 @@ text = "action type"
 label_settings = SubResource("LabelSettings_v4ya3")
 
 [node name="OptionMarginContainer" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 2
 
 [node name="OptionContainer" type="HBoxContainer" parent="OptionMarginContainer"]
@@ -298,6 +286,7 @@ layout_mode = 2
 text = "seconds"
 
 [node name="CustomMarginContainer" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="CustomContainer" type="HBoxContainer" parent="CustomMarginContainer"]

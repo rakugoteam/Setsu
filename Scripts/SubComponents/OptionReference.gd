@@ -1,5 +1,5 @@
 extends PanelContainer
-
+class_name OptionReference
 
 @onready var option = $MainContainer/VBoxContainer/Option
 @onready var sentence_preview = $MainContainer/VBoxContainer/SentencePreview
