@@ -1,5 +1,6 @@
 extends Control
 
+var upload_mode := "dialogue"
 var dialog = {}
 var dialog_for_localisation = []
 var emoji_finder : Window
@@ -29,16 +30,19 @@ const icon_finder_script :=\
 
 @onready var tab_bar: TabBar = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/TabBar
 @onready var graph_edits: Control = $MarginContainer/MainContainer/GraphEditsArea/VBoxContainer/GraphEdits
-@onready var side_panel_node = $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
-@onready var saved_notification = $MarginContainer/MainContainer/Header/SavedNotification
-@onready var graph_node_selecter = $GraphNodeSelecter
+@onready var side_panel_node := $MarginContainer/MainContainer/GraphEditsArea/MarginContainer/SidePanelNodeDetails
+@onready var saved_notification := $MarginContainer/MainContainer/Header/SavedNotification
+@onready var graph_node_selecter := $GraphNodeSelecter
 @onready var save_progress_bar: ProgressBar = $MarginContainer/MainContainer/Header/SaveProgressBarContainer/SaveProgressBar
 @onready var save_button: Button = $MarginContainer/MainContainer/Header/Save
 @onready var test_button: Button = $MarginContainer/MainContainer/Header/TestBtnContainer/Test
-@onready var add_menu_bar: PopupMenu = $MarginContainer/MainContainer/Header/MenuBar/Add
-@onready var recent_files_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
-@onready var recent_files_button_container = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
-@onready var cancel_file_btn = $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
+@onready var add_menu_bar := $MarginContainer/MainContainer/Header/MenuBar/Add
+@onready var recent_files_container := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer
+@onready var recent_files_button_container := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/RecentFilesContainer/ButtonContainer
+@onready var cancel_file_btn := $WelcomeWindow/PanelContainer/CenterContainer/VBoxContainer2/HBoxContainer/CancelFileBtn
+@onready var html_file_dialogue := $HTML5FileDialog
+@onready var sync_menu := $MarginContainer/MainContainer/Header/MenuBar/Sync
+@onready var edit_conf_btn := $MarginContainer/MainContainer/Header/TestBtnContainer/EditConfBtn
 
 var live_dict: Dictionary
 
@@ -60,7 +64,11 @@ func _ready():
 	var new_root_node = root_node.instantiate()
 	get_current_graph_edit().add_child(new_root_node)
 	connect_graph_edit_signal(get_current_graph_edit())
-	
+
+	if OS.get_name().to_lower() != "web":
+		sync_menu.queue_free()
+		html_file_dialogue.queue_free()
+
 	saved_notification.hide()
 	save_progress_bar.hide()
 	
@@ -79,14 +87,20 @@ func _ready():
 				data.erase(path)
 			for path in data.slice(0, 3):
 				var btn: Button = recent_file_button.instantiate()
-				var btn_text = path.replace("\\", "/")
+				var btn_text = path
+				btn_text = path.replace("\\", "/")
 				btn_text = btn_text.replace("//", "/")
 				btn_text = btn_text.split("/")
+				
 				if btn_text.size() >= 2:
 					btn_text = btn_text.slice(-2, btn_text.size())
 					btn_text = btn_text[0].path_join(btn_text[1])
 				else:
 					btn_text = btn_text.back()
+				
+				if OS.get_name().to_lower() == "web":
+					btn_text = btn_text.trim_prefix("user:/")
+
 				btn.text = btn_text
 				btn.pressed.connect(file_selected.bind(path, 1))
 				recent_files_button_container.add_child(btn)
@@ -135,12 +149,16 @@ func _to_dict() -> Dictionary:
 		get_current_graph_edit().save_db()
 		save_progress_bar.value += 1
 
+		var db_file_path : String = get_current_graph_edit().db_file_path
+		if OS.get_name().to_lower() == "web":
+			db_file_path = db_file_path.trim_prefix("user://")
+
 		return {
 			"EditorVersion": ProjectSettings.get_setting(
 				"application/config/version", "unknown"),
 			"RootNodeID": root_dict.get("ID"),
 			"ListNodes": list_nodes,
-			"DBFile": get_current_graph_edit().db_file_path,
+			"DBFile": db_file_path,
 		}
 
 	var characters = get_current_graph_edit().speakers
@@ -221,7 +239,8 @@ func get_root_dict(nodes):
 
 func get_root_node_ref():
 	for node in get_graph_nodes():
-		if !node.is_queued_for_deletion() and node.id == root_dict.get("ID"):
+		if (!node.is_queued_for_deletion()
+			and node.id == root_dict.get("ID")):
 			return node
 
 
@@ -250,6 +269,10 @@ func save(quick: bool = false):
 	save_button.show()
 	test_button.show()
 
+func alert(message: String):
+	$AcceptDialog.dialog_text = message
+	$AcceptDialog.show()
+	await $AcceptDialog.confirmed
 
 func load_project(path):
 	if not FileAccess.file_exists(path):
@@ -272,15 +295,15 @@ func load_project(path):
 
 	if "DBFile" in data:
 		var db_file := data["DBFile"] as String
-		# prints("DBFile:", db_file)
+		# alert("DBFile: %s" % db_file)
 		get_current_graph_edit().load_db(db_file)
 
 	else:
-		# prints("DBFile: null")
+		# alert("DBFile: null")
 		graph_edit.speakers = data.get("Characters")
 		graph_edit.variables = data.get("Variables")
 	
-	# prints("loaded db:", graph_edit.db_to_dict())
+	# alert("loaded db: %s" % graph_edit.db_to_dict())
 	
 	for node in graph_edit.get_children():
 		node.queue_free()
@@ -526,11 +549,12 @@ func _on_graph_node_selecter_close_requested():
 
 
 func tab_changed(_idx):
-	if tab_bar.get_tab_title(tab_bar.current_tab) != "+":
+	side_panel_node.hide()
+	if get_current_tab_name() != "+":
 		for ge in graph_edits.get_children():
 			ge.visible = graph_edits.get_child(
 				tab_bar.current_tab) == ge
-		
+			
 		return
 	
 	new_graph_edit()
@@ -572,6 +596,10 @@ func _on_file_id_pressed(id):
 			
 			new_graph_edit()
 			return await file_selected(new_file_path, 0)
+		
+		2: # Save
+			save()
+			return
 
 func new_graph_edit():
 	var graph_edit: GraphEdit = graph_edit_inst.instantiate()
@@ -625,11 +653,8 @@ func _on_file_dialog_canceled():
 func _on_cancel_file_btn_pressed():
 	$WelcomeWindow.hide()
 	$NoInteractions.hide()
-	if tab_bar.get_tab_title(tab_bar.current_tab) == "+":
+	if get_current_tab_name() == "+":
 		tab_bar.current_tab -= 1
-
-func _on_edit_conf_btn_pressed():
-	side_panel_node.show_config()
 
 func _on_emojis_btn_pressed():
 	if emoji_finder == null:
@@ -643,3 +668,75 @@ func _on_icons_btn_pressed():
 		add_child.call_deferred(icon_search)
 	
 	icon_search.popup_centered()
+
+func get_current_tab_name() -> String:
+	return tab_bar.get_tab_title(tab_bar.current_tab)
+
+func download_dialogue():
+	var data = JSON.stringify(_to_dict(), "\t", false, true)
+	JavaScriptBridge.download_buffer(
+		data.to_utf8_buffer(),
+		get_current_tab_name(),
+		"application/json"
+	)
+
+func download_db():
+	var current_tab := get_current_graph_edit()
+	var db : Dictionary = current_tab.db_to_dict()
+	var db_data := JSON.stringify(db, "\t", false, true)
+	var db_path : String = current_tab.db_file_path
+	db_path = Array(db_path.split("/", false)).back()
+	JavaScriptBridge.download_buffer(
+		db_data.to_utf8_buffer(), db_path,
+		"application/json"
+	)
+
+func _on_upload_file_btn_pressed():
+	upload_mode = "dialogue"
+	html_file_dialogue.show()
+
+func upload_file(file:HTML5FileHandle) -> String:
+	var text := await file.as_text()
+	var cloud_file_path := "user://" + file.name
+	var cloud_file = FileAccess.open(
+		cloud_file_path, FileAccess.WRITE)
+	cloud_file.store_string(text)
+	cloud_file.close()
+	return cloud_file_path
+
+func _on_html_5_file_dialog_file_selected(file:HTML5FileHandle):
+	$WelcomeWindow.hide()
+	var current_tab := get_current_graph_edit()
+	match upload_mode:
+		"dialogue":
+			new_graph_edit()
+			file_selected(await upload_file(file), 1)
+		"db": 
+			side_panel_node.hide()
+			current_tab.load_db(await upload_file(file))
+			side_panel_node.show_config()
+
+func _on_sync_id_pressed(id: int):
+	match id:
+		0: # UploadDialogue
+			upload_mode = "dialogue"
+			html_file_dialogue.show()
+		1: # Upload DB
+			upload_mode = "db"
+			html_file_dialogue.show()
+		2: # Download Dialogue
+			download_dialogue()
+		3: # Download DB
+			download_db()
+
+func _on_edit_conf_btn_toggled(toggled_on):
+	if toggled_on: side_panel_node.show_config()
+	else: side_panel_node.hide()
+
+func _on_node_selected(node):
+	edit_conf_btn.button_pressed = (
+		node.node_type == "NodeRoot"
+	)
+
+func _on_close_node_btn_pressed():
+	edit_conf_btn.button_pressed = false

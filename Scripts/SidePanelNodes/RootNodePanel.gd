@@ -30,6 +30,8 @@ func _ready():
 		add_variable(true, variable)
 	
 	line_edit_db.text = graph_node.get_parent().db_file_path
+	if OS.get_name().to_lower() == "web":
+		line_edit_db.text = line_edit_db.text.trim_prefix("user://")
 
 func _from_dict(dict):
 	id = dict.get("ID")
@@ -47,7 +49,6 @@ func add_character(reference: String = ""):
 	new_node.root_node = self
 	
 	update_speakers()
-
 
 func add_variable(init: bool = false, dict: Dictionary = {}):
 	var new_node = variable_node.instantiate()
@@ -86,7 +87,6 @@ func update_speakers():
 			continue
 		
 		child.id = all_nodes.find(child)
-		
 		updated_speakers.append(child._to_dict())
 		
 	graph_node.get_parent().speakers = updated_speakers
@@ -113,6 +113,8 @@ func _on_save_db_pressed():
 
 func _on_load_db_pressed():
 	file_dialog = $FileDialogOpen
+	if OS.get_name().to_lower() == "web":
+		file_dialog.access = FileDialog.ACCESS_USERDATA
 	file_dialog.popup_centered()
 
 func _on_file_dialog_file_selected(path):
@@ -120,7 +122,6 @@ func _on_file_dialog_file_selected(path):
 		FileDialog.FILE_MODE_SAVE_FILE:
 			graph_node.get_parent().save_db(path)
 			
-		
 		FileDialog.FILE_MODE_OPEN_FILE:
 			graph_node.get_parent().load_db(path)
 			for ch in characters_container.get_children():
@@ -134,9 +135,17 @@ func _on_file_dialog_file_selected(path):
 			
 			for variable in graph_node.get_parent().variables:
 				add_variable(true, variable)
-			
-		
-	line_edit_db.text = graph_node.get_parent().db_file_path
 
-func _on_line_edit_db_text_submitted(new_text):
+	line_edit_db.text = graph_node.get_parent().db_file_path
+	if OS.get_name().to_lower() == "web":
+		line_edit_db.text = line_edit_db.text.trim_prefix("user://")
+
+func _on_line_edit_db_text_submitted(new_text:String):
+	if OS.get_name().to_lower() == "web":
+		new_text = "user://" + new_text
 	graph_node.get_parent().load_db(new_text)
+
+func _on_upload_db_pressed():
+	var c = graph_node.get_parent().control_node
+	c.upload_mode = "db"
+	c.html_file_dialogue.show()
